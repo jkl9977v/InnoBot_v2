@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapperPUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.innochatbot.admin.mapper.ManualMapper">
+
+<select id="manualSelectAll" resultType="ManualDTO">
+select * from Manual
+</select>
+
+<select id="manualSelectId" resultType="ManualDTO" parameterType="long">
+<!--아이디가 일치하는 매뉴얼 선택-->
+select * from manual where id=#{id}
+</select>
+
+<insert id="manualInsert" parameterType="ManualDTO">
+insert into manual (title, descirption, file_path)
+values(#{title}, #{descripton}, #{filePath})
+</insert>
+
+<update id="manualUpdate" parameterType="ManualDTO">
+update manual
+set title=#{title}, description=#{descripton}, file_path=#{filePath}
+where id=#{id}
+</update>
+
+<delete id="manualDelete" parameterType="long">
+delete from manual where id = #{id}
+</delete>

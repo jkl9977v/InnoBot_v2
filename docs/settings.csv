@@ -1,0 +1,13 @@
+product_name,menu_path,option_key,default_val,description
+A.LizardBackup_P2,설정▶보안▶TLS,EnableTLS,Off,TLS 암호화 활성/비활성
+A.LizardBackup_P2,설정▶네트워크▶포트,WANSpeed,Auto,WAN 포트 속도 자동/수동 설정
+B.RansomeCruncher_P2,관리▶VLAN▶새 VLAN 추가,VLANID,,VLAN ID 번호 지정
+B.RansomeCruncher_P2,관리▶포트 설정▶속도,PortSpeed,1Gbps,포트 링크 속도 설정
+C.innoMark_P2,보안▶방화벽 정책▶인바운드,InboundRule,,수신 트래픽 허용/차단 규칙
+C.innoMark_P2,보안▶방화벽 정책▶아웃바운드,OutboundRule,,송신 트래픽 허용/차단 규칙
+D.nPouch_P2,영상▶해상도▶기본,Resolution,1080p,카메라 기본 해상도 설정
+D.nPouch_P2,영상▶프레임▶기본,FrameRate,30fps,초당 프레임 수 설정
+E.SecureZone_P2,무선▶SSID▶기본,SSID,MyAP,기본 SSID 이름 설정
+E.SecureZone_P2,무선▶보안▶암호화,Encryption,WPA2-PSK,무선 보안 모드 설정
+F.innoECM_P2,설정▶감도▶기본,Sensitivity,Medium,센서 감도 레벨 설정
+F.innoECM_P2,설정▶알림▶이메일,EmailAlert,Off,이메일 알림 활성/비활성
