@@ -8,10 +8,10 @@ import com.innochatbot.api.service.ChatService;
 import org.springframework.web.bind.annotation.*;
 //import java.util.*;
 
-@CrossOrigin(origins="http://localhost:5173") //프론트엔드 주소에 맞게 조정
+@CrossOrigin(origins="http://localhost:5173") //프론트엔드 주소에 맞게 조정, React에서 요청할 수 있도록 cors허용
 @RestController
-@RequestMapping("/chat")
-public class ChatController {
+@RequestMapping("/chat") //'/chat' url로 rest api 생성 
+public class ChatController { //React에서 보내는 chat post 요청을 받아서 처리한다.
 
     // @Value("${openai.api.key}")
     // private String apiKey;
@@ -20,8 +20,7 @@ public class ChatController {
     // private EmbeddingService embeddingService; //2-4-1
 
     //@Autowired
-    private final ChatService chatService;
-    // private ChatService chatService; //2-4-2
+    private final ChatService chatService; //2-4-2
 
     public ChatController (ChatService chatService){
         this.chatService=chatService;
