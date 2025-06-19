@@ -1,28 +1,31 @@
-<!DOCTYPE html>
-<!-- <html> -->
+<DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title> 매뉴얼 목록</title>
-    <!-- <link rel="stylesheet" href="resources/static/admin/css/manual.css"/> -->
+  <title>매뉴얼 목록</title>
 </head>
 <body>
-    <h1>매뉴얼 관리</h1>
-    <!-- <a th:href="@{/admin/manuals/new}">새 매뉴얼 등록</a> -->
-    <table>
-        <thead>
-            <tr><th>ID</th><th>제목</th><th>액션</th></tr>
-        </thead>
-        <tbody>
-            <!-- <tr th:each="m : ${manuals}">
-                <td th:text="${m.id}">1</td>
-                <td th:text="${m.title}">매뉴얼 제목</td>
-                <td>
-                    <a th:href="@{'/admin/manuals/' + ${m.id} + '/edit'}">수정</a>
-                    <a th:href="@{'/admin/manuals/' + ${m.id} + '/delete'}">삭제</a>
-                </td>
-            </tr> -->
-        </tbody>
-    </table>
+  <h1>매뉴얼 관리</h1>
+
+  <a th:href="@{/admin/manuals/form}">+ 새 매뉴얼 등록</a>
+
+  <table>
+    <thead>
+      <tr><th>ID</th><th>제목</th><th>파일</th><th>액션</th></tr>
+    </thead>
+    <tbody>
+      <tr th:each="m : ${manuals}">
+        <td th:text="${m.id}">1</td>
+        <td th:text="${m.title}">제목</td>
+        <td th:if="${m.filePath != null}">
+          <a th:href="@{'/' + ${m.filePath}}">다운로드</a>
+        </td>
+        <td>
+          <form th:action="@{'/admin/manuals/' + ${m.id} + '/delete'}" method="post">
+            <button type="submit">삭제</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </body>
 </html>

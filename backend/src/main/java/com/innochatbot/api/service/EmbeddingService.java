@@ -9,7 +9,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.List;
 
 @Service
-public class EmbeddingService {
+public class EmbeddingService { //질문을 벡터화 하는 파일이다.
 
     @Value("${openai.api.key}")
     private String apiKey;

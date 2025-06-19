@@ -12,6 +12,7 @@ import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Map;
 
+//OpenAI API 호출
 @Service
 public class ChatService {
 

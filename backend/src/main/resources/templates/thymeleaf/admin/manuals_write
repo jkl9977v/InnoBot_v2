@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>매뉴얼 등록</title>
+</head>
+<body>
+  <h1>매뉴얼 등록</h1>
+  <form th:action="@{/admin/manuals/form}" method="post">
+    <input type="text" name="title" placeholder="제목" />
+    <textarea name="description" placeholder="설명"></textarea>
+    <button type="submit">등록</button>
+  </form>
+</body>
+</html>
+
