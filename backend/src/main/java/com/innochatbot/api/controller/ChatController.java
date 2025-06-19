@@ -12,20 +12,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/chat") //'/chat' url로 rest api 생성 
 public class ChatController { //React에서 보내는 chat post 요청을 받아서 처리한다.
-
-    // @Value("${openai.api.key}")
-    // private String apiKey;
-
-    // @Autowired
-    // private EmbeddingService embeddingService; //2-4-1
-
-    //@Autowired
+    //의존성
     private final ChatService chatService; //2-4-2
 
+    //생성자 주입
     public ChatController (ChatService chatService){
         this.chatService=chatService;
     }
 
+    //post /chat요청 처리
+    //요청 바디(JSON) -> chatrequest로 바인딩 -> 서비스로 전달 -> chatResponse로 반환
     @PostMapping
     public ChatResponse chat(@RequestBody ChatRequest req){
         return chatService.handle(req.question());

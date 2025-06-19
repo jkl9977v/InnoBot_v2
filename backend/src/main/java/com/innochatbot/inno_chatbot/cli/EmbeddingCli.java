@@ -2,72 +2,86 @@ package com.innochatbot.inno_chatbot.cli;
 
 import java.nio.file.*;
 import java.util.*;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+
 import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.embedding.EmbeddingRequest;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-//애플리케이션이 시작될 때 한번 실행되는 커맨드라인툴
-/*
-1. 전체 역할 
-- Spring Boot 애플리케이션이 부팅된 직후(CommahndLineRunner 구현)
-- docs 폴더 안의 모든 PDF를 탐색
-- 각 PDF에서 텍스트를 뽑아 400자 단위로 나누고
-- OpenAI 임베딩을 호출해 벡터를 얻은 뒤
-- chunk 테이블에 저장
-이 과정을 자동화된 일괄작업(batch job)으로 한 번에 처리하기 위해 만든 파일
-*/
-
+/**
+ * Spring Boot 애플리케이션 실행 직후 자동 실행되는 일괄처리 컴포넌트
+ * 1. docs 폴더 내 PDF 파일을 순회하며
+ * 2. 텍스트 추출 → 청크 분할 → 임베딩 벡터 생성
+ * 3. DB의 chunk 테이블에 저장
+ */
 @Component
-public class EmbeddingCli implements CommandLineRunner {
+public class EmbeddingCli implements CommandLineRunner { 
+    //PDF파일을 읽고, 400자 단위로 나눈 다음, OpenAI 임베딩 벡터를 생성하고, chunk테이블에 저장하는 일괄처리(batch)파일
 
-    @Value("${openai.api.key}")
+    @Value("${openai.api.key}")         // application.properties 또는 .env에서 API 키 주입
     private String apiKey;
 
-    @Autowired
+    @Autowired                          // Spring에서 JdbcTemplate 자동 주입
     private JdbcTemplate jdbc;
 
     @Override
     public void run(String... args) throws Exception {
-        //이전 데이터 삭제(이 부분 추후 지우기)
+        // 시작 시 기존 chunk 테이블 데이터 삭제 (테스트 용도일 수 있음)
         jdbc.update("DELETE FROM chunk");
         System.out.println("▶ EmbeddingCli 시작");
-        // 1) docs 폴더 내 PDF 순회
-        Path docsDir = Paths.get("D:/Inno_ChatBot/docs");
+
+        // 1. docs 폴더 내 PDF 파일 순회
+        Path docsDir = Paths.get("D:/Inno_ChatBot/docs");   // PDF 위치 경로
         Files.walk(docsDir)
-             .filter(p -> p.toString().endsWith(".pdf"))
-             .forEach(pdfPath -> processPdf(pdfPath));
+             .filter(p -> p.toString().endsWith(".pdf"))    // .pdf 확장자만 선택
+             .forEach(pdfPath -> processPdf(pdfPath));      // 각 PDF 처리
+
         System.out.println("▶ EmbeddingCli 완료");
     }
 
+    // 개별 PDF 파일 처리 함수
     private void processPdf(Path pdfPath) {
-        System.out.println("처리대상 PDF:"+pdfPath.toAbsolutePath());
+        System.out.println("처리대상 PDF: " + pdfPath.toAbsolutePath());
+
         try (PDDocument doc = PDDocument.load(pdfPath.toFile())) {
+            // ① PDF 텍스트 추출
             String text = new PDFTextStripper().getText(doc);
+
+            // ② 텍스트를 400자 단위로 분할
             List<String> chunks = split(text, 400);
+
+            // ③ file_path 테이블을 기준으로 manual_id 조회
             Long manualId = getManualId(pdfPath.getFileName().toString());
-            System.out.println("manualId 조회: "+manualId);
-            if(manualId == null){
-                System.err.println("manualId조회 실패:file_path테이블 확인 필요");
+            System.out.println("manualId 조회: " + manualId);
+
+            if (manualId == null) {
+                System.err.println("manualId조회 실패: file_path 테이블 확인 필요");
                 return;
             }
+
+            // ④ 각 청크에 대해 임베딩 벡터 생성 + DB 저장
             for (int i = 0; i < chunks.size(); i++) {
                 float[] vec = callEmbedding(chunks.get(i));
                 saveChunk(manualId, i + 1, chunks.get(i), vec);
             }
+
             System.out.printf("  • 처리 완료: %s (%d 청크)%n", pdfPath.getFileName(), chunks.size());
+
         } catch (Exception e) {
             System.err.printf("  ! 오류: %s → %s%n", pdfPath.getFileName(), e.getMessage());
         }
     }
 
-    // 2-3-3. 텍스트 400자 분할
+    // 문자열을 지정 길이(size)로 분할하는 유틸 함수
     private List<String> split(String text, int size) {
         List<String> result = new ArrayList<>();
         int pos = 0;
@@ -79,31 +93,35 @@ public class EmbeddingCli implements CommandLineRunner {
         return result;
     }
 
-    // 2-3-4. OpenAI 임베딩 호출
+    // OpenAI 임베딩 API 호출 (단일 청크 기준)
     private float[] callEmbedding(String chunk) {
         OpenAiService service = new OpenAiService(apiKey);
+
         var request = EmbeddingRequest.builder()
-                          .model("text-embedding-3-small")
-                          .input(List.of(chunk))
-                          .build();
-        var response = service.createEmbeddings(request).getData().get(0);
-        // List<Double> → float[]
+                .model("text-embedding-3-small")      // 사용 모델
+                .input(List.of(chunk))               // 입력 텍스트 리스트
+                .build();
+
+        var response = service.createEmbeddings(request)
+                              .getData().get(0);
+
+        // List<Double> → float[]로 변환
         List<Double> data = response.getEmbedding();
         float[] vec = new float[data.size()];
         for (int i = 0; i < data.size(); i++) {
             vec[i] = data.get(i).floatValue();
         }
+
         return vec;
-        //return new float[1536];
     }
 
-    // 2-3-5. manual_id 조회 (파일명 기준)
+    // filename 기준으로 manual 테이블에서 manual_id 조회
     private Long getManualId(String filename) {
         String sql = "SELECT id FROM manual WHERE file_path LIKE ?";
         return jdbc.queryForObject(sql, Long.class, "%" + filename);
     }
 
-    // 2-3-5. chunk 테이블 INSERT
+    // chunk 테이블에 임베딩된 청크 삽입
     private void saveChunk(Long manualId, int pageNo, String content, float[] embedding) {
         String sql = "INSERT INTO chunk(manual_id, page_no, content, embedding) VALUES(?,?,?,?)";
         jdbc.update(con -> {
@@ -111,15 +129,15 @@ public class EmbeddingCli implements CommandLineRunner {
             ps.setLong(1, manualId);
             ps.setInt(2, pageNo);
             ps.setString(3, content);
-            ps.setBytes(4, toBytes(embedding));
+            ps.setBytes(4, toBytes(embedding));  // float[] → byte[]
             return ps;
         });
     }
 
-    // float[] → byte[] 변환 (4바이트씩 LE)
+    // float[] → byte[] 변환 (PostgreSQL pgvector용, LE 방식)
     private byte[] toBytes(float[] vec) {
         ByteBuffer buf = ByteBuffer.allocate(vec.length * 4);
-        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.order(ByteOrder.LITTLE_ENDIAN); // 리틀 엔디언으로 설정
         for (float v : vec) buf.putFloat(v);
         return buf.array();
     }
