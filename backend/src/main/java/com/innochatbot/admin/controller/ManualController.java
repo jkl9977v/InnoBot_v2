@@ -17,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+/* 
 @RestController
 @RequestMapping("/admin/manuals")
+
 public class ManualController {
 
     @Autowired
@@ -91,3 +93,4 @@ public class ManualController {
         return ResponseEntity.ok().build();
     }
 }
+    */

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ManualDeleteService {
-
+    /*
     @Autowired
     ManualMapper manualMapper;
 
@@ -23,4 +23,5 @@ public class ManualDeleteService {
     public void deleteManual(Long id) {
         manualMapper.manualDelete(id);
     }
+        */
 }

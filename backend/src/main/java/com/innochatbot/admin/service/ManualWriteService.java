@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ManualWriteService {
-
+    /*
     @Autowired
     ManualMapper manualMapper;
     
@@ -36,4 +36,5 @@ public class ManualWriteService {
         dto.setFilePath(filePath);                // 경로 설정
         manualMapper.manualUpdate(dto);                 // 다시 저장
     }
+    */
 }
