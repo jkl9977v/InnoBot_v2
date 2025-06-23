@@ -1,13 +1,8 @@
 package com.innochatbot.admin.controller;
 
-import com.innochatbot.admin.dto.ManualDTO;
-import com.innochatbot.admin.service.ManualDeleteService;
-import com.innochatbot.admin.service.ManualReadService;
-import com.innochatbot.admin.service.ManualWriteService;
 
 import ch.qos.logback.core.model.Model;
 
-import com.innochatbot.admin.service.ManualFileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,21 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-/* 
+
 @RestController
-@RequestMapping("/admin/manuals")
 
 public class ManualController {
 
-    @Autowired
-    ManualReadService manualReadService;
-    @Autowired
-    ManualWriteService manualWriteService;
-    @Autowired
-    ManualDeleteService manualDeleteService;
-    @Autowired
-    ManualFileService manualFileService;
-
+    /* 
 
     // 📘 전체 목록 조회
     @GetMapping
@@ -92,5 +78,5 @@ public class ManualController {
         manualWriteService.updateFilePath(id, path);             // DB에 경로 반영
         return ResponseEntity.ok().build();
     }
-}
     */
+}

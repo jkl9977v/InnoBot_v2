@@ -40,4 +40,4 @@ build/
 .env
 
 ## innoChatbot-db-1.erd
-InnoChatbot-db-1.erd
+*.erd
