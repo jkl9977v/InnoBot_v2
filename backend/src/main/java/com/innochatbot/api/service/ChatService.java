@@ -89,7 +89,9 @@ public class ChatService {
     private byte[] toBytes(float[] vec) {
         ByteBuffer buf = ByteBuffer.allocate(vec.length * 4);
         buf.order(ByteOrder.LITTLE_ENDIAN);
-        for (float v : vec) buf.putFloat(v);
+        for (float v : vec) {
+            buf.putFloat(v);
+        }
         return buf.array();
     }
 }

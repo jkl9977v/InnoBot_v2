@@ -67,7 +67,7 @@ public class EmbeddingCli implements CommandLineRunner {
             List<String> chunks = split(text, 400);
 
             // ③ file_path 테이블을 기준으로 file_id 조회
-            Long fileId = getFileId(pdfPath.getFileName().toString());
+            String fileId = getFileId(pdfPath.getFileName().toString());
             System.out.println("fileId 조회: " + fileId);
 
             if (fileId == null) {
@@ -122,34 +122,13 @@ public class EmbeddingCli implements CommandLineRunner {
         return vec;
     }
 
+    /*
     // filename 기준으로 file 테이블에서 file_id 조회
     private Long getFileId(String filename) {
         String sql = "SELECT fileId FROM file WHERE file_name LIKE ?";
         return jdbc.queryForObject(sql, Long.class, "%" + filename);
     }
 
-    /*
-    기존 코드에서 발생할 수 있는 오류 보완 가능한 코드
-    private Long getFileId(String filename) {
-        String sql = "SELECT fileId FROM file WHERE file_name LIKE ?";
-        List<Long> results = jdbc.queryForList(sql, Long.class, "%" + filename);
-        return results.isEmpty() ? null : results.get(0);
-    }
-    // chunk 테이블에 임베딩된 청크 삽입
-    private void saveChunk(Long chunkId, String fileId, int sequence, String content, float[] embedding) {
-        String sql = "INSERT INTO chunk(chunkId, fileId, sequence, content, toBytes(embedding), summary) VALUES(?,?,?,?,?,?)";
-        jdbc.update(con -> {
-            var ps = con.prepareStatement(sql);
-            ps.setLong(1, chunkId);
-            ps.setString(2, fileId);
-            ps.setInt(3, sequence);
-            ps.setString(4, content);
-            ps.setBytes(5, toBytes(embedding));  // float[] → byte[]
-            ps.setString(6, null);
-            return ps;
-        });
-    }
-     */
     // chunk 테이블에 임베딩된 청크 삽입
     private void saveChunk(Long fileId, int pageNo, String content, float[] embedding) {
         String sql = "INSERT INTO chunk(manual_id, page_no, content, embedding) VALUES(?,?,?,?)";
@@ -162,6 +141,35 @@ public class EmbeddingCli implements CommandLineRunner {
             return ps;
         }
         );
+    }
+     */
+    //기존 코드에서 발생할 수 있는 오류 보완 가능한 코드
+    private String getFileId(String filename) {
+        String sql = "SELECT fileId FROM file WHERE file_name LIKE ?";
+        List<String> results = jdbc.queryForList(sql, String.class, "%" + filename);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    private Long generateChunkId() {
+        UUID uuid = UUID.randomUUID();
+        Long chunkId = Math.abs(uuid.getMostSignificantBits()); //양수 보장
+        return chunkId;
+    }
+
+    // chunk 테이블에 임베딩된 청크 삽입
+    private void saveChunk(String fileId, int sequence, String content, float[] embedding) {
+        Long chunkId = generateChunkId(); // 또는 UUID를 long으로 변환하거나 sequence 활용
+        String sql = "INSERT INTO chunk(chunkId, fileId, sequence, content, toBytes(embedding), summary) VALUES(?,?,?,?,?,?)";
+        jdbc.update(con -> {
+            var ps = con.prepareStatement(sql);
+            ps.setLong(1, chunkId);
+            ps.setString(2, fileId);
+            ps.setInt(3, sequence);
+            ps.setString(4, content);
+            ps.setBytes(5, toBytes(embedding));  // float[] → byte[]
+            ps.setString(6, null);
+            return ps;
+        });
     }
 
     // float[] → byte[] 변환 (PostgreSQL pgvector용, LE 방식)

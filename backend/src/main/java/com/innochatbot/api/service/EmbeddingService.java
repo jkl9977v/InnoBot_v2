@@ -26,11 +26,10 @@ public class EmbeddingService { //질문을 벡터화 하는 파일이다.
         this.client = new OpenAiService(apiKey);
     }
 
-    
     // 질문 또는 청크 텍스트를 임베딩합니다.
     // 개발/테스트 단계에서는 더미 벡터를 반환하도록 설정할 수 있습니다.
     public float[] embed(String text) {
-        System.out.println("EmbeddingService.useDummy="+useDummy);
+        System.out.println("EmbeddingService.useDummy=" + useDummy);
         if (useDummy) {
             return embedDummy(text); //더미벡터 리턴
         } else {
@@ -48,7 +47,7 @@ public class EmbeddingService { //질문을 벡터화 하는 파일이다.
 
         // API 호출 및 결과 변환
         List<Double> data = client.createEmbeddings(request)
-                                  .getData().get(0).getEmbedding();
+                .getData().get(0).getEmbedding();
         // List<Double>를 float[]로 변환 (강제형 변환)
         float[] vec = new float[data.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -56,7 +55,6 @@ public class EmbeddingService { //질문을 벡터화 하는 파일이다.
         }
         return vec;
     }
-    
 
     //개발/테스트용 더미 벡터를 반환합니다.
     private float[] embedDummy(String text) {

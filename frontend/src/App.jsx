@@ -1,80 +1,81 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useRef, useEffect } from 'react';
+import './App.css';
+import botIcon from './image/tiumBot1.png';
 
 function App() {
-  //const [count, setCount] = useState(0)
-  const [question, setQuestion]=useState('');
-  const [answer, setAnswer] = useState('');
+  const [question, setQuestion] = useState('');
+  const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
-  
-  const handleSubmit = async(e) => {
+  const messagesEndRef = useRef(null);
+
+  //const textareaRef=useRef(null);
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!question.trim()) return;
+
+    const userMessage = { role: 'user', message: question };
+    setChatHistory((prev) => [...prev, userMessage]);
+    setQuestion('');
     setLoading(true);
-    setAnswer('');
-    try{ //답변 요청 시도
+
+    try {
       const res = await fetch('http://localhost:8080/chat', {
-        method:'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({question}),
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: userMessage.message }),
       });
+
       const data = await res.json();
-      setAnswer(data.answer);
-    }catch(err){ //답변 요청이 안됐을때
+      const botMessage = { role: 'bot', message: data.answer };
+      setChatHistory((prev) => [...prev, botMessage]);
+    } catch (err) {
       console.error(err);
-      setAnswer('요청 중 오류가 발생했습니다.');
-    }finally{
+      setChatHistory((prev) => [...prev, { role: 'bot', message: '오류가 발생했습니다.' }]);
+    } finally {
       setLoading(false);
     }
-  }
+  };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatHistory]);
 
   return (
-    <div style={{ maxWidth: 600, margin: '50px auto', fontFamilly:'sans-serif'}}>
-      <h1>Inno ChatBot</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text"
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          placeholder="질문을 입력하세요"
-          style={{ width:'100%', padding: '8px', fontSize:'1rem'}} 
-        />
-        <button type="submit" disabled={loading || !question.trim()}
-        style={{ marginTop: '10px'}}>
-          {loading? '로딩 중...': '전송'}
-        </button>
+    <div className="chat-wrapper">
+      <div className="chat-container">
+        <div className="chat-header">
+          <img src={botIcon} alt="Bot" className="bot-avatar"></img>
+          <span>TiumBot</span>
+        </div>
+
+        <div className="chat-messages">
+          {chatHistory.map((chat, idx) => (
+            <div
+              key={idx}
+              className={`chat-bubble ${chat.role === 'user' ? 'user' : 'bot'}`}
+            >
+              {chat.message}
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <form className="chat-input-area" onSubmit={handleSubmit}>
+          <textarea className="chat-textarea"
+            //ref={textareRef}
+            type="text"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            rows={1}
+            placeholder="질문을 입력하세요"
+          />
+          <button type="submit" disabled={loading || !question.trim()}>
+            {loading ? '로딩 중...' : '전송'}
+          </button>
         </form>
-        {answer && (
-          <div style={{ marginTop: '20px', whiteSpace: 'pre-wrap'}}>
-            <strong>답변: </strong>
-            <p>{answer}</p>
-          </div>
-        )}
+      </div>
     </div>
-    /*<>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-    */
-  )
+  );
 }
 
 export default App;
