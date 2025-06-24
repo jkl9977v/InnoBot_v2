@@ -18,13 +18,11 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 /**
- * Spring Boot 애플리케이션 실행 직후 자동 실행되는 일괄처리 컴포넌트
- * 1. docs 폴더 내 PDF 파일을 순회하며
- * 2. 텍스트 추출 → 청크 분할 → 임베딩 벡터 생성
- * 3. DB의 chunk 테이블에 저장
+ * Spring Boot 애플리케이션 실행 직후 자동 실행되는 일괄처리 컴포넌트 1. docs 폴더 내 PDF 파일을 순회하며 2. 텍스트
+ * 추출 → 청크 분할 → 임베딩 벡터 생성 3. DB의 chunk 테이블에 저장
  */
 @Component
-public class EmbeddingCli implements CommandLineRunner { 
+public class EmbeddingCli implements CommandLineRunner {
     //PDF파일을 읽고, 400자 단위로 나눈 다음, OpenAI 임베딩 벡터를 생성하고, chunk테이블에 저장하는 일괄처리(batch)파일
 
     @Value("${openai.api.key}")         // application.properties 또는 .env에서 API 키 주입
@@ -33,6 +31,15 @@ public class EmbeddingCli implements CommandLineRunner {
     @Autowired                          // Spring에서 JdbcTemplate 자동 주입
     private JdbcTemplate jdbc;
 
+    // chunk
+    /*
+    String chunkId
+    String fileId
+    int sequence
+    string content
+    varbinary(3027) embedding 벡터데이터
+    String summary 
+     */
     @Override
     public void run(String... args) throws Exception {
         // 시작 시 기존 chunk 테이블 데이터 삭제 (테스트 용도일 수 있음)
@@ -42,8 +49,8 @@ public class EmbeddingCli implements CommandLineRunner {
         // 1. docs 폴더 내 PDF 파일 순회
         Path docsDir = Paths.get("D:/Inno_ChatBot/docs");   // PDF 위치 경로
         Files.walk(docsDir)
-             .filter(p -> p.toString().endsWith(".pdf"))    // .pdf 확장자만 선택
-             .forEach(pdfPath -> processPdf(pdfPath));      // 각 PDF 처리
+                .filter(p -> p.toString().endsWith(".pdf")) // .pdf 확장자만 선택
+                .forEach(pdfPath -> processPdf(pdfPath));      // 각 PDF 처리
 
         System.out.println("▶ EmbeddingCli 완료");
     }
@@ -59,19 +66,19 @@ public class EmbeddingCli implements CommandLineRunner {
             // ② 텍스트를 400자 단위로 분할
             List<String> chunks = split(text, 400);
 
-            // ③ file_path 테이블을 기준으로 manual_id 조회
-            Long manualId = getManualId(pdfPath.getFileName().toString());
-            System.out.println("manualId 조회: " + manualId);
+            // ③ file_path 테이블을 기준으로 file_id 조회
+            Long fileId = getFileId(pdfPath.getFileName().toString());
+            System.out.println("fileId 조회: " + fileId);
 
-            if (manualId == null) {
-                System.err.println("manualId조회 실패: file_path 테이블 확인 필요");
+            if (fileId == null) {
+                System.err.println("fileId조회 실패: file_path 테이블 확인 필요");
                 return;
             }
 
             // ④ 각 청크에 대해 임베딩 벡터 생성 + DB 저장
             for (int i = 0; i < chunks.size(); i++) {
                 float[] vec = callEmbedding(chunks.get(i));
-                saveChunk(manualId, i + 1, chunks.get(i), vec);
+                saveChunk(fileId, i + 1, chunks.get(i), vec);
             }
 
             System.out.printf("  • 처리 완료: %s (%d 청크)%n", pdfPath.getFileName(), chunks.size());
@@ -98,12 +105,12 @@ public class EmbeddingCli implements CommandLineRunner {
         OpenAiService service = new OpenAiService(apiKey);
 
         var request = EmbeddingRequest.builder()
-                .model("text-embedding-3-small")      // 사용 모델
-                .input(List.of(chunk))               // 입력 텍스트 리스트
+                .model("text-embedding-3-small") // 사용 모델
+                .input(List.of(chunk)) // 입력 텍스트 리스트
                 .build();
 
         var response = service.createEmbeddings(request)
-                              .getData().get(0);
+                .getData().get(0);
 
         // List<Double> → float[]로 변환
         List<Double> data = response.getEmbedding();
@@ -115,30 +122,55 @@ public class EmbeddingCli implements CommandLineRunner {
         return vec;
     }
 
-    // filename 기준으로 manual 테이블에서 manual_id 조회
-    private Long getManualId(String filename) {
-        String sql = "SELECT id FROM manual WHERE file_path LIKE ?";
+    // filename 기준으로 file 테이블에서 file_id 조회
+    private Long getFileId(String filename) {
+        String sql = "SELECT fileId FROM file WHERE file_name LIKE ?";
         return jdbc.queryForObject(sql, Long.class, "%" + filename);
     }
 
+    /*
+    기존 코드에서 발생할 수 있는 오류 보완 가능한 코드
+    private Long getFileId(String filename) {
+        String sql = "SELECT fileId FROM file WHERE file_name LIKE ?";
+        List<Long> results = jdbc.queryForList(sql, Long.class, "%" + filename);
+        return results.isEmpty() ? null : results.get(0);
+    }
     // chunk 테이블에 임베딩된 청크 삽입
-    private void saveChunk(Long manualId, int pageNo, String content, float[] embedding) {
+    private void saveChunk(Long chunkId, String fileId, int sequence, String content, float[] embedding) {
+        String sql = "INSERT INTO chunk(chunkId, fileId, sequence, content, toBytes(embedding), summary) VALUES(?,?,?,?,?,?)";
+        jdbc.update(con -> {
+            var ps = con.prepareStatement(sql);
+            ps.setLong(1, chunkId);
+            ps.setString(2, fileId);
+            ps.setInt(3, sequence);
+            ps.setString(4, content);
+            ps.setBytes(5, toBytes(embedding));  // float[] → byte[]
+            ps.setString(6, null);
+            return ps;
+        });
+    }
+     */
+    // chunk 테이블에 임베딩된 청크 삽입
+    private void saveChunk(Long fileId, int pageNo, String content, float[] embedding) {
         String sql = "INSERT INTO chunk(manual_id, page_no, content, embedding) VALUES(?,?,?,?)";
         jdbc.update(con -> {
             var ps = con.prepareStatement(sql);
-            ps.setLong(1, manualId);
+            ps.setLong(1, fileId);
             ps.setInt(2, pageNo);
             ps.setString(3, content);
             ps.setBytes(4, toBytes(embedding));  // float[] → byte[]
             return ps;
-        });
+        }
+        );
     }
 
     // float[] → byte[] 변환 (PostgreSQL pgvector용, LE 방식)
     private byte[] toBytes(float[] vec) {
         ByteBuffer buf = ByteBuffer.allocate(vec.length * 4);
         buf.order(ByteOrder.LITTLE_ENDIAN); // 리틀 엔디언으로 설정
-        for (float v : vec) buf.putFloat(v);
+        for (float v : vec) {
+            buf.putFloat(v);
+        }
         return buf.array();
     }
 }

@@ -8,14 +8,14 @@ import com.innochatbot.admin.dto.FilePathDTO;
 
 @Mapper
 public interface FilePathMapper {
-    
+
     public List<FilePathDTO> filePathSelectAll();
 
-    public FilePathDTO filePathSelectId(Long id);
+    public FilePathDTO filePathSelectId(String pathId);
 
-    public void filePathInsert(FilePathDTO filePath);
+    public void filePathInsert(FilePathDTO dto);
 
-    public void filePathUpdate(FilePathDTO filePath);
+    public void filePathUpdate(FilePathDTO dto);
 
-    public void filePathDelete(Long id);
+    public void filePathDelete(String pathId);
 }

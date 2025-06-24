@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapperPUBLIC 
+  "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.innochatbot.admin.mapper.AutoNumMapper">
+
+<select id="autoNum1" resultType="string">
+    select concat(${column1}, nvl(max(substring(${column},#{len})), 000000)+1)
+    from ${table}
+</select>

@@ -15,16 +15,16 @@ select * from filePath where id=#{id}
 </select>
 
 <insert id="filePathInsert" parameterType="pathDTO">
-insert into filePath (title, descirption, file_path)
-values(#{title}, #{descripton}, #{filePath})
+insert into filePath (path_id, path, access_id)
+values(#{pathId}, #{path}, #{accessId})
 </insert>
 
 <update id="filePathUpdate" parameterType="pathDTO">
 update filePath
-set title=#{title}, description=#{descripton}, file_path=#{filePath}
-where id=#{id}
+set path=#{path}, access_id=#{accessId}
+where path_id=#{pathId}
 </update>
 
 <delete id="filePathDelete" parameterType="long">
-delete from filePath where id = #{id}
+delete from filePath where path_id = #{pathId}
 </delete>
