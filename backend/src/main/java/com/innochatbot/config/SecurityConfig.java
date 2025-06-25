@@ -1,13 +1,27 @@
 package com.innochatbot.config;
 
 import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.context.annotation.Bean;
 
 @Configuration
 public class SecurityConfig {
-    /* 
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http
+                .cors() // ✅ CORS 설정 활성화
+                .and()
+                .csrf().disable() // (개발 중에는 보통 비활성화)
+                .authorizeHttpRequests()
+                .anyRequest().permitAll();
+
+        return http.build();
+    }
+}
+/*
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -26,5 +40,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-     */
-}
+ */

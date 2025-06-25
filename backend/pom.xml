@@ -101,11 +101,16 @@
          	<groupId>org.springframework.boot</groupId>
          	<artifactId>spring-boot-devtools</artifactId>
       	</dependency>
-		<!-- 암호화 -->
-      	<!--<dependency>
+		<!-- 암호화, security -->
+      	<dependency>
         	<groupId>org.springframework.boot</groupId>
         	<artifactId>spring-boot-starter-security</artifactId>
-      	</dependency>-->   
+      	</dependency> 
+		<!--security2-->
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-config</artifactId>
+		</dependency>
       
       	<!-- validation -->
       	<dependency>

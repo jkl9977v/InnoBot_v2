@@ -19,7 +19,7 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:8080/chat', {
+      const res = await fetch('http://192.168.11.146:8080/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: userMessage.message }),
