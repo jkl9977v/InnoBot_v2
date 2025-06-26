@@ -78,6 +78,22 @@ public class ChatService {
                 .createCompletion(req)
                 .getChoices().get(0).getText().trim();
 
+        /*
+        //3.5 터보 모델 사용시
+        ChatMessage system = new ChatMessage("system", "다음 문서를 참고해서 사용자의 질문에 답하세요.");
+ChatMessage user = new ChatMessage("user", prompt.toString());
+
+ChatCompletionRequest req = ChatCompletionRequest.builder()
+        .model("gpt-3.5-turbo")
+        .messages(List.of(system, user))
+        .maxTokens(500)
+        .build();
+
+String answer = getClient()
+        .createChatCompletion(req)
+        .getChoices().get(0).getMessage().getContent()
+        .trim();
+         */
         // 5) source chunk IDs 수집
         List<Long> ids = rows.stream()
                 .map(r -> ((Number) r.get("id")).longValue())

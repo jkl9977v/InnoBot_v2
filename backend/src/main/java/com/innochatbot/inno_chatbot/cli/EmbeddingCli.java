@@ -1,21 +1,25 @@
 package com.innochatbot.inno_chatbot.cli;
 
-import java.nio.file.*;
-import java.util.*;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
-
-import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.embedding.EmbeddingRequest;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import com.theokanning.openai.service.OpenAiService;
 
 /**
  * Spring Boot 애플리케이션 실행 직후 자동 실행되는 일괄처리 컴포넌트 1. docs 폴더 내 PDF 파일을 순회하며 2. 텍스트
@@ -31,6 +35,8 @@ public class EmbeddingCli implements CommandLineRunner {
     @Autowired                          // Spring에서 JdbcTemplate 자동 주입
     private JdbcTemplate jdbc;
 
+    //@Autowired
+    //FileDTO fileDTO;
     // chunk
     /*
     String chunkId
@@ -43,7 +49,7 @@ public class EmbeddingCli implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // 시작 시 기존 chunk 테이블 데이터 삭제 (테스트 용도일 수 있음)
-        jdbc.update("DELETE FROM chunk");
+        //jdbc.update("DELETE FROM chunk");
         System.out.println("▶ EmbeddingCli 시작");
 
         // 1. docs 폴더 내 PDF 파일 순회
@@ -55,10 +61,67 @@ public class EmbeddingCli implements CommandLineRunner {
         System.out.println("▶ EmbeddingCli 완료");
     }
 
+    //파일의 해시 값 계산 함수
+    private String getFileHash(Path filePath) throws Exception {
+        byte[] fileBytes = Files.readAllBytes(filePath);
+        var md = java.security.MessageDigest.getInstance("MD5");
+        byte[] digest = md.digest(fileBytes);
+        return Base64.getEncoder().encodeToString(digest);
+    }
+
+    // 기존 해시 가져오는 함수
+    private String getFileHashFromDb(String fileId) {
+        try {
+            return jdbc.queryForObject("SELECT hash FROM file WHERE file_id = ?", String.class, fileId);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     // 개별 PDF 파일 처리 함수
     private void processPdf(Path pdfPath) {
         System.out.println("처리대상 PDF: " + pdfPath.toAbsolutePath());
 
+        //현재 파일 hash 계산, file_id와 그 파일의 기존 해시 조회한다.
+        try {
+            //현재 파일 hash 계산
+            String currentHash = getFileHash(pdfPath);
+
+            //file_id, 기존 해시 조회
+            String fileId = getFileId(pdfPath.getFileName().toString());
+            String oldHash = getFileHashFromDb(fileId);
+
+            if (fileId != null && currentHash.equals(oldHash)) {
+                System.out.println("파일 변경 없음 -> 생략: " + pdfPath.getFileName());
+                return;
+            }
+
+            //텍스트 추출
+            String text = new PDFTextStripper().getText(PDDocument.load(pdfPath.toFile()));
+            List<String> chunks = split(text, 400);
+
+            if (fileId == null) {
+                System.err.println("fileId 조회 실패: file 테이블 확인");
+                return;
+            }
+
+            jdbc.update("DELETE FROM chunk WHERE fileId = ?", fileId);
+
+            //chunk 저장
+            for (int i = 0; i < chunks.size(); i++) {
+                float[] vec = callEmbedding(chunks.get(i));
+                saveChunk(fileId, i + 1, chunks.get(i), vec);
+            }
+
+            //file 테이블의 hash 갱신
+            jdbc.update("UPDATE file SET hash = ? WHERE file_id = ?", currentHash, fileId);
+
+            System.out.printf("  • 처리 완료: %s (%d 청크)%n", pdfPath.getFileName(), chunks.size());
+
+        } catch (Exception e) {
+            System.err.printf("  ! 오류: %s → %s%n", pdfPath.getFileName(), e.getMessage());
+        }
+        /*
         try (PDDocument doc = PDDocument.load(pdfPath.toFile())) {
             // ① PDF 텍스트 추출
             String text = new PDFTextStripper().getText(doc);
@@ -86,6 +149,7 @@ public class EmbeddingCli implements CommandLineRunner {
         } catch (Exception e) {
             System.err.printf("  ! 오류: %s → %s%n", pdfPath.getFileName(), e.getMessage());
         }
+         */
     }
 
     // 문자열을 지정 길이(size)로 분할하는 유틸 함수
