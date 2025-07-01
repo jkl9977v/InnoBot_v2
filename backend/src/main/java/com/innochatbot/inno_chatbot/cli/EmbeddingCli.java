@@ -18,15 +18,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.theokanning.openai.embedding.EmbeddingRequest;
-import com.theokanning.openai.service.OpenAiService;
+import com.innochatbot.api.service.EmbeddingService;
+import com.theokanning.openai.messages.content.FilePath;
 
 /**
  * Spring Boot 애플리케이션 실행 직후 자동 실행되는 일괄처리 컴포넌트 1. docs 폴더 내 PDF 파일을 순회하며 2. 텍스트
  * 추출 → 청크 분할 → 임베딩 벡터 생성 3. DB의 chunk 테이블에 저장
  */
 @Component
-public class EmbeddingCli implements CommandLineRunner {
+public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임베딩 기능을 수행한다.
     //PDF파일을 읽고, 400자 단위로 나눈 다음, OpenAI 임베딩 벡터를 생성하고, chunk테이블에 저장하는 일괄처리(batch)파일
 
     @Value("${openai.api.key}")         // application.properties 또는 .env에서 API 키 주입
@@ -35,9 +35,9 @@ public class EmbeddingCli implements CommandLineRunner {
     @Autowired                          // Spring에서 JdbcTemplate 자동 주입
     private JdbcTemplate jdbc;
 
-    //@Autowired
-    //FileDTO fileDTO;
-    // chunk
+    @Autowired
+    private EmbeddingService embeddingService;
+
     /*
     String chunkId
     String fileId
@@ -53,10 +53,10 @@ public class EmbeddingCli implements CommandLineRunner {
         System.out.println("▶ EmbeddingCli 시작");
 
         // 1. docs 폴더 내 PDF 파일 순회
-        Path docsDir = Paths.get("D:/Inno_ChatBot/docs");   // PDF 위치 경로
+        Path docsDir = Paths.get("D:/InnoBot_v3/docs");   // 문서파일 위치 경로
         Files.walk(docsDir)
                 .filter(p -> p.toString().endsWith(".pdf")) // .pdf 확장자만 선택
-                .forEach(pdfPath -> processPdf(pdfPath));      // 각 PDF 처리
+                .forEach(filePath -> processPdf(filePath));      // 각 PDF 처리를 위한 파일경로 전달
 
         System.out.println("▶ EmbeddingCli 완료");
     }
@@ -79,77 +79,54 @@ public class EmbeddingCli implements CommandLineRunner {
     }
 
     // 개별 PDF 파일 처리 함수
-    private void processPdf(Path pdfPath) {
-        System.out.println("처리대상 PDF: " + pdfPath.toAbsolutePath());
+    private void processPdf(Path filePath) {
+        System.out.println("처리대상 PDF: " + filePath.toAbsolutePath());
+        System.out.println("파일명: " + filePath.getFileName().toString());
+        System.out.println("filePath: " + filePath);
 
         //현재 파일 hash 계산, file_id와 그 파일의 기존 해시 조회한다.
         try {
             //현재 파일 hash 계산
-            String currentHash = getFileHash(pdfPath);
+            String currentHash = getFileHash(filePath);
 
-            //file_id, 기존 해시 조회
-            String fileId = getFileId(pdfPath.getFileName().toString());
+            //file_path 테이블을 기준으로 file_id 조회, 파일의 기존 해시 조회(수정 여부 확인하기 위해)
+            String fileId = getFileId(filePath.getFileName().toString(), filePath);
             String oldHash = getFileHashFromDb(fileId);
 
             if (fileId != null && currentHash.equals(oldHash)) {
-                System.out.println("파일 변경 없음 -> 생략: " + pdfPath.getFileName());
+                System.out.println("파일 변경 없음 -> 생략: " + filePath.getFileName());
                 return;
+            } else {
+
+                // ① PDF 텍스트 추출
+                String text = new PDFTextStripper().getText(PDDocument.load(filePath.toFile()));
+                // ② 텍스트를 400자 단위로 분할
+                List<String> chunks = split(text, 400);
+
+                if (fileId == null) {
+                    System.err.println("fileId 조회 실패: file 테이블 확인");
+                    return;
+                } else {
+
+                    jdbc.update("DELETE FROM chunk WHERE file_id = ?", fileId);
+
+                    // ④ 각 청크에 대해 임베딩 벡터 생성 + DB 저장
+                    for (int i = 0; i < chunks.size(); i++) {
+                        //float[] vec = callEmbedding(chunks.get(i));
+                        float[] vec = embeddingService.embed(chunks.get(i));
+                        saveChunk(fileId, i + 1, chunks.get(i), vec);
+                    }
+
+                    //file 테이블의 hash 갱신
+                    jdbc.update("UPDATE file SET hash = ? WHERE file_id = ?", currentHash, fileId);
+
+                    System.out.printf("  • 처리 완료: %s (%d 청크)%n", filePath.getFileName(), chunks.size());
+                }
             }
-
-            //텍스트 추출
-            String text = new PDFTextStripper().getText(PDDocument.load(pdfPath.toFile()));
-            List<String> chunks = split(text, 400);
-
-            if (fileId == null) {
-                System.err.println("fileId 조회 실패: file 테이블 확인");
-                return;
-            }
-
-            jdbc.update("DELETE FROM chunk WHERE fileId = ?", fileId);
-
-            //chunk 저장
-            for (int i = 0; i < chunks.size(); i++) {
-                float[] vec = callEmbedding(chunks.get(i));
-                saveChunk(fileId, i + 1, chunks.get(i), vec);
-            }
-
-            //file 테이블의 hash 갱신
-            jdbc.update("UPDATE file SET hash = ? WHERE file_id = ?", currentHash, fileId);
-
-            System.out.printf("  • 처리 완료: %s (%d 청크)%n", pdfPath.getFileName(), chunks.size());
 
         } catch (Exception e) {
-            System.err.printf("  ! 오류: %s → %s%n", pdfPath.getFileName(), e.getMessage());
+            System.err.printf("  ! 오류: %s → %s%n", filePath.getFileName(), e.getMessage());
         }
-        /*
-        try (PDDocument doc = PDDocument.load(pdfPath.toFile())) {
-            // ① PDF 텍스트 추출
-            String text = new PDFTextStripper().getText(doc);
-
-            // ② 텍스트를 400자 단위로 분할
-            List<String> chunks = split(text, 400);
-
-            // ③ file_path 테이블을 기준으로 file_id 조회
-            String fileId = getFileId(pdfPath.getFileName().toString());
-            System.out.println("fileId 조회: " + fileId);
-
-            if (fileId == null) {
-                System.err.println("fileId조회 실패: file_path 테이블 확인 필요");
-                return;
-            }
-
-            // ④ 각 청크에 대해 임베딩 벡터 생성 + DB 저장
-            for (int i = 0; i < chunks.size(); i++) {
-                float[] vec = callEmbedding(chunks.get(i));
-                saveChunk(fileId, i + 1, chunks.get(i), vec);
-            }
-
-            System.out.printf("  • 처리 완료: %s (%d 청크)%n", pdfPath.getFileName(), chunks.size());
-
-        } catch (Exception e) {
-            System.err.printf("  ! 오류: %s → %s%n", pdfPath.getFileName(), e.getMessage());
-        }
-         */
     }
 
     // 문자열을 지정 길이(size)로 분할하는 유틸 함수
@@ -164,33 +141,11 @@ public class EmbeddingCli implements CommandLineRunner {
         return result;
     }
 
-    // OpenAI 임베딩 API 호출 (단일 청크 기준)
-    private float[] callEmbedding(String chunk) {
-        OpenAiService service = new OpenAiService(apiKey);
-
-        var request = EmbeddingRequest.builder()
-                .model("text-embedding-3-small") // 사용 모델
-                .input(List.of(chunk)) // 입력 텍스트 리스트
-                .build();
-
-        var response = service.createEmbeddings(request)
-                .getData().get(0);
-
-        // List<Double> → float[]로 변환
-        List<Double> data = response.getEmbedding();
-        float[] vec = new float[data.size()];
-        for (int i = 0; i < data.size(); i++) {
-            vec[i] = data.get(i).floatValue();
-        }
-
-        return vec;
-    }
-
-    /*
-    // filename 기준으로 file 테이블에서 file_id 조회
-    private Long getFileId(String filename) {
+    /*  //오류 발생할 수 있는 코드
+    // fileName 기준으로 file 테이블에서 file_id 조회
+    private Long getFileId(String fileName) {
         String sql = "SELECT fileId FROM file WHERE file_name LIKE ?";
-        return jdbc.queryForObject(sql, Long.class, "%" + filename);
+        return jdbc.queryForObject(sql, Long.class, "%" + fileName);
     }
 
     // chunk 테이블에 임베딩된 청크 삽입
@@ -207,13 +162,20 @@ public class EmbeddingCli implements CommandLineRunner {
         );
     }
      */
-    //기존 코드에서 발생할 수 있는 오류 보완 가능한 코드
-    private String getFileId(String filename) {
-        String sql = "SELECT fileId FROM file WHERE file_name LIKE ?";
-        List<String> results = jdbc.queryForList(sql, String.class, "%" + filename);
+    //기존 코드에서 발생할 수 있는 오류 보완 가능한 코드, UUID를 활용, 양수를 보장하여 chunkId에 양수만 들어가게 함
+    // fileName 기준으로 file 테이블에서 file_id 조회
+    private String getFileId(String fileName, Path filePath) {
+        String fullPath = filePath.toAbsolutePath().toString().replace("\\", "/"); //Windows 경로 정리
+        String path = fullPath.replace("/" + fileName, "");
+        String sql = "SELECT file_id FROM file f "
+                + "join file_path fp "
+                + "on f.path_id=fp.path_id "
+                + " WHERE file_name LIKE ? and fp.path = ?";
+        List<String> results = jdbc.queryForList(sql, String.class, "%" + fileName, path);
         return results.isEmpty() ? null : results.get(0);
     }
 
+    //chunkId 생성 및 값 부여
     private Long generateChunkId() {
         UUID uuid = UUID.randomUUID();
         Long chunkId = Math.abs(uuid.getMostSignificantBits()); //양수 보장
@@ -223,7 +185,8 @@ public class EmbeddingCli implements CommandLineRunner {
     // chunk 테이블에 임베딩된 청크 삽입
     private void saveChunk(String fileId, int sequence, String content, float[] embedding) {
         Long chunkId = generateChunkId(); // 또는 UUID를 long으로 변환하거나 sequence 활용
-        String sql = "INSERT INTO chunk(chunkId, fileId, sequence, content, toBytes(embedding), summary) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO chunk(chunk_id, file_id, sequence, content, toBytes(embedding)) VALUES(?,?,?,?,?)";
+        /*summary*/
         jdbc.update(con -> {
             var ps = con.prepareStatement(sql);
             ps.setLong(1, chunkId);
@@ -231,7 +194,7 @@ public class EmbeddingCli implements CommandLineRunner {
             ps.setInt(3, sequence);
             ps.setString(4, content);
             ps.setBytes(5, toBytes(embedding));  // float[] → byte[]
-            ps.setString(6, null);
+            //ps.setString(6, null);
             return ps;
         });
     }

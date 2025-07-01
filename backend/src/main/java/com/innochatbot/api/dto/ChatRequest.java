@@ -1,9 +1,9 @@
 package com.innochatbot.api.dto;
 
 //요청DTO
-public record ChatRequest(String question){
+public record ChatRequest(String question) {
+    //레코드 기반이므로 생성자, getter, json변환이 자동으로 지원됨
 
-    
 }
 
 /*

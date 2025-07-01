@@ -18,6 +18,7 @@ public class WebConfig {
                                 "http://192.168.11.146:5173", "http://172.22.144.1:5173",
                                 "http://192.168.134.1:5173", "http://192.168.100.1:5173") //React 주소
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
                         .allowCredentials(true);
             }
 

@@ -60,7 +60,12 @@ function App() {
           <div ref={messagesEndRef} />
         </div>
 
-        <form className="chat-input-area" onSubmit={handleSubmit}>
+        <form className="chat-input-area" 
+          onSubmit={ (e) => {
+            e.preventDefault(); //기본 제출(get) 동작 막기
+            handleSubmit(e); //직접 처리
+          }}  action="" //기본 form 경로 제거, 이중 안전장치
+          >
           <textarea className="chat-textarea"
             //ref={textareRef}
             type="text"

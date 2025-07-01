@@ -3,6 +3,7 @@ package com.innochatbot.api.service;
 import com.innochatbot.api.dto.ChatResponse;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Map;
+
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatMessage;
 
 //OpenAI API 호출
 @Service
@@ -22,7 +26,7 @@ public class ChatService {
     @Value("${openai.api.key}")
     private String apiKey;
 
-    @Value("${chat.useDummy:true}")
+    @Value("${chat.useDummy:false}")
     private boolean useDummy;
 
     private OpenAiService client;
@@ -41,12 +45,14 @@ public class ChatService {
     }
 
     public ChatResponse handle(String question) {
+        /*     API 연결 테스트용
         if (useDummy) {
             // 테스트용 더미 응답
             List<Long> dummyIds = List.of(1L, 2L, 3L);
             String dummyAnswer = "이것은 테스트용 더미 응답입니다.";
             return new ChatResponse(dummyAnswer, dummyIds);
         }
+         */
 
         // 1) 질문 임베딩
         float[] qVec = embeddingService.embed(question);
@@ -67,7 +73,48 @@ public class ChatService {
         }
         prompt.append("Question: ").append(question);
 
-        // 4) GPT 호출
+        // 4) GPT 호출 방식 (ChatMessage, completionRequest)
+        //3.5 터보 모델 사용시
+        ChatMessage system = new ChatMessage("system", "다음 문서를 참고해서 사용자의 질문에 답하세요.");
+        ChatMessage user = new ChatMessage("user", prompt.toString());
+
+        ChatCompletionRequest req = ChatCompletionRequest.builder()
+                .model("gpt-3.5-turbo")
+                .messages(List.of(system, user))
+                .maxTokens(500)
+                .build();
+
+        String answer = getClient()
+                .createChatCompletion(req)
+                .getChoices().get(0).getMessage().getContent()
+                .trim();
+
+
+        /*
+        String answer;
+
+        try {
+            var response = getClient().createChatCompletion(req);
+
+            if (response.getChoices().isEmpty()) {
+                System.err.println("❗ GPT 응답 choices 비어 있음");
+                answer = "죄송합니다. 답변을 생성하지 못했습니다.";
+            } else {
+                answer = response.getChoices().get(0).getMessage().getContent().trim();
+
+                if (answer == null || answer.isBlank()) {
+                System.err.println("❗ GPT 응답이 null 또는 공백입니다.");
+                answer = "답변이 비어 있습니다. 다시 시도해주세요.";
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("❗ GPT 호출 중 예외 발생: " + e.getMessage());
+            answer = "죄송합니다. 질문 처리 중 오류가 발생했습니다.";
+        }
+         */
+
+ /*         //3.5모델 사용시 적합하지 않아 주석처리함
         CompletionRequest req = CompletionRequest.builder()
                 .model("gpt-3.5-turbo")
                 .prompt(prompt.toString())
@@ -77,22 +124,6 @@ public class ChatService {
         String answer = getClient()
                 .createCompletion(req)
                 .getChoices().get(0).getText().trim();
-
-        /*
-        //3.5 터보 모델 사용시
-        ChatMessage system = new ChatMessage("system", "다음 문서를 참고해서 사용자의 질문에 답하세요.");
-ChatMessage user = new ChatMessage("user", prompt.toString());
-
-ChatCompletionRequest req = ChatCompletionRequest.builder()
-        .model("gpt-3.5-turbo")
-        .messages(List.of(system, user))
-        .maxTokens(500)
-        .build();
-
-String answer = getClient()
-        .createChatCompletion(req)
-        .getChoices().get(0).getMessage().getContent()
-        .trim();
          */
         // 5) source chunk IDs 수집
         List<Long> ids = rows.stream()
