@@ -1,11 +1,14 @@
 package com.innochatbot.api.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.innochatbot.api.dto.ChatRequest;
 import com.innochatbot.api.dto.ChatResponse;
 import com.innochatbot.api.service.ChatService;
-//import com.innochatbot.api.service.EmbeddingService;
-//import org.springframework.beans.factory.annotation.*;
-import org.springframework.web.bind.annotation.*;
 //import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:5173") //프론트엔드 주소에 맞게 조정, React에서 요청할 수 있도록 cors허용

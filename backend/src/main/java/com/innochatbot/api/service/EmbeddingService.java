@@ -1,12 +1,14 @@
 package com.innochatbot.api.service;
 
-import com.theokanning.openai.embedding.EmbeddingRequest;
-import com.theokanning.openai.service.OpenAiService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.theokanning.openai.embedding.EmbeddingRequest;
+import com.theokanning.openai.service.OpenAiService;
+
 import jakarta.annotation.PostConstruct;
-import java.util.List;
 
 @Service
 public class EmbeddingService { //질문을 벡터화 하는 파일이다.
@@ -22,6 +24,7 @@ public class EmbeddingService { //질문을 벡터화 하는 파일이다.
     @PostConstruct
     private void init() {
         // OpenAiService 클라이언트 초기화
+        System.out.println("현재apiKey" + apiKey);
         this.client = new OpenAiService(apiKey);
     }
 
