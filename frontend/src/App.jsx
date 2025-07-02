@@ -61,10 +61,10 @@ function App() {
         </div>
 
         <form className="chat-input-area" 
-          onSubmit={ (e) => {
-            e.preventDefault(); //기본 제출(get) 동작 막기
-            handleSubmit(e); //직접 처리
-          }}  action="" //기본 form 경로 제거, 이중 안전장치
+          // onSubmit={ (e) => {
+          //   e.preventDefault(); //기본 제출(get) 동작 막기
+          //   handleSubmit(e); //직접 처리
+          // /}}  action="" //기본 form 경로 제거, 이중 안전장치
           >
           <textarea className="chat-textarea"
             //ref={textareRef}
@@ -74,7 +74,7 @@ function App() {
             rows={1}
             placeholder="질문을 입력하세요"
           />
-          <button type="submit" disabled={loading || !question.trim()}>
+          <button type="button" onClick={handleSubmit} disabled={loading || !question.trim()}>
             {loading ? '로딩 중...' : '전송'}
           </button>
         </form>

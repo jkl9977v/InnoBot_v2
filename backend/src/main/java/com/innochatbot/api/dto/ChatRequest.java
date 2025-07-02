@@ -6,7 +6,7 @@ public record ChatRequest(String question) {
 
 }
 
-/*
+/*/
 package com.innochatbot.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

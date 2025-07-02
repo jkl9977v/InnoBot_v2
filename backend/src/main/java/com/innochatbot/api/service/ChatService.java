@@ -1,20 +1,18 @@
 package com.innochatbot.api.service;
 
-import com.innochatbot.api.dto.ChatResponse;
-import com.theokanning.openai.completion.CompletionRequest;
-import com.theokanning.openai.service.OpenAiService;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
+import com.innochatbot.api.dto.ChatResponse;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.service.OpenAiService;
 
 //OpenAI API 호출
 @Service
@@ -59,7 +57,7 @@ public class ChatService {
 
         // 2) 유사도 Top-K 검색 (K=5)
         String sql = """
-          SELECT id, content
+          SELECT chunk_id, content
           FROM chunk
           ORDER BY (embedding <=> ?)
           LIMIT 5
@@ -72,7 +70,7 @@ public class ChatService {
             prompt.append(row.get("content")).append("\n---\n");
         }
         prompt.append("Question: ").append(question);
-
+//
         // 4) GPT 호출 방식 (ChatMessage, completionRequest)
         //3.5 터보 모델 사용시
         ChatMessage system = new ChatMessage("system", "다음 문서를 참고해서 사용자의 질문에 답하세요.");
@@ -127,7 +125,7 @@ public class ChatService {
          */
         // 5) source chunk IDs 수집
         List<Long> ids = rows.stream()
-                .map(r -> ((Number) r.get("id")).longValue())
+                .map(r -> ((Number) r.get("chunk_id")).longValue())
                 .toList();
 
         return new ChatResponse(answer, ids);

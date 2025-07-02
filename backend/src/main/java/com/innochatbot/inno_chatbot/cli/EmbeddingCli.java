@@ -19,7 +19,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.innochatbot.api.service.EmbeddingService;
-import com.theokanning.openai.messages.content.FilePath;
 
 /**
  * Spring Boot 애플리케이션 실행 직후 자동 실행되는 일괄처리 컴포넌트 1. docs 폴더 내 PDF 파일을 순회하며 2. 텍스트
@@ -86,44 +85,48 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
 
         //현재 파일 hash 계산, file_id와 그 파일의 기존 해시 조회한다.
         try {
+
             //현재 파일 hash 계산
             String currentHash = getFileHash(filePath);
-
             //file_path 테이블을 기준으로 file_id 조회, 파일의 기존 해시 조회(수정 여부 확인하기 위해)
             String fileId = getFileId(filePath.getFileName().toString(), filePath);
             String oldHash = getFileHashFromDb(fileId);
-
             if (fileId != null && currentHash.equals(oldHash)) {
                 System.out.println("파일 변경 없음 -> 생략: " + filePath.getFileName());
                 return;
             } else {
+                String text;
+                List<String> chunks;
 
                 // ① PDF 텍스트 추출
-                String text = new PDFTextStripper().getText(PDDocument.load(filePath.toFile()));
-                // ② 텍스트를 400자 단위로 분할
-                List<String> chunks = split(text, 400);
+                try (PDDocument doc = PDDocument.load(filePath.toFile())) {
+                    text = new PDFTextStripper().getText(doc);
+                    // ② 텍스트를 400자 단위로 분할
+                    chunks = split(text, 400);
+                }
 
                 if (fileId == null) {
-                    System.err.println("fileId 조회 실패: file 테이블 확인");
+                    System.err.println("fileId 조회 실패: file 테이블 확인" + fileId);
                     return;
-                } else {
-
-                    jdbc.update("DELETE FROM chunk WHERE file_id = ?", fileId);
-
-                    // ④ 각 청크에 대해 임베딩 벡터 생성 + DB 저장
-                    for (int i = 0; i < chunks.size(); i++) {
-                        //float[] vec = callEmbedding(chunks.get(i));
-                        float[] vec = embeddingService.embed(chunks.get(i));
-                        saveChunk(fileId, i + 1, chunks.get(i), vec);
-                    }
-
-                    //file 테이블의 hash 갱신
-                    jdbc.update("UPDATE file SET hash = ? WHERE file_id = ?", currentHash, fileId);
-
-                    System.out.printf("  • 처리 완료: %s (%d 청크)%n", filePath.getFileName(), chunks.size());
                 }
-            }
 
+                jdbc.update("DELETE FROM chunk WHERE file_id = ?", fileId);
+
+                // ④ 각 청크에 대해 임베딩 벡터 생성 + DB 저장
+                for (int i = 0; i < chunks.size(); i++) {
+                    //float[] vec = callEmbedding(chunks.get(i));
+                    float[] vec = embeddingService.embed(chunks.get(i));
+                    //System.out.println("embedding length: " + vec.length);
+                    saveChunk(fileId, i + 1, chunks.get(i), vec);
+                    //System.out.println("Embedding float length: " + vec.length);
+                    //System.out.println("Embedding byte size: " + toBytes(vec).length);
+                }
+
+                //file 테이블의 hash 갱신
+                jdbc.update("UPDATE file SET hash = ? WHERE file_id = ?", currentHash, fileId);
+                System.out.printf("  • 처리 완료: %s (%d 청크)%n", filePath.getFileName(), chunks.size());
+
+            }
         } catch (Exception e) {
             System.err.printf("  ! 오류: %s → %s%n", filePath.getFileName(), e.getMessage());
         }
@@ -147,7 +150,7 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
         String sql = "SELECT fileId FROM file WHERE file_name LIKE ?";
         return jdbc.queryForObject(sql, Long.class, "%" + fileName);
     }
-
+//
     // chunk 테이블에 임베딩된 청크 삽입
     private void saveChunk(Long fileId, int pageNo, String content, float[] embedding) {
         String sql = "INSERT INTO chunk(manual_id, page_no, content, embedding) VALUES(?,?,?,?)";
@@ -185,7 +188,8 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
     // chunk 테이블에 임베딩된 청크 삽입
     private void saveChunk(String fileId, int sequence, String content, float[] embedding) {
         Long chunkId = generateChunkId(); // 또는 UUID를 long으로 변환하거나 sequence 활용
-        String sql = "INSERT INTO chunk(chunk_id, file_id, sequence, content, toBytes(embedding)) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO chunk(chunk_id, file_id, sequence, content, embedding) VALUES(?,?,?,?,?)";
+        //System.out.println(sql);
         /*summary*/
         jdbc.update(con -> {
             var ps = con.prepareStatement(sql);
@@ -206,6 +210,7 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
         for (float v : vec) {
             buf.putFloat(v);
         }
+
         return buf.array();
     }
 }

@@ -58,7 +58,7 @@ public class EmbeddingService { //질문을 벡터화 하는 파일이다.
         return vec;
     }
 
-    /*  //개발/테스트용 더미 벡터를 반환합니다. 테스트시에만 사용, 실제 서비스시에는 노노
+    /*  ///개발/테스트용 더미 벡터를 반환합니다. 테스트시에만 사용, 실제 서비스시에는 노노
     private float[] embedDummy(String text) {
         // 모델 차원(예: 1536)에 맞춰 0으로 초기화된 벡터 반환
         return new float[1536];

@@ -26,6 +26,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/rag
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: pass
+      JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
       #OPENAI_API_KEY: ${OPENAI_API_KEY} #는 .env로부터 자동 주입
     ports:
       - "8080:8080"

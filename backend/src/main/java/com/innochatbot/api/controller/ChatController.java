@@ -24,7 +24,7 @@ public class ChatController { //React에서 보내는 chat post 요청을 받아
         this.chatService = chatService;
     }
 
-    //post /chat요청 처리
+    //post /chat요청 처리/
     //요청 바디(JSON) -> chatrequest로 바인딩 -> 서비스로 전달 -> chatResponse로 반환
     @PostMapping
     public ChatResponse chat(@RequestBody ChatRequest req) {
