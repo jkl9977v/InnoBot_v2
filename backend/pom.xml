@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<!-- Web & Embedded Tomcat 내장 톰캣 포함-->
@@ -124,6 +124,7 @@
     		<version>1.18.38</version> 
     		<scope>provided</scope>
 		</dependency>
+		
 
 		<!--mybatis-->
 		<dependency>

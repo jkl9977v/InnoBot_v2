@@ -15,7 +15,7 @@ public class AccessRuleListService {
     @Autowired
     AccessRuleMapper accessRuleMapper;
 
-    public void ruleList(String access_id, Model model) {
+    public void ruleList( Model model) {
         List<AccessRuleDTO> dto = accessRuleMapper.accessRuleSelectAll();
 
         model.addAttribute("dto", dto);

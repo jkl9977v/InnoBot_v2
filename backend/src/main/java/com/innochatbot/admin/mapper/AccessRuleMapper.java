@@ -11,11 +11,11 @@ public interface AccessRuleMapper {
 
     public List<AccessRuleDTO> accessRuleSelectAll();
 
-    public AccessRuleDTO accessRuleSelectId(String pathId);
+    public AccessRuleDTO accessRuleSelectId(String accessId);
 
     public void accessRuleInsert(AccessRuleDTO dto);
 
     public void accessRuleUpdate(AccessRuleDTO dto);
 
-    public void accessRuleDelete(String pathId);
+    public void accessRuleDelete(String accessId);
 }

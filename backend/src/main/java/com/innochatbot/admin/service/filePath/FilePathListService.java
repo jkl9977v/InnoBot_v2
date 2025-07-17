@@ -15,7 +15,7 @@ public class FilePathListService {
     @Autowired
     FilePathMapper filePathMapper;
 
-    public void pathList(String path_id, Model model) {
+    public void pathList(String pathId, Model model) {
         List<FilePathDTO> dto = filePathMapper.filePathSelectAll();
         model.addAttribute("dto", dto);
 

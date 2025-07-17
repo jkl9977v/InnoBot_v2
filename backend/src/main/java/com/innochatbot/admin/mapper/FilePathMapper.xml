@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapperPUBLIC 
-  "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.innochatbot.admin.mapper.FilePathMapper">
 
 <select id="filePathSelectAll" resultType="pathDTO">
-select * from filePath
+select * from file_path
 </select>
 
-<select id="filePathSelectId" resultType="pathDTO" parameterType="long">
-<!--아이디가 일치하는 매뉴얼 선택-->
-select * from filePath where id=#{id}
+<select id="filePathSelectId" resultType="pathDTO" parameterType="string">
+select * from file_path where path_id=#{pathId}
 </select>
 
 <insert id="filePathInsert" parameterType="pathDTO">
-insert into filePath (path_id, path, access_id)
+insert into file_path (path_id, path, access_id)
 values(#{pathId}, #{path}, #{accessId})
 </insert>
 
 <update id="filePathUpdate" parameterType="pathDTO">
-update filePath
+update file_path
 set path=#{path}, access_id=#{accessId}
 where path_id=#{pathId}
 </update>
 
-<delete id="filePathDelete" parameterType="long">
-delete from filePath where path_id = #{pathId}
+<delete id="filePathDelete" parameterType="string">
+delete from file_path where path_id = #{pathId}
 </delete>
+
+</mapper>

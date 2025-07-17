@@ -37,6 +37,13 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
     @Autowired
     private EmbeddingService embeddingService;
 
+    // public void EmbeddingCli(EmbeddingService embeddingService) {
+    //     this.embeddingService = embeddingService;
+    // }
+    public EmbeddingService getEmbeddingService() {
+        return embeddingService;
+    }
+
     /*
     String chunkId
     String fileId
@@ -213,4 +220,5 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
 
         return buf.array();
     }
+
 }

@@ -24,9 +24,8 @@ public class ChatService {
     @Value("${openai.api.key}")
     private String apiKey;
 
-    @Value("${chat.useDummy:false}")
-    private boolean useDummy;
-
+    //@Value("${chat.useDummy:false}")
+    //private boolean useDummy;
     private OpenAiService client;
 
     public ChatService(JdbcTemplate jdbc, EmbeddingService embeddingService) {
@@ -60,26 +59,34 @@ public class ChatService {
           SELECT chunk_id, content
           FROM chunk
           ORDER BY (embedding <=> ?)
-          LIMIT 5
+          LIMIT 50
         """;
         List<Map<String, Object>> rows = jdbc.queryForList(sql, toBytes(qVec));
 
         // 3) 프롬프트 생성
         StringBuilder prompt = new StringBuilder();
+        int index = 1;
         for (Map<String, Object> row : rows) {
-            prompt.append(row.get("content")).append("\n---\n");
+            //prompt.append(row.get("content")).append("\n---\n");
+            prompt.append("Document " + index + ":\n");
+            prompt.append(row.get("content")).append("\n\n");
+            index++;
         }
         prompt.append("Question: ").append(question);
-//
+
         // 4) GPT 호출 방식 (ChatMessage, completionRequest)
         //3.5 터보 모델 사용시
-        ChatMessage system = new ChatMessage("system", "다음 문서를 참고해서 사용자의 질문에 답하세요.");
+        ChatMessage system = new ChatMessage("system",
+                "다음은 사내 기술 매뉴얼 및 문서의 발췌 내용입니다. "
+                + "사용자가 한 질문에 대해, 이 문서만을 바탕으로 답변하세요. "
+                + "문서에 없는 정보는 모른다고 하세요. 추측하지 마세요."
+                + "당신은 이노티움 회사의 티움봇입니다.");
         ChatMessage user = new ChatMessage("user", prompt.toString());
 
         ChatCompletionRequest req = ChatCompletionRequest.builder()
                 .model("gpt-3.5-turbo")
                 .messages(List.of(system, user))
-                .maxTokens(500)
+                .maxTokens(1000)
                 .build();
 
         String answer = getClient()

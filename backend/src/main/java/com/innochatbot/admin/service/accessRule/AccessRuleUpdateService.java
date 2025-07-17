@@ -16,9 +16,12 @@ public class AccessRuleUpdateService {
     public void pathUpdate(AccessRuleCommand accessRuleCommand) {
         AccessRuleDTO dto = new AccessRuleDTO();
 
-        dto.setPathId(accessRuleCommand.getPathId());
-        dto.setPath(accessRuleCommand.getPath());
         dto.setAccessId(accessRuleCommand.getAccessId());
+        dto.setAccessName(accessRuleCommand.getAccessName());
+        dto.setAllowdId(accessRuleCommand.getAllowdId());
+        dto.setAllowgId(accessRuleCommand.getAllowgId());
+        dto.setAccessType(accessRuleCommand.getAccessType());
+        
         accessRuleMapper.accessRuleInsert(dto);
     }
 

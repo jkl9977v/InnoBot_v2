@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>파일 관리 관리자 페이지</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      background-color: #f4f6f8;
+    }
+    aside {
+      width: 240px;
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    main {
+      flex-grow: 1;
+      padding: 1rem 2rem;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    ul.folder-tree {
+      list-style: none;
+      padding-left: 1rem;
+    }
+    ul.folder-tree li {
+      margin: 0.25rem 0;
+      cursor: pointer;
+    }
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .toolbar button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #3f51b5;
+      color: white;
+      cursor: pointer;
+    }
+    .file-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .file-table th, .file-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    .file-table th {
+      background-color: #f0f0f0;
+    }
+  </style>
+ <script src="/static/admin/js/index.js" ></script>
+
+</head>
+<body>
+  <aside>
+    <h2>폴더</h2>
+    <ul class="folder-tree">
+      <li>📁 기술문서</li>
+      <li>📁 영업자료</li>
+      <li>📁 인사정보</li>
+      <li>📁 보안기준</li>
+    </ul>
+  </aside>
+  <main>
+    <div class="toolbar">
+      <button>접근권한 설정</button>
+      <button>삭제</button>
+      <button>업로드</button>
+    </div>
+    <table class="file-table">
+      <thead>
+        <tr>
+          <th>파일명</th>
+          <th>크기</th>
+          <th>수정일</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>매뉴얼_v1.pdf</td>
+          <td>2.4MB</td>
+          <td>2025-07-10</td>
+        </tr>
+        <tr>
+          <td>보안정책.docx</td>
+          <td>812KB</td>
+          <td>2025-07-08</td>
+        </tr>
+        <tr>
+          <td>계약서.hwp</td>
+          <td>3.2MB</td>
+          <td>2025-06-30</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

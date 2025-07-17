@@ -1,24 +1,28 @@
 package com.innochatbot.admin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.innochatbot.admin.service.accessRule.AccessRuleDeleteService;
+import com.innochatbot.admin.command.AccessRuleCommand;
+import com.innochatbot.admin.mapper.AccessRuleMapper;
+import com.innochatbot.admin.service.AutoNumService;
 import com.innochatbot.admin.service.accessRule.AccessRuleDetailService;
 import com.innochatbot.admin.service.accessRule.AccessRuleListService;
 import com.innochatbot.admin.service.accessRule.AccessRuleUpdateService;
 import com.innochatbot.admin.service.accessRule.AccessRuleWriteService;
 
-@RestController
-@RequestMapping("/admin/accessRule")
 
+@RequestMapping("admin/accessRule")
+@Controller
 public class AccessRuleController { //파일 경로 관리
+	@Autowired
+	AutoNumService autoNumService;
 
     @Autowired
     AccessRuleWriteService accessRuleWriteService;
@@ -27,56 +31,55 @@ public class AccessRuleController { //파일 경로 관리
     @Autowired
     AccessRuleUpdateService accessRuleUpdateService;
     @Autowired
-    AccessRuleDeleteService accessRuleDeleteService;
-    @Autowired
     AccessRuleDetailService accessRuleDetailService;
 
     @GetMapping("ruleWrite") //경로 추가
-    public String AccessRuleWrite(@RequestParam String param) {
-        return "thymeleaf/admin/ruleWrite";
+    public String AccessRuleWrite(AccessRuleCommand accessRuleCommand
+    		, @RequestParam(defaultValue = "rule_") String sep
+    		, @RequestParam(defaultValue = "access_id") String column
+    		, @RequestParam(defaultValue = "6") int len
+    		, @RequestParam(defaultValue = "access_rule") String table) {
+    	accessRuleCommand.setAccessId(autoNumService.autoNum1(sep, column,len, table));
+        return "thymeleaf/accessRule/ruleWrite";
     }
 
     @PostMapping("ruleWrite")
-    public String AccessRuleWrite1(@RequestBody String entity) {
-        //TODO: process POST request
+    public String AccessRuleWrite1(AccessRuleCommand accessRuleCommand) {
+        accessRuleWriteService.ruleWrite(accessRuleCommand);
 
         return "redirect:ruleList";
     }
 
-    @GetMapping("ruleList") //경로쪽 코드 복잡할 예정, 경로 목록 보여주기
-    public String AccessRuleList(@RequestParam String access_id, Model model) {
-        accessRuleListService.ruleList(access_id, model);
-        return "thymeleaf/admin/ruleList";
+    @GetMapping("ruleList")
+    public String AccessRuleList( Model model) {
+        accessRuleListService.ruleList( model);
+        return "thymeleaf/accessRule/ruleList";
     }
 
-    @PostMapping("ruleList")
-    public String AccessRuleList1(@RequestBody String entity) {
-        //TODO: process POST request
+    @GetMapping("ruleDetail")
+    public String AccessRuleList1(@RequestBody String accessId, Model model) {
+        accessRuleDetailService.ruleDetail(accessId, model);
 
         return "redirect:ruleList";
     }
 
     @GetMapping("ruleUpdate")
     public String AccessRuleUpdate(@RequestParam String param) {
-        return "thymeleaf/admin/ruleUpdate";
+        return "thymeleaf/accessRule/ruleUpdate";
     }
 
     @PostMapping("ruleUpdate")
     public String AccessRuleUpdate1(@RequestBody String entity) {
         //TODO: process POST request
 
-        return "";
+        return "redirect:ruleList";
     }
+    @Autowired
+    AccessRuleMapper accessRuleMapper;
 
     @GetMapping("ruleDelete")
-    public String AccessRuleDelete(@RequestParam String param) {
-        return "thymeleaf/admin/ruleDelete";
-    }
-
-    @PostMapping("ruleDelete")
-    public String AccessRuleDelete1(@RequestBody String entity) {
-        //TODO: process POST request
-
+    public String AccessRuleDelete(@RequestParam String accessId) {
+    	accessRuleMapper.accessRuleDelete(accessId);
         return "redirect:ruleList";
     }
 }

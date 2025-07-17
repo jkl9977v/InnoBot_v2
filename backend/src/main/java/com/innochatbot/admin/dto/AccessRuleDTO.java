@@ -2,17 +2,18 @@ package com.innochatbot.admin.dto;
 
 import org.apache.ibatis.type.Alias;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Data
 @Alias("accessRuleDTO")
-@Setter
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccessRuleDTO {
-
-    String pathId;
-    String path;
-    String accessId;
+	String accessId;
+	String accessName;
+	String allowdId;
+	String allowgId;
+    String accessType;
 }

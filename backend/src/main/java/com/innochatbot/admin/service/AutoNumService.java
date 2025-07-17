@@ -13,8 +13,8 @@ public class AutoNumService {
     @Autowired
     AutoNumMapper autoNumMapper;
     
-    public String autoNum1(String column1, String column, int len, String table){
-        String autoNum=autoNumMapper.autoNum1(column1, column, len, table);
+    public String autoNum1(String sep, String column, int len, String table){
+        String autoNum=autoNumMapper.autoNum1(sep, column, len, table);
         return autoNum;
     }
 
