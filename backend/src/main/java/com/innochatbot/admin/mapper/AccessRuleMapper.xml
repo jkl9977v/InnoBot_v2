@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.innochatbot.admin.mapper.AccessRuleMapper">
+
+<select id="accessRuleSelectAll" resultType="accessRuleDTO">
+select * from access_rule
+</select>
+
+<select id="accessRuleSelectId" resultType="accessRuleDTO" parameterType="string">
+select * from access_rule where access_id=#{accessId}
+</select>
+
+<insert id="accessRuleInsert" parameterType="accessRuleDTO">
+insert into access_rule (access_id, access_name, allowd_id, allowg_id, access_type)
+values(#{accessId}, #{accessName}, #{allowdId}, #{allowgId}, #{accessType})
+</insert>
+
+<update id="accessRuleUpdate" parameterType="accessRuleDTO">
+update access_rule
+set access_name=#{accessName},  allowd_id=#{allowdId}
+, allowg_id=#{allowgId}, access_type=#{accessType}
+where access_id=#{accessId}
+</update>
+
+<delete id="accessRuleDelete" parameterType="string">
+delete from access_rule where access_id = #{accessId}
+</delete>
+
+</mapper>

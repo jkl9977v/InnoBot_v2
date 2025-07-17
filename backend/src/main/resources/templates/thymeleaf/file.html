@@ -4,82 +4,8 @@
   <meta charset="UTF-8">
   <title>파일 관리 관리자 페이지</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="../static/css/file.css">
-	<style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-    body {
-      margin: 0;
-      display: flex;
-      height: 100vh;
-      background-color: #f4f6f8;
-    }
-    aside {
-      width: 240px;
-      background-color: #fff;
-      border-right: 1px solid #ddd;
-      padding: 1rem;
-      overflow-y: auto;
-    }
-    main {
-      flex-grow: 1;
-      padding: 1rem 2rem;
-    }
-    h2 {
-      margin-top: 0;
-    }
-    ul.folder-tree {
-      list-style: none;
-      padding-left: 1rem;
-    }
-    ul.folder-tree li {
-      margin: 0.25rem 0;
-      cursor: pointer;
-    }
-    .toolbar {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .toolbar button {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 4px;
-      background-color: #3f51b5;
-      color: white;
-      cursor: pointer;
-    }    
-    .button {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 4px;
-      background-color: #3f51b5;
-      color: white;
-      cursor: pointer;
-    }
-    .file-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .file-table th, .file-table td {
-      padding: 0.75rem;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
-    .file-table th {
-      background-color: #f0f0f0;
-    }
-    a {
-    	text-decoration: none;
-    }
-    </style>
-	<script type="text/javascript" src="../static/js/index.js" ></script>
+	<link href="../css/file.css" rel="stylesheet">
+	<script type="text/javascript" src="../js/index.js" ></script>
 
 </head>
 <body>
@@ -109,10 +35,10 @@
   
   <a th:href="@{/admin/file/pathUpdate?pathId=path_000000001}">파일경로 수정</a>
   <a th:href="@{/admin/file/addAccessRule?pathId=path_000000001}">접근권한 설정(경로에)</a>
-  <a th:href="@{/admin/accessRule/update}">접근규칙 수정</a> <br/>
+  <a th:href="@{/admin/accessRule/ruleUpdate?accessId=rule_000000001}">접근규칙 수정</a> <br/>
   
         <a th:href="@{/admin/file/pathDelete?pathId=path_000000002}">파일경로 삭제</a>
-  <a th:href="@{/admin/accessRule/update}">접근규칙 삭제</a> <br/>
+  <a th:href="@{/admin/accessRule/ruleDelete?accessId=rule_000000002}">접근규칙 삭제</a> <br/>
     <table class="file-table">
       <thead>
         <tr>

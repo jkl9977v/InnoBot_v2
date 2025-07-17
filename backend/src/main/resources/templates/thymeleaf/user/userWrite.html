@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	사용자 생성 <br/>
+	<form action="/admin/user/userWrite" method="post" readonly>
+	userNum: <input type="text" name="userNum" th:value="${command.userNum}" readonly>[[${command.userNum}]]   번호 자동생성 <br/>
+	userId: <input type="text" name="userId" placeholder="아이디"> <br/>
+	userPw:  <input type="text" name="userPw" placeholder="비밀번호"> <br/>
+	departmentId: <input type="text" name="departmentId" placeholder="부서"> <br/>
+	gradeId:  <input type="text" name="gradeId" placeholder="등급"><br/>
+	 <br/>
+	<button type="submit">생성</button>
+	</form>
+</body>
+</html>

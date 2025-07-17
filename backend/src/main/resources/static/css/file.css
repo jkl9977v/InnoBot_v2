@@ -1,3 +1,4 @@
+@charset "UTF-8";
 
     * {
       box-sizing: border-box;
@@ -45,6 +46,14 @@
       color: white;
       cursor: pointer;
     }
+    .button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #3f51b5;
+      color: white;
+      cursor: pointer;
+    }
     .file-table {
       width: 100%;
       border-collapse: collapse;
@@ -59,4 +68,7 @@
     }
     .file-table th {
       background-color: #f0f0f0;
+    }
+    a {
+    	text-decoration: none;
     }

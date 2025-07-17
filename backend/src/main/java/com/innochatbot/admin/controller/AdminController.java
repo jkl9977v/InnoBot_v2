@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.innochatbot.admin.service.UserLoginService;
 import com.innochatbot.admin.service.filePath.FilePathListService;
@@ -32,7 +31,7 @@ public class AdminController {
     
     @GetMapping("file")
     public String adminMain() {
-    	//파일시스템 보여줌
+    	//파일시스템을 보여줌
     	return "thymeleaf/file"; 
     }
     @GetMapping("user")

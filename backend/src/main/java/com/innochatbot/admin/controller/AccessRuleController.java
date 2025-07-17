@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,15 +37,16 @@ public class AccessRuleController { //파일 경로 관리
     		, @RequestParam(defaultValue = "rule_") String sep
     		, @RequestParam(defaultValue = "access_id") String column
     		, @RequestParam(defaultValue = "6") int len
-    		, @RequestParam(defaultValue = "access_rule") String table) {
+    		, @RequestParam(defaultValue = "access_rule") String table
+    		, Model model) {
     	accessRuleCommand.setAccessId(autoNumService.autoNum1(sep, column,len, table));
+    	model.addAttribute("command", accessRuleCommand);
         return "thymeleaf/accessRule/ruleWrite";
     }
 
     @PostMapping("ruleWrite")
     public String AccessRuleWrite1(AccessRuleCommand accessRuleCommand) {
         accessRuleWriteService.ruleWrite(accessRuleCommand);
-
         return "redirect:ruleList";
     }
 
@@ -57,29 +57,32 @@ public class AccessRuleController { //파일 경로 관리
     }
 
     @GetMapping("ruleDetail")
-    public String AccessRuleList1(@RequestBody String accessId, Model model) {
+    public String AccessRuleList1(@RequestParam String accessId, Model model) {
         accessRuleDetailService.ruleDetail(accessId, model);
 
         return "redirect:ruleList";
     }
 
     @GetMapping("ruleUpdate")
-    public String AccessRuleUpdate(@RequestParam String param) {
+    public String AccessRuleUpdate(@RequestParam String accessId, Model model) {
+    	accessRuleDetailService.ruleDetail(accessId, model);
         return "thymeleaf/accessRule/ruleUpdate";
     }
 
     @PostMapping("ruleUpdate")
-    public String AccessRuleUpdate1(@RequestBody String entity) {
-        //TODO: process POST request
-
-        return "redirect:ruleList";
+    public String AccessRuleUpdate1(AccessRuleCommand accessRuleCommand) {
+    	accessRuleUpdateService.ruleUpdate(accessRuleCommand);
+        return "redirect:../accessRule";
     }
+    
     @Autowired
     AccessRuleMapper accessRuleMapper;
 
     @GetMapping("ruleDelete")
     public String AccessRuleDelete(@RequestParam String accessId) {
     	accessRuleMapper.accessRuleDelete(accessId);
-        return "redirect:ruleList";
+        return "redirect:../accessRule";
     }
+    
+    //rule 세부조건 설정하는 코드 작성하기
 }

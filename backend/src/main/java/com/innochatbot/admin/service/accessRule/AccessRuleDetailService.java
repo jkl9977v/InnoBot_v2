@@ -11,11 +11,10 @@ import com.innochatbot.admin.mapper.AccessRuleMapper;
 public class AccessRuleDetailService {
 
     @Autowired
-
     AccessRuleMapper accessRuleMapper;
 
     public void ruleDetail(String accessId, Model model) {
         AccessRuleDTO dto = accessRuleMapper.accessRuleSelectId(accessId);
-        model.addAttribute(dto);
+        model.addAttribute("dto", dto);
     }
 }

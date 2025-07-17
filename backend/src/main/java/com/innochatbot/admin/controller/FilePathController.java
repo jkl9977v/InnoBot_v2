@@ -73,7 +73,6 @@ public class FilePathController { //파일 경로 관리
     @PostMapping("pathUpdate")
     public String filePathUpdate1(FilePathCommand filePathCommand) {
         filePathUpdateService.pathUpdate(filePathCommand);
-
         return "redirect:pathList";
     }
     

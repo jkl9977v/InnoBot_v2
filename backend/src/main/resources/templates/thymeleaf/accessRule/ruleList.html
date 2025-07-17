@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>파일 관리 관리자 페이지</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="../static/css/file.css">
+	<link  href="../static/css/file.css" rel="stylesheet">
 	<style>
     * {
       box-sizing: border-box;
@@ -94,7 +94,7 @@
   </aside>
   <main>
     <div class="toolbar">
-      <a class="button" th:href="@{/admin/accessRule}">접근규칙 설정</a>
+      <a class="button" th:href="@{../admin/file}">파일/경로 관리</a>
       <a class="button" th:href="@{/admin/user}" >사용자 설정</a>
       <button>삭제</button>
       <button>업로드</button>
@@ -111,7 +111,7 @@
   <a th:href="@{/admin/file/addAccessRule?pathId=path_000000001}">접근권한 설정(경로에)</a>
   <a th:href="@{/admin/accessRule/update}">접근규칙 수정</a> <br/>
   
-        <a th:href="@{/admin/file/pathDelete?pathId=path_000000002}">파일경로 삭제</a>
+  <a th:href="@{/admin/file/pathDelete?pathId=path_000000002}">파일경로 삭제</a>
   <a th:href="@{/admin/accessRule/update}">접근규칙 삭제</a> <br/>
     <table class="file-table">
       <thead>

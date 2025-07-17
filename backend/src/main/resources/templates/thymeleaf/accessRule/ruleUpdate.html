@@ -5,13 +5,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-	파일 경로 생성 <br/>
-	<form action="/admin/file/pathWrite" method="post">
-	path_id: <input type="text" name="pathId" th:value="${dto.pathId}" readonly> <br/>
-	path: <input type="text" name="path" th:value="${dto.path}"><br/>
-	access_id:  <input type="text" name="accessId" th:value="${dto.accessId}"><br/>
-	depth: <br/>
-	parent_id:  <br/>
+	접근규칙 생성 <br/>
+	<form action="/admin/accessRule/ruleUpdate" method="post" readonly>
+	access_id: <input type="text" name="accessId" th:value="${dto.accessId}" readonly>[[${dto.accessId}]]   번호 자동생성 <br/>
+	accessName: <input type="text" name="accessName" placeholder="규칙 이름" th:value="${dto.accessName}"> <br/>
+	allowdId:  <input type="text" name="allowdId" placeholder="허용부서" th:value="${dto.allowdId}"> <br/>
+	allowgId: <input type="text" name="allowgId" placeholder="허용등급" th:value="${dto.allowgId}" > <br/>
+	accessType:  <input type="text" name="accessType" placeholder="규칙 유형" th:value="${dto.accessType}" ><br/>
+	'all', 'internal_all', 'dept_only', 'grade_only', 'dept_grade' <br/>
+
 	<button type="submit">생성</button>
 	</form>
 </body>
