@@ -42,4 +42,5 @@ build/
 ## innoChatbot-db-1.erd
 *.erd
 
+src/main/resources/application.properties
 */application.properties
