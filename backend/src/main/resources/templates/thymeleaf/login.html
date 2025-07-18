@@ -3,52 +3,14 @@
 <head>
   <title>관리자 로그인</title>
   <link href="/css/login.css" rel="stylesheet">
-  <script type="text/javascript">
-const signUpBox = document.querySelector(".sign-up-box");
-
-signUpBox.addEventListener("click", handleClick, false);
-function handleClick(event) {
-  if (signUpBox.classList.contains("active")) return;
-  let str = `
-        <span onclick="event.stopPropagation(); removedActive();">X</span>
-        <input type="text" name="name" placeholder="Name"/>
-        <input type="email" name="email" placeholder="Email"/>
-        <input type="password" name="password" placeholder="Password"/>
-        <button onclick="event.stopPropagation(); handleSignUp();" >Sign up</button>
-    `;
-  this.classList.toggle("active");
-  this.innerHTML = "";
-  setTimeout(() => (this.innerHTML = str), 500);
-}
-
-function removedActive() {
-  signUpBox.classList.remove("active");
-  signUpBox.innerHTML = `<i class="material-icons">create</i>`;
-}
-function handleSignUp() {
-  let signUpBoxActive = document.querySelector(".active");
-  let inputs = signUpBoxActive.querySelectorAll("input");
-  let nameField = inputs[0];
-  let emailField = inputs[1];
-  let passwordField = inputs[2];
-  if (
-    nameField.value === "" ||
-    emailField.value === "" ||
-    passwordField.value === ""
-  ) {
-    return;
-  }
-  removedActive();
-}
-  </script>
 </head>
 <body>
   
 <form action="/admin" method="post">
 <div class="box">
-<h1>로그인</h1><br>
-  <input type="text" placeholder="userId" />
-  <input type="password" placeholder="userPw" />
+<h1><img src="/img/tiumBot1.png" style="width:50px">TiumBot  <br/> 관리자 로그인</h1><br>
+  <input type="text" name="userId" placeholder="아이디" />
+  <input type="password" name="userPw" placeholder="비밀번호" />
   <button type="submit">로그인</button>
 
   <div class="sign-up-box">
