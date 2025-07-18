@@ -55,7 +55,7 @@ public class FilePathController { //파일 경로 관리
 
     @GetMapping("pathList") //경로쪽 코드 복잡할 예정, 경로 목록 보여주기
     public String filePathList(@RequestParam String pathId, Model model) {
-        filePathListService.pathList(pathId, model);
+        //filePathListService.pathList(pathId, model);
         return "thymeleaf/path/pathList";
     }
     @GetMapping("pathDetail")

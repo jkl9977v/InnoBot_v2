@@ -5,8 +5,19 @@
 
 <mapper namespace="com.innochatbot.admin.mapper.FilePathMapper">
 
-<select id="filePathSelectAll" resultType="pathDTO">
-select * from file_path
+<select id="filePathSelectAll" resultType="pathDTO" parameterType="StartEndPageDTO">
+select * 
+from (
+select rownum rn, file_id, file_name,
+  extension, f.path_id, size, update_time
+from file_path fp
+join file f on fp.path_id=f.path_id
+<if test="searchWord!=null">
+where 
+path like '%'||#{searchWord}||'%'
+order by file_name
+</if>
+) where rn between #{startRow and #{endRow}
 </select>
 
 <select id="filePathSelectId" resultType="pathDTO" parameterType="string">

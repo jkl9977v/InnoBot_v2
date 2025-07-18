@@ -27,7 +27,6 @@ public class UserLoginService {
 		//세션, 쿠키
 		LoginDTO loginSession = loginMapper.userIdSelectOne(loginCommand.getUserId());
 		Boolean LoginStatus=false;
-		System.out.println("로그인 전 "+LoginStatus);
 		if(loginSession != null) { //아이디 있음, 로그인 진행
 			// ++ 등급에 따라 로그인 가능하게 하는 절차도 필요.
 			// 왜냐하면 아무 사용자가 다 로그인 가능하면 안되기 때문

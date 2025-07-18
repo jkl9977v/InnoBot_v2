@@ -2,6 +2,7 @@ package com.innochatbot.admin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,11 +46,11 @@ public class AdminController {
     		, HttpSession session, HttpServletResponse response) {
     	//로그인 처리 과정
     	Boolean LoginStatus= userLoginService.userLogin(loginCommand, session, response);
-    	System.out.println(LoginStatus);
     	if(LoginStatus) {
     		return "redirect:/admin/file";
     	}
     	else return "redirect:/admin/login";
+    	
     }
     @GetMapping("logout")
     public String logout(HttpSession session) {
@@ -60,13 +61,13 @@ public class AdminController {
     
     
     @GetMapping("file")
-    public String adminMain(@RequestParam (defaultValue="docs")String filePath
-    		, @RequestParam (defaultValue="") String searchWord) {
+    public String adminMain(@RequestParam (defaultValue="1") int page
+    		, @RequestParam (defaultValue="10") int limitRow
+    		, @RequestParam (defaultValue="docs")String filePath
+    		, @RequestParam (required=false) String searchWord
+    		, Model model) {
     	//파일시스템을 보여줌
-    	String fullFilePath="D:/InnoBot_v3/"+filePath;
-    	//listPageService(fullFilePath);
-    	
-    	
+    	filePathListService.filePathList(page, limitRow, filePath, searchWord, model);
     	return "thymeleaf/file"; 
     }
     @GetMapping("user")

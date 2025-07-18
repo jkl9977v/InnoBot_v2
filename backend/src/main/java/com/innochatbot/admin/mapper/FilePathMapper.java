@@ -5,11 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.innochatbot.admin.dto.FilePathDTO;
+import com.innochatbot.admin.dto.StartEndPageDTO;
 
 @Mapper
 public interface FilePathMapper {
 
-    public List<FilePathDTO> filePathSelectAll();
+    public List<FilePathDTO> filePathSelectAll(StartEndPageDTO dto);
+    
+    public Integer filePathCount();
 
     public FilePathDTO filePathSelectId(String pathId);
 
@@ -18,4 +21,8 @@ public interface FilePathMapper {
     public void filePathUpdate(FilePathDTO dto);
 
     public void filePathDelete(String pathId);
+
+
+
+	
 }
