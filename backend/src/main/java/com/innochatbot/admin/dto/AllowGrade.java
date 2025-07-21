@@ -7,17 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Alias("pathDTO")
+@Alias("allowGrade")
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilePathDTO {
-	
-	int rowNum;
-    String pathId;
-    String path;
-    String accessId;
-    int depth;
-    String parentId;
-    
-    FileDTO fileDTO;
+public class AllowGrade {
+	String allowgId;
+	String gradeId;
 }

@@ -5,11 +5,34 @@
 
 <mapper namespace="com.innochatbot.admin.mapper.FilePathMapper">
 
-<select id="filePathSelectAll" resultType="pathDTO" parameterType="StartEndPageDTO">
+<resultMap id="filePathWithFileMap" type="pathDTO">
+	<id property="rowNum" column="rn" javaType="int"/>
+	<result property="pathId" column="path_id" javaType="java.lang.String"/>
+	<result property="path" column="path" javaType="java.lang.String"/>
+	<result property="accessId" column="access_id" javaType="java.lang.String"/>
+	<result property="depth" column="depth" javaType="int"/>
+	<result property="parentId" column="parent_id" javaType="java.lang.String"/>
+	
+	<association property="fileDTO" javaType="com.innochatbot.admin.dto.FileDTO" autoMapping="true">
+ 		<id property="fileId" column="file_id" javaType="java.lang.String"/>
+		<result property="fileName" column="file_name" javaType="java.lang.String"/>
+		<result property="extension" column="extension" javaType="java.lang.String"/>
+		<result property="pathId" column="file_path_id" javaType="java.lang.String"/>
+		<result property="hash" column="hash" javaType="java.lang.String"/>
+		<result property="size" column="size" javaType="Long"/>
+ 		<result property="updateTime" column="update_time" javaType="java.sql.Date"/> 
+	</association>
+</resultMap>
+
+<select id="filePathSelectAll" resultMap="filePathWithFileMap"  parameterType="StartEndPageDTO"> <!-- resultType="pathDTO" -->
 select * 
 from (
-select rownum rn, file_id, file_name,
-  extension, f.path_id, size, update_time
+select row_number() over (order by file_id) as rn
+, file_id as file_id, file_name as file_name
+, extension as extension, size as size
+  , hash as hash, update_time as update_time
+  , fp.path_id as path_id
+  , f.path_id as file_path_id, path, access_Id <!-- ,depth, parentId -->
 from file_path fp
 join file f on fp.path_id=f.path_id
 <if test="searchWord!=null">
@@ -17,7 +40,19 @@ where
 path like '%'||#{searchWord}||'%'
 order by file_name
 </if>
-) where rn between #{startRow and #{endRow}
+) as sub where rn between #{startRow} and #{endRow}
+</select>
+
+<select id="filePathCount" resultType="Integer" parameterType="String">
+select count(*) 
+from file f join file_path fp on
+f.path_id=fp.path_id  
+where f.path_id=#{pathId}
+<!-- fp.parent_id=#{pathId} -->
+</select>
+
+<select id="selectPathId" resultType="String" parameterType="String">
+select path_id from file_path where path=#{fullFilePath}
 </select>
 
 <select id="filePathSelectId" resultType="pathDTO" parameterType="string">

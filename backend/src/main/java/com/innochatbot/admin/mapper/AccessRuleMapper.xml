@@ -5,8 +5,26 @@
 
 <mapper namespace="com.innochatbot.admin.mapper.AccessRuleMapper">
 
-<select id="accessRuleSelectAll" resultType="accessRuleDTO">
-select * from access_rule
+<select id="accessRuleSelectAll" resultType="accessRuleDTO" parameterType="StartEndPageDTO">
+select * from
+(select Row_number() over (order by access_id) as rn
+, access_id, access_name
+, ar.allowd_id, ar.allowg_id
+, access_type
+ from access_rule ar
+ join allow_departments ad
+ on ar.allowd_id=ad.allowd_id
+ join allow_grade ag
+ on ar.allowg_id=ag.allowg_id
+ where
+ <if test="searchWord">
+ 	access_name=#{searchWord}
+ </if> 
+ )
+</select>
+
+<select id="accessRuleCount" resultType="Integer">
+select count(access_id) from access_rule
 </select>
 
 <select id="accessRuleSelectId" resultType="accessRuleDTO" parameterType="string">

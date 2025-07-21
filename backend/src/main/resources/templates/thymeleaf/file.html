@@ -5,7 +5,7 @@
   <link rel="icon" type="image/svg+xml" href="/img/tiumBot1.png" />
   <title>TiumBotAdmin</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-	<link href="../css/file.css" rel="stylesheet">
+	<link href="/css/file.css" rel="stylesheet">
 	<script type="text/javascript" src="../js/index.js" ></script>
 
 </head>
@@ -28,6 +28,7 @@
       <a class="button" th:href="@{/admin/logout}">로그아웃</a>
       
     </div>
+   
             <a th:href="@{/admin/file}">파일/파일경로 관리</a>
   <a >접근규칙 관리</a> <br/>
   
@@ -40,29 +41,24 @@
   
         <a th:href="@{/admin/file/pathDelete?pathId=path_000000002}">파일경로 삭제</a>
   <a th:href="@{/admin/accessRule/ruleDelete?accessId=rule_000000002}">접근규칙 삭제</a> <br/>
+   전체 파일 수: [[${count}]] <br/>
+   현재경로 : [[${list[0].path}]]<br/>
+    <div >
+    
+    </div>
     <table class="file-table">
       <thead>
-        <tr>
+        <tr >
           <th>파일명</th>
           <th>크기</th>
           <th>수정일</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>매뉴얼_v1.pdf</td>
-          <td>2.4MB</td>
-          <td>2025-07-10</td>
-        </tr>
-        <tr>
-          <td>보안정책.docx</td>
-          <td>812KB</td>
-          <td>2025-07-08</td>
-        </tr>
-        <tr>
-          <td>계약서.hwp</td>
-          <td>3.2MB</td>
-          <td>2025-06-30</td>
+        <tr th:each="dto:${list}">
+          <td>[[${dto.fileDTO.fileName}]]</td>
+          <td>[[${dto.fileDTO.size}]]</td>
+          <td>[[${dto.fileDTO.updateTime}]]</td>
         </tr>
       </tbody>
     </table>

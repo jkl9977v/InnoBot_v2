@@ -51,8 +51,11 @@ public class AccessRuleController { //파일 경로 관리
     }
 
     @GetMapping("ruleList")
-    public String AccessRuleList( Model model) {
-        accessRuleListService.ruleList( model);
+    public String AccessRuleList(@RequestParam (defaultValue="1") int page
+    		, @RequestParam (defaultValue="10") int limitRow
+    		, @RequestParam (required=false) String searchWord
+    		, Model model) {
+        accessRuleListService.ruleList(page, limitRow, searchWord, model);
         return "thymeleaf/accessRule/ruleList";
     }
 

@@ -6,9 +6,7 @@ import org.apache.ibatis.type.Alias;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @Alias("fileDTO")
@@ -18,8 +16,9 @@ public class FileDTO {
 
     String fileId;
     String fileName;
-    String extenstion;
+    String extension; //확장자
     String pathId;
-    String hash;
+    String hash; //파일의 해시값
+    Long size;
     Date updateTime;
 }

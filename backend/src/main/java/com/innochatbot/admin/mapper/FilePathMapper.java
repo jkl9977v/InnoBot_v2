@@ -12,7 +12,7 @@ public interface FilePathMapper {
 
     public List<FilePathDTO> filePathSelectAll(StartEndPageDTO dto);
     
-    public Integer filePathCount();
+    public Integer filePathCount(String pathId);
 
     public FilePathDTO filePathSelectId(String pathId);
 
@@ -21,6 +21,8 @@ public interface FilePathMapper {
     public void filePathUpdate(FilePathDTO dto);
 
     public void filePathDelete(String pathId);
+
+	public String selectPathId(String fullFilePath);
 
 
 

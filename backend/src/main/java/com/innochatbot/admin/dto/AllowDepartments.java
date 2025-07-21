@@ -6,18 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Alias("allowDepartments")
 @Data
-@Alias("pathDTO")
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilePathDTO {
-	
-	int rowNum;
-    String pathId;
-    String path;
-    String accessId;
-    int depth;
-    String parentId;
-    
-    FileDTO fileDTO;
+public class AllowDepartments {
+	String allowId;
+	String departmentId;
 }

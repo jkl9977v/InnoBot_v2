@@ -5,11 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.innochatbot.admin.dto.AccessRuleDTO;
+import com.innochatbot.admin.dto.StartEndPageDTO;
 
 @Mapper
 public interface AccessRuleMapper {
 
-    public List<AccessRuleDTO> accessRuleSelectAll();
+    public List<AccessRuleDTO> accessRuleSelectAll(StartEndPageDTO dto);
 
     public AccessRuleDTO accessRuleSelectId(String accessId);
 
@@ -18,4 +19,6 @@ public interface AccessRuleMapper {
     public void accessRuleUpdate(AccessRuleDTO dto);
 
     public void accessRuleDelete(String accessId);
+
+	public Integer accessRuleCount();
 }

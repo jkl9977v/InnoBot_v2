@@ -61,19 +61,13 @@ public class AdminController {
     
     
     @GetMapping("file")
-    public String adminMain(@RequestParam (defaultValue="1") int page
-    		, @RequestParam (defaultValue="10") int limitRow
-    		, @RequestParam (defaultValue="docs")String filePath
-    		, @RequestParam (required=false) String searchWord
-    		, Model model) {
-    	//파일시스템을 보여줌
-    	filePathListService.filePathList(page, limitRow, filePath, searchWord, model);
-    	return "thymeleaf/file"; 
+    public String adminMain() {
+    	return "redirect:/admin/file/fileList";
     }
     @GetMapping("user")
     public String user() {
     	//유저 설정(유저 추가/부서/직급)
-    	return "redirtect:/admin/user/userList";
+    	return "redirect:/admin/user/userList";
     }
     @GetMapping("accessRule") //접근권한 규칙 설정
     public String accessRule(

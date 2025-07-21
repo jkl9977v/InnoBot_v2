@@ -23,10 +23,14 @@ public class FilePathListService {
 	public void filePathList(int page, int limitRow, String filePath, String searchWord, Model model) {
 		//디렉토리의 파일, 폴더 목록 조회
 		String fullFilePath="D:/InnoBot_v3/"+filePath;
+		String pathId=filePathMapper.selectPathId(fullFilePath);
+		
 		StartEndPageDTO dto=listPageService.StartEndRow(page,limitRow,filePath,searchWord, fullFilePath );
 		
 		List<FilePathDTO> list = filePathMapper.filePathSelectAll(dto);
-		Integer count = filePathMapper.filePathCount();
+		Integer count = filePathMapper.filePathCount(pathId);
+		
+		listPageService.ShowList(page, limitRow,  count,searchWord, list, model);
 		
 	}
 	
