@@ -5,20 +5,19 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.innochatbot.admin.dto.FilePathDTO;
 import com.innochatbot.admin.dto.StartEndPageDTO;
 
 @Service
 public class ListPageService {
 
-	public StartEndPageDTO StartEndRow(int page, int limitRow, String filePath, String searchWord, String fullFilePath) {
+	public StartEndPageDTO StartEndRow(int page, int limitRow, String pathId, String searchWord, String kind) {
 		int startRow=(page-1)*limitRow+1;
 		int endRow=startRow+limitRow-1;
 		
 		StartEndPageDTO dto = new StartEndPageDTO();
 		dto.setStartRow(startRow);
 		dto.setEndRow(endRow);
-		dto.setFullFilePath(fullFilePath);
+		dto.setIdColumn(pathId);
 		dto.setSearchWord(searchWord);
 		
 		return dto;
@@ -26,7 +25,7 @@ public class ListPageService {
 	}
 
 	public void ShowList(int page, int limitRow, Integer count, String searchWord, List list,
-			Model model) {
+			Model model, String pathId) {
 		Integer limitPage=10;
 		Integer startPageNum=(int)((double)page/limitPage-0.05)*limitPage+1;
 		Integer endPageNum=startPageNum+limitPage-1;
@@ -44,6 +43,9 @@ public class ListPageService {
 		model.addAttribute("searchWord", searchWord);
 		model.addAttribute("list", list);
 		model.addAttribute("count", count);
+		if(pathId!=null) {
+			model.addAttribute("pathId", pathId);
+		}
 		//model.addAttribute("kind", kind);
 		
 	}

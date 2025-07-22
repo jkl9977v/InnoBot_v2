@@ -1,4 +1,4 @@
-package com.innochatbot.admin.dto;
+package com.innochatbot.admin.command;
 
 import org.apache.ibatis.type.Alias;
 
@@ -7,10 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Alias("allowGrade")
 @AllArgsConstructor
 @NoArgsConstructor
-public class AllowGrade {
+public class GradeCommand { //등급(직급)정보, 허용등급(직급) 규칙에 사용함
 	String allowgId;
 	String gradeId;
+	String gradeName;
+	
 }

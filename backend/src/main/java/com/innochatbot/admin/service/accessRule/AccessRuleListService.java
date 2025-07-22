@@ -19,13 +19,13 @@ public class AccessRuleListService {
     @Autowired
     ListPageService listPageService;
 
-    public void ruleList( int page, int limitRow, String searchWord, Model model) {
-        StartEndPageDTO dto=listPageService.StartEndRow(page, limitRow, null, searchWord, null);
+    public void ruleList( int page, int limitRow, String searchWord, String kind,Model model) {
+        StartEndPageDTO dto=listPageService.StartEndRow(page, limitRow, null, searchWord, kind);
         Integer count = accessRuleMapper.accessRuleCount();
         
         List<AccessRuleDTO> list = accessRuleMapper.accessRuleSelectAll(dto);
         
-        listPageService.ShowList(page, limitRow, count, searchWord, list, model);
+        listPageService.ShowList(page, limitRow, count, searchWord, list, model, null);
 
     }
 

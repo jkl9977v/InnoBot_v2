@@ -5,7 +5,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	접근규칙 생성 <br/>
+	접근규칙 수정<br/>
 	<form action="/admin/accessRule/ruleUpdate" method="post" readonly>
 	access_id: <input type="text" name="accessId" th:value="${dto.accessId}" readonly>[[${dto.accessId}]]   번호 자동생성 <br/>
 	accessName: <input type="text" name="accessName" placeholder="규칙 이름" th:value="${dto.accessName}"> <br/>
@@ -14,7 +14,7 @@
 	accessType:  <input type="text" name="accessType" placeholder="규칙 유형" th:value="${dto.accessType}" ><br/>
 	'all', 'internal_all', 'dept_only', 'grade_only', 'dept_grade' <br/>
 
-	<button type="submit">생성</button>
+	<button type="submit">수정</button>
 	</form>
 </body>
 </html>

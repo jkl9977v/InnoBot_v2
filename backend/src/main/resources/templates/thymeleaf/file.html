@@ -24,15 +24,15 @@
       <a class="button" th:href="@{/admin/accessRule}">접근규칙 설정</a>
       <a class="button" th:href="@{/admin/user}" >사용자 설정</a>
       <button>삭제</button>
-      <button>업로드</button>
+      <a class="button" th:href="@{/admin/chatbot}">챗봇 설정</a>
       <a class="button" th:href="@{/admin/logout}">로그아웃</a>
       
     </div>
    
-            <a th:href="@{/admin/file}">파일/파일경로 관리</a>
+  <a th:href="@{/admin/file/fileList(pathId=${pathId},page=${page},searchWord=${searchWord})}">파일/파일경로 관리</a>
   <a >접근규칙 관리</a> <br/>
   
-    <a th:href="@{/admin/file/pathWrite}">파일경로 생성</a>
+  <a th:href="@{/admin/file/pathWrite}">파일경로 생성</a>
   <a th:href="@{/admin/accessRule/ruleWrite}">접근규칙 생성</a> <br/>
   
   <a th:href="@{/admin/file/pathUpdate?pathId=path_000000001}">파일경로 수정</a>
@@ -60,7 +60,21 @@
           <td>[[${dto.fileDTO.size}]]</td>
           <td>[[${dto.fileDTO.updateTime}]]</td>
         </tr>
+        
       </tbody>
+      <tr align="center" > 
+      <td > 
+      	<span th:if="${page<=1}">[이전]</span>
+      	<span th:if="${page>1}" th:href="@{/admin/file/fileList(pathId=${pathId},page=${page-1},searchWord=${searchWord})}">[이전]</span>
+      	<!-- filePath대신 pathId 사용하는 로직으로 바꿔야 함 -->
+      	<th:block th:each="i:${#numbers.sequence(startPageNum, endPageNum)}">
+      	
+      	[<a th:href="@{/admin/file/fileList(pathId=${pathId},page=${i},searchWord=${searchWord})}">[[${i}]]</a>]
+      	</th:block>
+      	<span th:if="${page<maxPage}" th:href="@{/admin/file/fileList(page=${page+1},searchWord=${searchWord})}">[다음]</span>
+      	<span th:if="${page>=maxPage}">[다음]</span>
+      </td> 
+      </tr>
     </table>
   </main>
 </body>

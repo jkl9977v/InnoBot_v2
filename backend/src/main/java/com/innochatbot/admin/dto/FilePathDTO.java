@@ -19,5 +19,5 @@ public class FilePathDTO {
     int depth;
     String parentId;
     
-    FileDTO fileDTO;
+    FileDTO FileDTO;
 }

@@ -15,5 +15,5 @@ public class StartEndPageDTO {
 	int endRow;
 	String searchWord;
 	String kind;
-	String fullFilePath;
+	String idColumn;
 }

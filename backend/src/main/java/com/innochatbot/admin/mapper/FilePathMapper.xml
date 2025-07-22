@@ -28,15 +28,19 @@
 select * 
 from (
 select row_number() over (order by file_id) as rn
-, file_id as file_id, file_name as file_name
+, file_id as file_id, file_name as file_name         <!-- 파일 -->
 , extension as extension, size as size
   , hash as hash, update_time as update_time
-  , fp.path_id as path_id
-  , f.path_id as file_path_id, path, access_Id <!-- ,depth, parentId -->
+  , f.path_id as file_path_id
+  , fp.path_id as path_id          <!-- 파일경로 -->
+  , path, access_Id
+  , depth, fp.parent_Id as parent_id
 from file_path fp
 join file f on fp.path_id=f.path_id
+where (f.path_id=#{idColumn} or parent_id=#{idColumn})
+
 <if test="searchWord!=null">
-where 
+and
 path like '%'||#{searchWord}||'%'
 order by file_name
 </if>

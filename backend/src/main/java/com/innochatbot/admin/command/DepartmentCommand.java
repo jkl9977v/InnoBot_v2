@@ -1,16 +1,13 @@
-package com.innochatbot.admin.dto;
-
-import org.apache.ibatis.type.Alias;
+package com.innochatbot.admin.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Alias("departmentDTO")
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepartmentDTO { //부서정보, 허용부서 규칙에 사용함
+@Data
+public class DepartmentCommand {
 	String allowdId;
 	String departmentId;
 	String departmentName;
