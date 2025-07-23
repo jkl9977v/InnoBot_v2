@@ -16,6 +16,7 @@ public class AllowdUpdateService {
 		DepartmentDTO dto = new DepartmentDTO();
 		
 		dto.setAllowdId(departmentCommand.getAllowdId());
+		dto.setAllowdName(departmentCommand.getAllowdName());
 		dto.setDepartmentId(departmentCommand.getDepartmentId());
 		departmentMapper.allowdUpdate(dto);
 	}

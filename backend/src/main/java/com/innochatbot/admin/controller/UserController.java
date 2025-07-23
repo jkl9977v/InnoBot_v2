@@ -44,11 +44,15 @@ public class UserController {
 	@PostMapping("userWrite")
 	public String userWrite1(UserCommand userCommand) {
 		userWriteService.userWrite(userCommand);
-		return "redirect:userList";
+		return "redirect:/admin/user/userList";
 	}
 	@GetMapping("userList")
-	public String userList(Model model) {
-		userListService.userList(model);
+	public String userList(@RequestParam (defaultValue = "1") int page
+			, @RequestParam (defaultValue = "10") int limitRow
+			, @RequestParam (required = false) String searchWord
+			, @RequestParam (required = false) String kind
+			, Model model) {
+		userListService.userList(page, limitRow, searchWord, kind, model);
 		return "thymeleaf/user/userList";
 	}
 	@GetMapping("userDetail")
@@ -64,7 +68,7 @@ public class UserController {
 	@PostMapping("userUpdate")
 	public String userUpdate1(UserCommand userCommand) {
 		userUpdateService.userUpdate(userCommand);
-		return "redirect: userList";
+		return "redirect:/admin/user/userList";
 	}
 	
 	@Autowired
@@ -72,7 +76,7 @@ public class UserController {
 	@GetMapping("userDelete")
 	public String userDelete(@RequestParam String userNum) {
 		userMapper.userDelete(userNum);
-		return "redirect: userLiset";
+		return "redirect:/admin/user/userLiset";
 	}
 
 }

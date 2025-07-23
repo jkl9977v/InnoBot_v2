@@ -16,6 +16,7 @@ public class UserWriteService {
 		UserDTO dto = new UserDTO();
 		
 		dto.setUserId(userCommand.getUserId());
+		dto.setUserName(userCommand.getUserName());
 		dto.setUserNum(userCommand.getUserNum());
 		dto.setUserPw(userCommand.getUserPw());
 		dto.setDepartmentId(userCommand.getDepartmentId());

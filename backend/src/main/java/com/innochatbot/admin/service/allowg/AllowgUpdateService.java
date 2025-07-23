@@ -8,11 +8,11 @@ import com.innochatbot.admin.dto.GradeDTO;
 import com.innochatbot.admin.mapper.GradeMapper;
 
 @Service
-public class AllowgWriteService {
+public class AllowgUpdateService {
 	@Autowired
 	GradeMapper gradeMapper;
 
-	public void allowgWrite(GradeCommand gradeCommand) {
+	public void allowgUpdate(GradeCommand gradeCommand) {
 		GradeDTO dto = new GradeDTO();
 		
 		dto.setAllowgId(gradeCommand.getAllowgId());
@@ -20,8 +20,6 @@ public class AllowgWriteService {
 		dto.setGradeId(gradeCommand.getGradeId());
 		//dto.setGradeName(gradeCommand.getGradeName());
 		
-		gradeMapper.allowgInsert(dto);
-		
+		gradeMapper.allowgUpdate(dto);
 	}
-
 }

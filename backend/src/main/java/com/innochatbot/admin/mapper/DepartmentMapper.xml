@@ -5,9 +5,11 @@
 
 <mapper namespace="com.innochatbot.admin.mapper.DepartmentMapper">
 
+<!-- allowd -->
+
 <insert id="allowdInsert" parameterType="departmentDTO">
-Insert allow_departments into (allowd_id, department_id)
-values(#{allowdId}, #{departmentId})
+Insert into allow_departments (allowd_id, allowd_name, department_id)
+values(#{allowdId}, #{allowdName}, #{departmentId})
 </insert>
 
 <select id="allowdCount" resultType="Integer">
@@ -17,26 +19,31 @@ select count(allowd_id) from allow_departments
 <select id="allowdSelectAll" parameterType="StartEndPageDTO" resultType="departmentDTO">
 select * from (
 select row_number() over (order by allowd_id) as rn
- allowd_id, ad.department_id, department_name 
+ , allowd_id, allowd_name
+ , ad.department_id, department_name 
 from allow_departments ad 
 left join department d 
 on ad.department_id = d.department_id
 <if test="searchWord!=null">
-where department_name = #{searchWord}
+where 
+allowd_name like '%'||#{searchWord}||'%'
 </if>
 ) as sub where rn between #{startRow} and #{endRow}
 </select>
 
 <select id="allowdDetail" parameterType="String" resultType="departmentDTO">
-select allowd_id, ad.department_id, department_name
+select allowd_id, allowd_name
+, ad.department_id, department_name
 from allow_departments ad
 left join department d
 on ad.department_id = d.department_id
+where allowd_id=#{allowdId}
 </select>
 
 <update id="allowdUpdate" parameterType="departmentDTO">
 update allowd_departments
-set department_id=#{departmentId}
+set allowd_name=#{allowd_name}
+, department_id=#{departmentId}
 where allowd_id=#{allowdId}
 </update>
 
@@ -45,4 +52,38 @@ delete from allowd_departments
 where allowd_id=#{allowdId}
 </delete>
 
+
+<!-- department -->
+
+<insert id="departmentInsert" parameterType="departmentDTO">
+insert into department(department_id, department_name)
+values (#{departmentId}, #{departmentName})
+</insert>
+
+<select id="departmentCount" resultType="Integer">
+select count(department_id) from department
+</select>
+
+<select id="departmentSelectAll" resultType="departmentDTO" parameterType="StartEndPageDTO">
+select * from (
+select row_number() over (order by department_id) as rn,
+department_id, department_name
+from department
+<if test="searchWord!=null">
+where
+department_name=#{searchWord}
+</if>
+) as sub where rn between #{startRow} and #{endRow}
+</select>
+
+<select id="departmentDetail" parameterType="String">
+select * from department
+where department_id=#{departmentId}
+</select>
+
+<update id="departmentUpdate" parameterType="departmentDTO">
+update department
+set department_name=#{departmentName}
+where department_Id=#{departmentId}
+</update>
 </mapper>

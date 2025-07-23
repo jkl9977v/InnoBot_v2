@@ -13,5 +13,6 @@ public class UserCommand {
 	String userPw;
 	String gradeId;
 	String departmentId;
+	String userName;
 }
 

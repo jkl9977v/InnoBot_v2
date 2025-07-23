@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DepartmentDTO { //부서정보, 허용부서 규칙에 사용함
 	String allowdId;
+	String allowdName;
 	String departmentId;
 	String departmentName;
 }

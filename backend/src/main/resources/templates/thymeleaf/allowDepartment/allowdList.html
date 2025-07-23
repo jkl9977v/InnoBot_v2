@@ -27,42 +27,38 @@
       
     </div>
 
-  <h2 >사용자 관리 페이지</h2>
-  <a th:href="@{/admin/accessRule/ruleList}">접근규칙 관리</a> <br/>
+  <h2 >접근규칙 관리 페이지</h2>
+  <a th:href="@{/admin/accessRule/ruleWrite}">접근규칙 생성</a> <br/>
   
+  <a th:href="@{/admin/file/addAccessRule?pathId=path_000000001}">접근권한 설정(경로에)</a> <br/>
+  <a th:href="@{/admin/accessRule/ruldUpdate}">접근규칙 수정</a> <br/>
+  <a th:href="@{/admin/accessRule/ruleDelete}">접근규칙 삭제</a> <br/><hr/>
+  <a th:href="@{/admin/accessRule/allowdWrite}">허용 부서 규칙 생성</a><br/>
   <a th:href="@{/admin/accessRule/allowdList}">허용 부서 규칙 목록</a><br/>
+  <a th:href="@{/admin/accessRule/allowdUpdate}">허용 부서 규칙 수정</a><br/>
+  <a th:href="@{/admin/accessRule/allowdDelete}">허용 부서 규칙 삭제</a><br/><hr/>
+  <a th:href="@{/admin/accessRule/allowgWrite}">허용 직급 규칙 생성</a><br/>
   <a th:href="@{/admin/accessRule/allowgList}">허용 직급 규칙 목록</a><br/>
-  <a th:href="@{/admin/user/userWrite}">사용자 추가</a><br/>
-  <a th:href="@{/admin/user/userDelete(userNum=${userNum})}">사용자 삭제</a> <hr/>
-  <a th:href="@{/admin/department/departmentList}">부서 관리</a><br/>
-  <a th:href="@{/admin/department/departmentWrite}">부서 생성</a><br/>
-  <a th:href="@{/admin/department/departmentUpdate}">부서 수정</a><br/>
-  <a th:href="@{/admin/department/departmentDelete}">부서 삭제</a><hr/>
-  <a th:href="@{/admin/grade/gradeList}">직급 관리</a><br/>
-  <a th:href="@{/admin/grade/gradeWrite}">직급 생성</a><br/>
-  <a th:href="@{/admin/grade/gradeUpdate}">직급 수정</a><br/>
-  <a th:href="@{/admin/grade/gradeDelete}">직급 삭제</a><br/>
-
+  <a th:href="@{/admin/accessRule/allowgUpdate}">허용 직급 규칙 수정</a><br/>
+  <a th:href="@{/admin/accessRule/allowgDelete}">허용 직급 규칙 삭제</a><br/>
     <table class="file-table">
       <thead>
         <tr>
-          <th>사용자</th>
-          <th>사용자 아이디</th>
-          <th>사용자 이름</th>
+          <th>허용 부서 규칙</th>
+          <th>규칙 이름</th>
           <th>부서</th>
-          <th>직급</th>
+          <th>부서</th>
           <th>자세히</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="dto:${list}">
-          <td>[[${dto.userNum}]]</td>
-          <td>[[${dto.userId}]]</td>
-          <td>[[${dto.userName}]]</td>
+          <td>[[${dto.allowdId}]]</td>
+          <td>[[${dto.allowdName}]]</td>
           <td>[[${dto.departmentId}]]</td>
-          <td>[[${dto.gradeId}]]</td>
+          <td>[[${dto.departmentName}]]</td>
           <td> <a class="button" 
-          th:href="@{/admin/user/userUpdate?(userNum=${dto.userNum})}">자세히</a></td>
+          th:href="@{/admin/accessRule/allowdUpdate?(allowdId=${dto.allowdId})}">자세히</a></td>
         </tr>
       </tbody>
     </table>

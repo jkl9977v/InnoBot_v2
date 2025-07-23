@@ -5,22 +5,51 @@
 
 <mapper namespace="com.innochatbot.admin.mapper.UserMapper">
 
-<select id="userSelectAll" resultType="userDTO">
-select * from user
+<select id="userSelectAll" resultType="userDTO" parameterType="StartEndPageDTO">
+select * from (
+select row_number() over (order by user_num) as rn
+, user_num, user_name, user_id
+, u.department_id, department_name
+, u.grade_id, grade_name
+ from user u
+ left join department d 
+ on u.department_id=d.department_id
+ left join grade g
+ on u.grade_id=g.grade_id
+<if test="searchWord!=null">
+where 
+user_name like '%'||#{searchWord}||'%' 
+or user_id like '%'||#{searchWord}||'%'
+</if>
+) as sub where rn between #{startRow} and #{endRow}
 </select>
 
 <select id="userSelectOne" resultType="userDTO" parameterType="string">
-select * from user where user_num=#{userNum}
+select user_num, user_name
+, user_id, user_pw
+, u.department_id, department_name
+, g.grade_id, grade_name
+ from user u
+ left join department d
+ on u.department_id = d.department_id
+ left join grade g
+ on u.grade_id = g.grade_id 
+where user_num=#{userNum}
+</select>
+
+<select id="userCount" resultType="Integer">
+select count(user_num) from user
 </select>
 
 <insert id="userInsert" parameterType="userDTO">
-insert into user (user_num, user_id, user_pw, department_id, grade_id)
-values(#{userNum}, #{userId}, #{userPw}, #{departmentId}, #{gradeId})
+insert into user (user_num, user_name, user_id, user_pw, department_id, grade_id)
+values(#{userNum}, #{userName}, #{userId}, #{userPw}, #{departmentId}, #{gradeId})
 </insert>
 
 <update id="userUpdate" parameterType="userDTO">
 update user
-set user_pw=#{userPw}, department_id=#{departmentId}, grade_id=#{gradId}
+set user_name=#{userName}, user_pw=#{userPw}
+, department_id=#{departmentId}, grade_id=#{gradeId}
 where user_num=#{userNum}
 </update>
 

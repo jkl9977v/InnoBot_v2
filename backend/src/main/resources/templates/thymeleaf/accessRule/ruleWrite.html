@@ -6,7 +6,7 @@
 </head>
 <body>
 	접근규칙 생성 <br/>
-	<form action="/admin/accessRule/ruleWrite" method="post" readonly>
+	<form action="/admin/accessRule/ruleWrite" method="post" >
 	access_id: <input type="text" name="accessId" th:value="${command.accessId}" readonly>[[${command.accessId}]]   번호 자동생성 <br/>
 	accessName: <input type="text" name="accessName" placeholder="규칙 이름"> <br/>
 	allowdId:  <input type="text" name="allowdId" placeholder="허용부서"> <br/>

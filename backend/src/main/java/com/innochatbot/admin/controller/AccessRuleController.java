@@ -13,6 +13,7 @@ import com.innochatbot.admin.command.DepartmentCommand;
 import com.innochatbot.admin.command.GradeCommand;
 import com.innochatbot.admin.mapper.AccessRuleMapper;
 import com.innochatbot.admin.mapper.DepartmentMapper;
+import com.innochatbot.admin.mapper.GradeMapper;
 import com.innochatbot.admin.service.AutoNumService;
 import com.innochatbot.admin.service.accessRule.AccessRuleDetailService;
 import com.innochatbot.admin.service.accessRule.AccessRuleListService;
@@ -22,7 +23,9 @@ import com.innochatbot.admin.service.allowd.AllowdDetailService;
 import com.innochatbot.admin.service.allowd.AllowdListService;
 import com.innochatbot.admin.service.allowd.AllowdUpdateService;
 import com.innochatbot.admin.service.allowd.AllowdWriteService;
+import com.innochatbot.admin.service.allowg.AllowgDetailService;
 import com.innochatbot.admin.service.allowg.AllowgListService;
+import com.innochatbot.admin.service.allowg.AllowgUpdateService;
 import com.innochatbot.admin.service.allowg.AllowgWriteService;
 
 
@@ -139,13 +142,13 @@ public class AccessRuleController {
     		, @RequestParam (required=false) String searchWord
     		, @RequestParam (required=false) String kind
     		, Model model) {
-    	allowdListService.allowdList(page, limitRow, searchWord, kind);
-    	return "thymeleaf//allowDepartment/allowdList";
+    	allowdListService.allowdList(page, limitRow, searchWord, kind, model);
+    	return "thymeleaf/allowDepartment/allowdList";
     }
     @GetMapping("allowdDetail")
     public String allowdDetail(@RequestParam String allowdId, Model model) {
     	allowdDetailService.allowdDetail(allowdId, model);
-    	return "thymeleaf//allowDepartment/allowdDetail";
+    	return "thymeleaf/allowDepartment/allowdDetail";
     }
     @GetMapping("allowdUpdate")
     public String allowdUpdate(@RequestParam String allowdId, Model model) {
@@ -171,6 +174,10 @@ public class AccessRuleController {
     AllowgWriteService allowgWriteService;
     @Autowired
     AllowgListService allowgListService;
+    @Autowired
+    AllowgDetailService allowgDetailService;
+    @Autowired
+    AllowgUpdateService allowgUpdateService;
     
     @GetMapping("allowgWrite")
     public String allowgWrite(GradeCommand gradeCommand
@@ -194,24 +201,31 @@ public class AccessRuleController {
     		, @RequestParam (required=false) String searchWord
     		, @RequestParam (required=false) String kind
     		, Model model) {
-    	
-    	return "thymeleaf/allowGrade/";
+    	allowgListService.allowgList(page, limitRow, searchWord, kind, model);
+    	return "thymeleaf/allowGrade/allowgList";
     }
     @GetMapping("allowgDetail")
-    public String allowgDetail() {
-    	return "";
+    public String allowgDetail(@RequestParam String allowgId, Model model) {
+    	allowgDetailService.allowgDetail(allowgId, model);
+    	return "thymeleaf/allowGrade/allowgDetail";
     }
     @GetMapping("allowgUpdate")
-    public String allowgUpdate() {
-    	return "";
+    public String allowgUpdate(@RequestParam String allowgId, Model model) {
+    	allowgDetailService.allowgDetail(allowgId, model);
+    	return "thymeleaf/allowGrade/allowgUpdate";
     }
     @PostMapping("allowgUpdate")
-    public String allowgUpdate1() {
-    	return "";
+    public String allowgUpdate1(GradeCommand gradeCommand) {
+    	allowgUpdateService.allowgUpdate(gradeCommand);
+    	return "redirect:/admin/accessRule/allowgList";
     }
+    @Autowired
+    GradeMapper gradeMapper;
+    
     @GetMapping("allowgDelte")
-    public String allowgDelete() {
-    	return "";
+    public String allowgDelete(@RequestParam String allowgId) {
+    	gradeMapper.allowgDelete(allowgId);
+    	return "redirect:/admin/accessRule/allowgList";
     }
     
 }

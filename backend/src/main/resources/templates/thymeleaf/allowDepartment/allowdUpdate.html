@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	허용 부서 규칙 수정<br/>
+	<form action="/admin/accessRule/allowdUpdate" method="post">
+	allowd_id: <input type="text" name="allowdId" th:value="${dto.allowdId}" readonly>[[${dto.allowdId}]]   번호 자동생성 <br/>
+	allowdName: <input type="text" name="allowdName" placeholder="허용 부서 규칙 이름" th:value="${dto.allowdName}"> <br/>
+	departmentId:  <input type="text" name="departmentId" placeholder="허용부서" th:value="${dto.departmentId}"> <br/>
+	departmentName: <input type="text" name="departmentName" placeholder="허용 부서 이름" th:value="${dto.departmentName}" > <br/>
+	<button type="submit">수정</button>
+	</form>
+</body>
+</html>

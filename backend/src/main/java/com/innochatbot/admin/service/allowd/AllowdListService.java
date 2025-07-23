@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.innochatbot.admin.dto.DepartmentDTO;
 import com.innochatbot.admin.dto.StartEndPageDTO;
@@ -17,8 +18,8 @@ public class AllowdListService {
 	@Autowired
 	ListPageService listPageService;
 
-	public void allowdList(int page, int limitRow, String searchWord, String kind) {
-		//1. 파라미터로 받아온 값을 listPageService에 넘겨서 각 페이지의 시작 행, 마지막 행 값을 생성한다.
+	public void allowdList(int page, int limitRow, String searchWord, String kind, Model model) {
+		//1. 파라미터로 받아온 값을 listPageService에 넘겨서 각 페이지의 시작 행, 마지막 행 값을 dto에 받아온다.
 		StartEndPageDTO dto = listPageService.StartEndRow(page, limitRow, null, searchWord, kind);
 		
 		//2. 출력하고자 하는 행의 전체 값을 가져온다.
@@ -28,7 +29,7 @@ public class AllowdListService {
 		List<DepartmentDTO> list = departmentMapper.allowdSelectAll(dto); 
 		
 		//4. 파라미터로 받아온 값, count, list를 listPageService에 넘겨서 화면에 출력한다.
-		listPageService.ShowList(page, limitRow, count, searchWord, list, null, kind);
+		listPageService.ShowList(page, limitRow, count, searchWord, list, model, kind);
 		
 		
 	}

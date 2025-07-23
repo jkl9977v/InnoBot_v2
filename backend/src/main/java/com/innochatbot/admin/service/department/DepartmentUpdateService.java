@@ -1,4 +1,4 @@
-package com.innochatbot.admin.service.allowd;
+package com.innochatbot.admin.service.department;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,19 +8,16 @@ import com.innochatbot.admin.dto.DepartmentDTO;
 import com.innochatbot.admin.mapper.DepartmentMapper;
 
 @Service
-public class AllowdWriteService {
+public class DepartmentUpdateService {
 	@Autowired
 	DepartmentMapper departmentMapper;
 
-	public void allowdWrite(DepartmentCommand departmentCommand) {
+	public void departmentUpdate(DepartmentCommand departmentCommand) {
 		DepartmentDTO dto = new DepartmentDTO();
 		
-		dto.setAllowdId(departmentCommand.getAllowdId());
-		dto.setAllowdName(departmentCommand.getAllowdName());
 		dto.setDepartmentId(departmentCommand.getDepartmentId());
-		System.out.println(dto);
-		//dto.setDepartmentName(departmentCommand.getDepartmentName());
-		departmentMapper.allowdInsert(dto);
+		dto.setDepartmentName(departmentCommand.getDepartmentName());
+		
+		departmentMapper.departmentUpdate(dto);
 	}
-
 }

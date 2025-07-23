@@ -16,4 +16,5 @@ public class UserDTO {
 	String userPw;
 	String gradeId;
 	String departmentId;
+	String userName;
 }

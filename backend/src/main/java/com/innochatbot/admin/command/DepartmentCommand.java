@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class DepartmentCommand {
 	String allowdId;
+	String allowdName;
 	String departmentId;
 	String departmentName;
 }

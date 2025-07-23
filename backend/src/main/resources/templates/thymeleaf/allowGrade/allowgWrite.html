@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	허용 직급 규칙 생성 <br/>
+	<form action="/admin/accessRule/allowgWrite" method="post">
+	allowg_id: <input type="text" name="allowgId" th:value="${command.allowgId}" readonly>[[${command.allowgId}]]   번호 자동생성 <br/>
+	allowgName: <input type="text" name="allowgName" placeholder="규칙 이름"> <br/>
+	gradeId:  <input type="text" name="gradeId" placeholder="허용 직급"> <br/>
+	gradeName: <input type="text" name="gradeName" placeholder="직급 이름"> <br/>
+	<button type="submit">생성</button>
+	</form>
+</body>
+</html>

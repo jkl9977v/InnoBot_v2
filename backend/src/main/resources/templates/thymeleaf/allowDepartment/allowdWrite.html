@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	허용 부서 규칙 생성 <br/>
+	<form action="/admin/accessRule/allowdWrite" method="post" readonly>
+	allowd_id: <input type="text" name="allowdId" th:value="${command.allowdId}" readonly>
+		[[${command.allowdId}]]   번호 자동생성 <br/>
+	allowdName: <input type="text" name="allowdName" placeholder="허용 부서 규칙 이름"> <br/>
+	departmentId:  <input type="text" name="departmentId" placeholder="허용부서"> <br/>
+	departmentName: <input type="text" name="departmentName" placeholder="부서 이름"> <br/>
+	<button type="submit">생성</button>
+	</form>
+</body>
+</html>
