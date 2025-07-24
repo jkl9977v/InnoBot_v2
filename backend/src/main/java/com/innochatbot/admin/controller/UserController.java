@@ -32,10 +32,10 @@ public class UserController {
 	
 	@GetMapping("userWrite")
 	public String userWrite(UserCommand userCommand
-		, @RequestParam (defaultValue="user_") String sep
-		, @RequestParam (defaultValue="user_num") String column
-		, @RequestParam (defaultValue="6") int len
-		, @RequestParam (defaultValue="user") String table
+		, @RequestParam (defaultValue = "user_") String sep
+		, @RequestParam (defaultValue = "user_num") String column
+		, @RequestParam (defaultValue = "6") int len
+		, @RequestParam (defaultValue = "user") String table
 		, Model model) {
 		userCommand.setUserNum(autoNumService.autoNum1(sep, column, len, table));
 		model.addAttribute("command", userCommand);
@@ -76,7 +76,7 @@ public class UserController {
 	@GetMapping("userDelete")
 	public String userDelete(@RequestParam String userNum) {
 		userMapper.userDelete(userNum);
-		return "redirect:/admin/user/userLiset";
+		return "redirect:/admin/user/userList";
 	}
 
 }

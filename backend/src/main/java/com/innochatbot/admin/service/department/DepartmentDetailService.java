@@ -14,6 +14,6 @@ public class DepartmentDetailService {
 
 	public void departmentDetail(String departmentId, Model model) {
 		DepartmentDTO dto = departmentMapper.departmentDetail(departmentId);
-		model.addAttribute(dto);
+		model.addAttribute("dto", dto);
 	}
 }

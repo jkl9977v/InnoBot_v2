@@ -54,7 +54,7 @@ where user_num=#{userNum}
 </update>
 
 <delete id="userDelete" parameterType="string">
-delete from user where user_id = #{userId}
+delete from user where user_num = #{userNum}
 </delete>
 
 </mapper>

@@ -27,32 +27,28 @@
       
     </div>
 
-  <h2 >허용 부서 규칙 관리 페이지</h2>
+  <h2 >부서 관리 페이지</h2>
   <p>
-  <a class="button" th:href="@{/admin/accessRule/allowdWrite}">허용 부서 규칙 생성</a> | 
-  <a class="button" th:href="@{/admin/accessRule/allowgWrite}">허용 직급 규칙 생성</a>
-  <a class="button" th:href="@{/admin/accessRule/allowgList}">허용 직급 규칙 관리</a><br/>
+  <a class="button" th:href="@{/admin/department/departmentWrite}">부서 생성</a> | 
+  <a class="button" th:href="@{/admin/grade/gradeList}">직급 관리</a><br/>
   </p>
+
     <table class="file-table">
       <thead>
         <tr>
-          <th>허용 부서 규칙</th>
-          <th>규칙 이름</th>
           <th>부서</th>
-          <th>부서</th>
+          <th>부서명</th>
           <th>자세히</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="dto:${list}">
-          <td>[[${dto.allowdId}]]</td>
-          <td>[[${dto.allowdName}]]</td>
           <td>[[${dto.departmentId}]]</td>
           <td>[[${dto.departmentName}]]</td>
           <td> <a class="button" 
-          th:href="@{/admin/accessRule/allowdUpdate?(allowdId=${dto.allowdId})}">자세히</a>
-           <a class="button" 
-          th:href="@{/admin/accessRule/allowdDelete?(allowdId=${dto.allowdId})}">삭제</a></td>
+          th:href="@{/admin/department/departmentUpdate(departmentId=${dto.departmentId})}">자세히</a>
+          <a class="button" 
+          th:href="@{/admin/department/departmentDelete(departmentId=${dto.departmentId})}">삭제</a></td>
         </tr>
       </tbody>
     </table>

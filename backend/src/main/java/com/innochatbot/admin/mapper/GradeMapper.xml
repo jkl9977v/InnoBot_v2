@@ -5,6 +5,8 @@
 
 <mapper namespace="com.innochatbot.admin.mapper.GradeMapper">
 
+<!-- allowg -->
+
 <insert id="allowgInsert" parameterType="gradeDTO">
 insert into allow_grade (allowg_id, allowg_name, grade_id)
 values(#{allowgId}, #{allowgName}, #{gradeId})
@@ -48,6 +50,44 @@ where allowg_id=#{allowgId}
 <delete id="allowgDelete" parameterType="String">
 delete from allow_grade
 where allowg_id=#{allowgId}
+</delete>
+
+<!-- grade -->
+<insert id="gradeInsert" parameterType="gradeDTO">
+insert into grade(grade_id, grade_name)
+values(#{gradeId}, #{gradeName})
+</insert>
+
+<select id="gradeCount" resultType="Integer">
+select count(grade_id) from grade
+</select>
+
+<select id="gradeSelectAll" resultType="gradeDTO" parameterType="StartEndPageDTO">
+select * from (
+select row_number() over (order by grade_id) as rn
+, grade_id, grade_name
+from grade
+<if test="searchWord!=null">
+where
+grade_name = #{searchWord}
+</if>
+) as sub where rn between #{startRow} and #{endRow}
+</select>
+
+<select id="gradeDetail" resultType="gradeDTO" parameterType="String">
+select * from grade
+where grade_id = #{gradeId}
+</select>
+
+<update id="gradeUpdate" parameterType="gradeDTO">
+update grade
+set grade_name = #{gradeName}
+where grade_id = #{gradeId}
+</update>
+
+<delete id="gradeDelete" parameterType="String">
+delete from grade
+where grade_id = #{gradeId}
 </delete>
 
 </mapper>

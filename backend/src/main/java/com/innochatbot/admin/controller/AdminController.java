@@ -28,8 +28,16 @@ public class AdminController {
     @Autowired
     ListPageService listPageService;
     
-    @GetMapping("")
+    @RequestMapping("")
     public String main(HttpServletRequest request) {
+    	HttpSession session = request.getSession(false);
+    	if(session != null && session.getAttribute("loginSession") != null) {
+    		return "redirect:/admin/file";
+    	}
+    	return "redirect:/admin/login";
+    }
+    @RequestMapping("/")
+    public String main1(HttpServletRequest request) {
     	HttpSession session = request.getSession(false);
     	if(session != null && session.getAttribute("loginSession") != null) {
     		return "redirect:/admin/file";
@@ -40,7 +48,7 @@ public class AdminController {
     public String login() {
     	return "thymeleaf/login";
     }
-    @PostMapping("")
+    @PostMapping("login")
     public String login1(LoginCommand loginCommand
     		, HttpSession session, HttpServletResponse response) {
     	//로그인 처리 과정
@@ -60,7 +68,7 @@ public class AdminController {
     
     @GetMapping("file")
     public String adminMain() {
-    	return "redirect:/admin/file/fileList?";
+    	return "redirect:/admin/file/fileList";
     }
     @GetMapping("user")
     public String user() {
@@ -71,6 +79,11 @@ public class AdminController {
     public String accessRule(
     		) {
         return "redirect:/admin/accessRule/ruleList";
+    }
+    
+    @GetMapping("chatbot")
+    public String chatbot() {
+    	return "thymeleaf/main";
     }
     //pageNo=1&pageSize=&searchText=&searchTextOption=userName&memberStatuses=CREATE
 

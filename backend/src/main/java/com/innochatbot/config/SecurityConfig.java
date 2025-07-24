@@ -16,7 +16,9 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable() // (개발 중에는 보통 비활성화)
                 .authorizeHttpRequests()
-                .anyRequest().permitAll();
+            		.requestMatchers("/admin/login", "/css/**", "/js/**", "/img/**").permitAll()
+            		//.requestMatchers("/admin/**").authenticated()  // 관리자 페이지 보호
+            		.anyRequest().permitAll();
 
         return http.build();
     }
@@ -25,12 +27,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+        	.cors().and()
+        	.csrf().disable()
             .authorizeHttpRequests()
+            	.requestMatchers("/admin/login", "/css/**", "/js/**", "/img/**").permitAll()
                 .requestMatchers("/admin/**").authenticated()  // 관리자 페이지 보호
                 .anyRequest().permitAll()
             .and()
             .formLogin()  // 기본 로그인 페이지 사용
-                .loginPage("/login")        // 커스텀 로그인 화면 사용 시 설정
+                .loginPage("/admin/login")        // 커스텀 로그인 화면 사용 시 설정
                 .defaultSuccessUrl("/admin/manuals/view", true)
                 .permitAll()
             .and()

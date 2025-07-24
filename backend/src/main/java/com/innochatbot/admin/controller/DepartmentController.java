@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.innochatbot.admin.command.DepartmentCommand;
+import com.innochatbot.admin.mapper.DepartmentMapper;
 import com.innochatbot.admin.service.AutoNumService;
 import com.innochatbot.admin.service.department.DepartmentDetailService;
 import com.innochatbot.admin.service.department.DepartmentListService;
@@ -62,15 +63,18 @@ public class DepartmentController {
 	@GetMapping("departmentUpdate")
 	public String departmentUpdate(@RequestParam String departmentId, Model model) {
 		departmentDetailService.departmentDetail(departmentId, model);
-		return "thymeleat/department/departmentUpdate";
+		return "thymeleaf/department/departmentUpdate";
 	}
 	@PostMapping("departmentUpdate")
 	public String departmentUpdate1(DepartmentCommand departmentCommand) {
 		departmentUpdateService.departmentUpdate(departmentCommand);
 		return "redirect:/admin/department/departmentList";
 	}
+	@Autowired
+	DepartmentMapper departmentMapper;
 	@GetMapping("departmentDelete")
-	public String departmentDelete() {
+	public String departmentDelete(@RequestParam String departmentId) {
+		departmentMapper.departmentDelete(departmentId);
 		return "redirect:/admin/department/departmentList";
 	}
 

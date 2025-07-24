@@ -20,28 +20,21 @@
   <main>
     <div class="toolbar">
       <a class="button" th:href="@{/admin/file}">파일/경로 관리</a>
-      <a class="button" th:href="@{/admin/user}" >사용자 설정</a>
-      <button>삭제</button>
-      <button>업로드</button>
-      <button>로그아웃</button>
+      <a class="button" th:href="@{/admin/accessRule}">접근규칙 설정</a>
+      <a class="button" th:href="@{/admin/chatbot}">챗봇 설정</a>
+      <a class="button" th:href="@{/admin/logout}">로그아웃</a>
       
     </div>
 
   <h2 >사용자 관리 페이지</h2>
-  <a th:href="@{/admin/accessRule/ruleList}">접근규칙 관리</a> <br/>
-  
-  <a th:href="@{/admin/accessRule/allowdList}">허용 부서 규칙 목록</a><br/>
-  <a th:href="@{/admin/accessRule/allowgList}">허용 직급 규칙 목록</a><br/>
-  <a th:href="@{/admin/user/userWrite}">사용자 추가</a><br/>
-  <a th:href="@{/admin/user/userDelete(userNum=${userNum})}">사용자 삭제</a> <hr/>
-  <a th:href="@{/admin/department/departmentList}">부서 관리</a><br/>
-  <a th:href="@{/admin/department/departmentWrite}">부서 생성</a><br/>
-  <a th:href="@{/admin/department/departmentUpdate}">부서 수정</a><br/>
-  <a th:href="@{/admin/department/departmentDelete}">부서 삭제</a><hr/>
-  <a th:href="@{/admin/grade/gradeList}">직급 관리</a><br/>
-  <a th:href="@{/admin/grade/gradeWrite}">직급 생성</a><br/>
-  <a th:href="@{/admin/grade/gradeUpdate}">직급 수정</a><br/>
-  <a th:href="@{/admin/grade/gradeDelete}">직급 삭제</a><br/>
+  <p>
+  <a class="button" th:href="@{/admin/user/userWrite}">사용자 추가</a> | 
+  <a class="button" th:href="@{/admin/department/departmentList}">부서 관리</a>
+  <a class="button" th:href="@{/admin/department/departmentWrite}">부서 생성</a> | 
+  <a class="button" th:href="@{/admin/grade/gradeList}">직급 관리</a>
+  <a class="button" th:href="@{/admin/grade/gradeWrite}">직급 생성</a><br/>
+
+  </p>
 
     <table class="file-table">
       <thead>
@@ -62,7 +55,9 @@
           <td>[[${dto.departmentId}]]</td>
           <td>[[${dto.gradeId}]]</td>
           <td> <a class="button" 
-          th:href="@{/admin/user/userUpdate?(userNum=${dto.userNum})}">자세히</a></td>
+          th:href="@{/admin/user/userUpdate?(userNum=${dto.userNum})}">자세히</a>
+          <a class="button" 
+          th:href="@{/admin/user/userDelete?(userNum=${dto.userNum})}">삭제</a></td>
         </tr>
       </tbody>
     </table>

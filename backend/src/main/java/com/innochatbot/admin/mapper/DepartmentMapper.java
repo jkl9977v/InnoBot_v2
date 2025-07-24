@@ -36,4 +36,6 @@ public interface DepartmentMapper { //allowd와 department
 
 	public void departmentUpdate(DepartmentDTO dto);
 
+	public void departmentDelete(String departmentId);
+
 }

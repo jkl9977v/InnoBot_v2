@@ -54,10 +54,11 @@ public class FilePathController { //파일 경로 관리
     }
 
     @GetMapping("fileList") //경로쪽 코드 복잡할 예정, 경로 목록 보여주기
-    public String fileList(@RequestParam (defaultValue="1") int page
-    		, @RequestParam (defaultValue="10") int limitRow
-    		, @RequestParam (defaultValue="path_000000001")String pathId
-    		, @RequestParam (required=false) String searchWord
+    public String fileList(@RequestParam (defaultValue = "1") int page
+    		, @RequestParam (defaultValue = "10") int limitRow
+    		, @RequestParam (defaultValue = "path_000000001")String pathId
+    		, @RequestParam (required = false) String searchWord
+    		, @RequestParam (required = false) String kind
     		, Model model) {
     	//파일시스템을 보여줌
     	filePathListService.filePathList(page, limitRow, pathId, searchWord, model);

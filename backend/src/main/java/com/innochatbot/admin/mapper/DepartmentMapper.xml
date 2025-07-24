@@ -76,7 +76,7 @@ department_name=#{searchWord}
 ) as sub where rn between #{startRow} and #{endRow}
 </select>
 
-<select id="departmentDetail" parameterType="String">
+<select id="departmentDetail" parameterType="String" resultType="departmentDTO">
 select * from department
 where department_id=#{departmentId}
 </select>
@@ -86,4 +86,10 @@ update department
 set department_name=#{departmentName}
 where department_Id=#{departmentId}
 </update>
+
+<delete id="departmentDelete" parameterType="string">
+delete from department
+where department_id = #{departmentId}
+</delete>
+
 </mapper>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	부서 수정 <br/>
+	<form action="/admin/department/departmentUpdate" method="post">
+	departmentId: <input type="text" name="departmentId" th:value="${dto.departmentId}" readonly>[[${dto.departmentId}   번호 자동생성 <br/>
+	departmentName: <input type="text" name="departmentName" th:value="${dto.departmentName}"><br/>
+	 <br/>
+	<button type="submit">수정</button>
+	</form>
+</body>
+</html>

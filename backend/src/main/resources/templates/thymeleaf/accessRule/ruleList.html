@@ -21,26 +21,19 @@
     <div class="toolbar">
       <a class="button" th:href="@{/admin/file}">파일/경로 관리</a>
       <a class="button" th:href="@{/admin/user}" >사용자 설정</a>
-      <button>삭제</button>
-      <button>업로드</button>
-      <button>로그아웃</button>
+      <a class="button" th:href="@{/admin/chatbot}">챗봇 설정</a>
+      <a class="button" th:href="@{/admin/logout}">로그아웃</a>
       
     </div>
 
   <h2 >접근규칙 관리 페이지</h2>
-  <a th:href="@{/admin/accessRule/ruleWrite}">접근규칙 생성</a> <br/>
-  
-  <a th:href="@{/admin/file/addAccessRule?pathId=path_000000001}">접근권한 설정(경로에)</a> <br/>
-  <a th:href="@{/admin/accessRule/ruldUpdate}">접근규칙 수정</a> <br/>
-  <a th:href="@{/admin/accessRule/ruleDelete}">접근규칙 삭제</a> <br/><hr/>
-  <a th:href="@{/admin/accessRule/allowdWrite}">허용 부서 규칙 생성</a><br/>
-  <a th:href="@{/admin/accessRule/allowdList}">허용 부서 규칙 목록</a><br/>
-  <a th:href="@{/admin/accessRule/allowdUpdate}">허용 부서 규칙 수정</a><br/>
-  <a th:href="@{/admin/accessRule/allowdDelete}">허용 부서 규칙 삭제</a><br/><hr/>
-  <a th:href="@{/admin/accessRule/allowgWrite}">허용 직급 규칙 생성</a><br/>
-  <a th:href="@{/admin/accessRule/allowgList}">허용 직급 규칙 목록</a><br/>
-  <a th:href="@{/admin/accessRule/allowgUpdate}">허용 직급 규칙 수정</a><br/>
-  <a th:href="@{/admin/accessRule/allowgDelete}">허용 직급 규칙 삭제</a><br/>
+  <p>
+  <a class="button" th:href="@{/admin/accessRule/ruleWrite}">접근규칙 생성</a> | 
+  <a class="button" th:href="@{/admin/accessRule/allowdWrite}">허용 부서 규칙 생성</a> 
+  <a class="button" th:href="@{/admin/accessRule/allowdList}">허용 부서 규칙 설정</a> | 
+  <a class="button" th:href="@{/admin/accessRule/allowgWrite}">허용 직급 규칙 생성</a> 
+  <a class="button" th:href="@{/admin/accessRule/allowgList}">허용 직급 규칙 설정</a><br/>
+  </p>
     <table class="file-table">
       <thead>
         <tr>
@@ -54,7 +47,9 @@
           <td>[[${dto.accessName}]]</td>
           <td>[[${dto.accessType}]]</td>
           <td> <a class="button" 
-          th:href="@{/admin/accessRule/ruleUpdate?(accessId=${dto.accessId})}">자세히</a></td>
+          th:href="@{/admin/accessRule/ruleUpdate?(accessId=${dto.accessId})}">자세히</a>
+          <a class="button" 
+          th:href="@{/admin/accessRule/ruleDelete?(accessId=${dto.accessId})}">삭제</a></td>
         </tr>
       </tbody>
     </table>
