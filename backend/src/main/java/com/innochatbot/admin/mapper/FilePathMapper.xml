@@ -39,12 +39,20 @@ from file_path fp
 join file f on fp.path_id=f.path_id
 where (f.path_id=#{idColumn} or parent_id=#{idColumn})
 
-<if test="searchWord!=null">
+<if test="searchWord != null">
 and
-path like '%'||#{searchWord}||'%'
-order by file_name
+file_name like concat('%',#{searchWord},'%')
+
+</if>
+<if test="kind != null and kind != ''">
+		and extension like concat('%',#{kind},'%')
 </if>
 ) as sub where rn between #{startRow} and #{endRow}
+order by file_name
+</select>
+
+<select id="pathSelect" parameterType="String" resultType="String">
+select path from file_path where path_id = #{pathId}
 </select>
 
 <select id="filePathCount" resultType="Integer" parameterType="String">

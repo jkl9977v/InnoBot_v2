@@ -24,6 +24,8 @@ public interface FilePathMapper {
 
 	public String selectPathId(String fullFilePath);
 
+	public String pathSelect(String pathId);
+
 
 
 	

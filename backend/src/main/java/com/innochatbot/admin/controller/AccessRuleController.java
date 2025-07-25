@@ -31,9 +31,7 @@ import com.innochatbot.admin.service.allowg.AllowgWriteService;
 
 @RequestMapping("admin/accessRule")
 @Controller
-public class AccessRuleController {
-
-    private final UserController userController; //파일 경로 관리
+public class AccessRuleController { //파일 경로 관리
 	@Autowired
 	AutoNumService autoNumService;
 
@@ -45,10 +43,6 @@ public class AccessRuleController {
     AccessRuleUpdateService accessRuleUpdateService;
     @Autowired
     AccessRuleDetailService accessRuleDetailService;
-
-    AccessRuleController(UserController userController) {
-        this.userController = userController;
-    }
     
     //1. accessRule 기본
     @GetMapping("ruleWrite") //경로 추가
@@ -83,7 +77,7 @@ public class AccessRuleController {
 //    public String AccessRuleList1(@RequestParam String accessId, Model model) {
 //        accessRuleDetailService.ruleDetail(accessId, model);
 //
-//        return "redirect:ruleList";
+//        return "thymeleaf/accessRule/ruleDetail";
 //    }
 
     @GetMapping("ruleUpdate")

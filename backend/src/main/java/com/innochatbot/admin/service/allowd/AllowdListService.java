@@ -29,7 +29,7 @@ public class AllowdListService {
 		List<DepartmentDTO> list = departmentMapper.allowdSelectAll(dto); 
 		
 		//4. 파라미터로 받아온 값, count, list를 listPageService에 넘겨서 화면에 출력한다.
-		listPageService.ShowList(page, limitRow, count, searchWord, list, model, kind);
+		listPageService.ShowList(page, limitRow, count, searchWord, list, model,null, kind);
 		
 		
 	}

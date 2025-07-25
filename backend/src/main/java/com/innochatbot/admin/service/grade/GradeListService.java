@@ -29,7 +29,7 @@ public class GradeListService {
 		List<GradeDTO> list = gradeMapper.gradeSelectAll(dto);
 		
 		//4. 
-		listPageService.ShowList(page, limitRow, count, searchWord, list, model, kind);
+		listPageService.ShowList(page, limitRow, count, searchWord, list, model, null, kind);
 	}
 
 }

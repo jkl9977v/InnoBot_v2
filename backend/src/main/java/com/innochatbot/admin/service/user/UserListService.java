@@ -30,7 +30,7 @@ public class UserListService {
 		List<UserDTO> list = userMapper.userSelectAll(dto);
 		
 		//4. 
-		listPageService.ShowList(page, limitRow, count, searchWord, list, model, kind);
+		listPageService.ShowList(page, limitRow, count, searchWord, list, model, null, kind);
 		
 	}
 

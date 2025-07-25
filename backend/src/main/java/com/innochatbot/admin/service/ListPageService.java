@@ -19,13 +19,14 @@ public class ListPageService {
 		dto.setEndRow(endRow);
 		dto.setIdColumn(pathId);
 		dto.setSearchWord(searchWord);
+		dto.setKind(kind);
 		
 		return dto;
 		
 	}
 
 	public void ShowList(int page, int limitRow, Integer count, String searchWord, List list,
-			Model model, String pathId) {
+			Model model, String pathId, String kind) {
 		Integer limitPage=10;
 		Integer startPageNum=(int)((double)page/limitPage-0.05)*limitPage+1;
 		Integer endPageNum=startPageNum+limitPage-1;
@@ -43,6 +44,7 @@ public class ListPageService {
 		model.addAttribute("searchWord", searchWord);
 		model.addAttribute("list", list);
 		model.addAttribute("count", count);
+		model.addAttribute("kind", kind);
 		if(pathId!=null) {
 			model.addAttribute("pathId", pathId);
 		}

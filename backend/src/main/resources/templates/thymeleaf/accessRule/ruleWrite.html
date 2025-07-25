@@ -11,8 +11,14 @@
 	accessName: <input type="text" name="accessName" placeholder="규칙 이름"> <br/>
 	allowdId:  <input type="text" name="allowdId" placeholder="허용부서"> <br/>
 	allowgId: <input type="text" name="allowgId" placeholder="허용등급"> <br/>
-	accessType:  <input type="text" name="accessType" placeholder="규칙 유형"><br/>
-	'all', 'internal_all', 'dept_only', 'grade_only', 'dept_grade' <br/>
+	accessType:  <select type="text" name="accessType">
+		<option value="허용 안함" selected>허용 안함</option>
+		<option value="모두 허용" >모두 허용</option>
+		<option value="내부 전체 허용" >내부 전체 허용</option>
+		<option value="일부 부서 허용" >일부 부서 허용</option>
+		<option value="특정 직급 이상 허용" >특정 직급 이상 허용</option>
+		<option value="일부 부서의 특정 직급 이상 허용" >일부 부서의 특정 직급 이상 허용</option>
+	</select><br/>
 	<button type="submit">생성</button>
 	</form>
 </body>

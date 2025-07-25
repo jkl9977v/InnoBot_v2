@@ -27,12 +27,23 @@
       
     </div>
 
-  <h2 >허용 직급 규칙 관리 페이지</h2>
+  <h2 >허용 직급 규칙 관리</h2>
   <p>
   <a class="button" th:href="@{/admin/accessRule/allowdWrite}">허용 부서 규칙 생성</a>
   <a class="button" th:href="@{/admin/accessRule/allowdList}">허용 부서 규칙 목록</a> | 
   <a class="button" th:href="@{/admin/accessRule/allowgWrite}">허용 직급 규칙 생성</a><br/>
   </p>
+    <form action="/admin/accessRule/allowgList" method="get">
+  	검색어 : <input type="text" name="searchWord" th:value="${searchWord}">
+  	행: <select id="category" name="limitRow" >
+      	<option value="10" th:selected="${limitRow==10 or limitRow == null or limitRow==''}">10개씩</option>
+      	<option value="15" th:selected="${limitRow==15}">15개씩</option>
+      	<option value="20" th:selected="${limitRow==20}">20개씩</option>
+      	<option value="25" th:selected="${limitRow==25}">25개씩</option>
+      	<option value="30" th:selected="${limitRow==30}">30개씩</option>
+      	</select>
+    <button class="button" type="submit">검색</button>
+  </form>
 
     <table class="file-table">
       <thead>
@@ -55,7 +66,21 @@
           <a class="button" 
           th:href="@{/admin/accessRule/allowgDelete?(allowgId=${dto.allowgId})}">삭제</a></td>
         </tr>
+        <tr>
+        <td th:if="${list.size()==0}" colspan="10" align="center"> 검색결과가 없습니다.</td>
+        </tr>
       </tbody>
+      <tr>
+      	<td colspan="6" align="center">
+      	<span th:if="${page<=1}">[이전]</span>
+      	<span th:if="${page>1}" th:href="@{/admin/accessRule/allowgList(page=${page-1},searchWord=${searchWord})}">[이전]</span>
+      	<th:block th:each="i:${#numbers.sequence(startPageNum, endPageNum)}" >
+      		[<a th:href="@{/admin/accessRule/allowgList(page=${page},searchWord=${searchWord})}">[[${i}]]</a>]
+      	</th:block>
+      	<span th:if="${page<maxPage}" th:href="@{/admin/accessRule/allowgList(page=${page+1},searchWord=${searchWord})}">[다음]</span>
+      	<span th:if="${page>=maxPage}">[다음]</span>
+      	</td>
+      </tr>
     </table>
   </main>
 </body>

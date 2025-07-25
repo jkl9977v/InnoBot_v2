@@ -61,17 +61,18 @@ public class FilePathController { //파일 경로 관리
     		, @RequestParam (required = false) String kind
     		, Model model) {
     	//파일시스템을 보여줌
-    	filePathListService.filePathList(page, limitRow, pathId, searchWord, model);
+    	filePathListService.filePathList(page, limitRow, pathId, searchWord, model, kind);
     	return "thymeleaf/file";
     }
     @GetMapping("pathList") // "/"의 폴더, 파일 목록을 보여주는 용도..?
     public String filePathList(@RequestParam (defaultValue="1") int page
-    		, @RequestParam (defaultValue="10") int limitRow
-    		, @RequestParam (defaultValue="path_000000001")String pathId
-    		, @RequestParam (required=false) String searchWord
+    		, @RequestParam (defaultValue = "10") int limitRow
+    		, @RequestParam (defaultValue = "path_000000001")String pathId
+    		, @RequestParam (required = false) String searchWord
+    		, @RequestParam (required = false ) String kind
     		, Model model) {
     	//파일시스템을 보여줌
-    	filePathListService.filePathList(page, limitRow, pathId, searchWord, model);
+    	filePathListService.filePathList(page, limitRow, pathId, searchWord, model, kind);
     	return "thymeleaf/file";
     }
     @GetMapping("pathDetail")

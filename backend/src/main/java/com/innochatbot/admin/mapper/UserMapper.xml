@@ -18,8 +18,8 @@ select row_number() over (order by user_num) as rn
  on u.grade_id=g.grade_id
 <if test="searchWord!=null">
 where 
-user_name like '%'||#{searchWord}||'%' 
-or user_id like '%'||#{searchWord}||'%'
+user_name like concat('%',#{searchWord},'%')
+or user_id like concat('%',#{searchWord},'%')
 </if>
 ) as sub where rn between #{startRow} and #{endRow}
 </select>

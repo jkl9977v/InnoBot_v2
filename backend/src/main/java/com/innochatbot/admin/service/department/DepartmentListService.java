@@ -27,7 +27,7 @@ public class DepartmentListService {
 		
 		List<DepartmentDTO> list = departmentMapper.departmentSelectAll(dto);
 		
-		listPageService.ShowList(page, limitPage, count, searchWord, list, model, kind);
+		listPageService.ShowList(page, limitPage, count, searchWord, list, model, null, kind);
 		
 	}
 }

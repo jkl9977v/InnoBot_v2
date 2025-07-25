@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
 import com.innochatbot.admin.dto.AccessRuleDTO;
 import com.innochatbot.admin.dto.StartEndPageDTO;
 import com.innochatbot.admin.mapper.AccessRuleMapper;
@@ -24,8 +23,10 @@ public class AccessRuleListService {
         Integer count = accessRuleMapper.accessRuleCount();
         
         List<AccessRuleDTO> list = accessRuleMapper.accessRuleSelectAll(dto);
+        System.out.println(dto);
+        System.out.println(list);
         
-        listPageService.ShowList(page, limitRow, count, searchWord, list, model, null);
+        listPageService.ShowList(page, limitRow, count, searchWord, list, model, null, kind );
 
     }
 

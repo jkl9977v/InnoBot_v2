@@ -26,7 +26,7 @@ left join department d
 on ad.department_id = d.department_id
 <if test="searchWord!=null">
 where 
-allowd_name like '%'||#{searchWord}||'%'
+allowd_name like concat('%',#{searchWord},'%')
 </if>
 ) as sub where rn between #{startRow} and #{endRow}
 </select>
@@ -71,7 +71,7 @@ department_id, department_name
 from department
 <if test="searchWord!=null">
 where
-department_name=#{searchWord}
+department_name like concat('%',#{searchWord},'%')
 </if>
 ) as sub where rn between #{startRow} and #{endRow}
 </select>

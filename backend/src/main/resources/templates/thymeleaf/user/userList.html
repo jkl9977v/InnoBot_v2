@@ -35,6 +35,33 @@
   <a class="button" th:href="@{/admin/grade/gradeWrite}">직급 생성</a><br/>
 
   </p>
+    <form action="/admin/user/userList" method="get">
+  	부서 : <select class="select" id="category" name="kind">
+  		<option th:selected="${kind ==null or kind==''}">전체</option>
+  		<option th:each="dto : ${list}"
+          th:value="${dto.departmentId}"
+          th:text="${dto.departmentId}"
+          th:selected="${kind == dto.departmentId}">
+  		</option>
+  	</select>
+  	직급 : <select class="select" id="category" name="kind">
+  		<option th:selected="${kind2 ==null or kind2==''}">전체</option>
+  		<option th:each="dto : ${list}"
+          th:value="${dto.gradeId}"
+          th:text="${dto.gradeId}"
+          th:selected="${kind2 == dto.gradeId}">
+  		</option>
+  	</select>
+  	검색어 : <input type="text" name="searchWord" th:value="${searchWord}">
+  	행: <select id="category" name="limitRow" >
+      	<option value="10" th:selected="${limitRow==10 or limitRow == null or limitRow==''}">10개씩</option>
+      	<option value="15" th:selected="${limitRow==15}">15개씩</option>
+      	<option value="20" th:selected="${limitRow==20}">20개씩</option>
+      	<option value="25" th:selected="${limitRow==25}">25개씩</option>
+      	<option value="30" th:selected="${limitRow==30}">30개씩</option>
+      	</select>
+    <button class="button" type="submit">검색</button>
+  </form>
 
     <table class="file-table">
       <thead>
@@ -59,7 +86,21 @@
           <a class="button" 
           th:href="@{/admin/user/userDelete?(userNum=${dto.userNum})}">삭제</a></td>
         </tr>
+        <tr>
+        <td th:if="${list.size()==0}" colspan="10" align="center"> 검색결과가 없습니다.</td>
+        </tr>
       </tbody>
+      <tr>
+      	<td colspan="6" align="center">
+      	<span th:if="${page<=1}">[이전]</span>
+      	<span th:if="${page>1}" th:href="@{/admin/user/userList(page=${page-1},searchWord=${searchWord})}">[이전]</span>
+      	<th:block th:each="i:${#numbers.sequence(startPageNum,endPageNum)}">
+      		[<a th:href="@{/admin/user/userList(page=${page},searchWord=${searchWord})}">[[${i}]]</a>]
+      	</th:block>
+      	<span th:if="${page<maxPage}" th:href="@{/admin/user/userList(page=${page+1},searchWord=${searchWord})}">[다음]</span>
+      	<span th:if="${page>=maxPage}">[다음]</span>
+      	</td>
+      </tr>
     </table>
   </main>
 </body>
