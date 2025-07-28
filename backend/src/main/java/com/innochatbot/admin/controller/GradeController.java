@@ -56,6 +56,15 @@ public class GradeController {
 		gradeListService.gradeList(page, limitRow, searchWord, kind, model);
 		return "thymeleaf/grade/gradeList";
 	}
+	@GetMapping("gradeSearch")
+	public String gradeSearch(@RequestParam (defaultValue = "1") int page
+			, @RequestParam (defaultValue = "10") int limitRow
+			, @RequestParam (required = false) String searchWord
+			, @RequestParam (required = false) String kind
+			, Model model) {
+		gradeListService.gradeList(page, limitRow, searchWord, kind, model);
+		return "thymeleaf/grade/gradeSearch";
+	}
 	@GetMapping("gradeDetail")
 	public String gradeDetail(@RequestParam String gradeId, Model model) {
 		gradeDetailService.gradeDetail(gradeId, model);

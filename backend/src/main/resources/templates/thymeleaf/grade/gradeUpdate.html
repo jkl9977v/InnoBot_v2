@@ -8,7 +8,13 @@
 	직급 수정 <br/>
 	<form action="/admin/grade/gradeUpdate" method="post">
 	gradeId: <input type="text" name="gradeId" th:value="${dto.gradeId}" readonly>[[${dto.gradeId}]]   번호 자동생성 <br/>
-	gradeName: <input type="text" name="gradeName" th:value="${dto.gradeName}"><br/>
+	gradeName: <input type="text" name="gradeName" th:value="${dto.gradeName}" placeholder="직급 이름"><br/>
+	gradeLevel : <select id="gradeLevel" name="gradeLevel">
+	<option th:each = " i : ${#numbers.sequence(1,20)} "
+		th:value="${i}"
+		th:text="${i}"
+		th:selected="${dto.gradeName == i }" />
+	</select>
 	 <br/>
 	<button type="submit">수정</button>
 	</form>

@@ -73,7 +73,10 @@ from department
 where
 department_name like concat('%',#{searchWord},'%')
 </if>
-) as sub where rn between #{startRow} and #{endRow}
+) as sub where rn 
+<if test="startRow!=null and endRow!=null">
+between #{startRow} and #{endRow}
+</if>
 </select>
 
 <select id="departmentDetail" parameterType="String" resultType="departmentDTO">

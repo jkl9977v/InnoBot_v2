@@ -14,7 +14,7 @@ public interface UserMapper {
 
 	public List<UserDTO> userSelectAll(StartEndPageDTO dto);
 
-	public UserDTO userSelectOne(String userNum);
+	public UserDTO userDetail(String userNum);
 
 	public void userDelete(String userNum);
 

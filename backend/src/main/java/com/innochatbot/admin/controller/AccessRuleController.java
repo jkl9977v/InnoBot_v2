@@ -139,6 +139,15 @@ public class AccessRuleController { //파일 경로 관리
     	allowdListService.allowdList(page, limitRow, searchWord, kind, model);
     	return "thymeleaf/allowDepartment/allowdList";
     }
+    @GetMapping("allowdSearch")
+    public String allowdSearch(@RequestParam (defaultValue="1") int page
+    		, @RequestParam (defaultValue="10") int limitRow
+    		, @RequestParam (required=false) String searchWord
+    		, @RequestParam (required=false) String kind
+    		, Model model) {
+    	allowdListService.allowdList(page, limitRow, searchWord, kind, model);
+    	return "thymeleaf/allowDepartment/allowdSearch";
+    }
     @GetMapping("allowdDetail")
     public String allowdDetail(@RequestParam String allowdId, Model model) {
     	allowdDetailService.allowdDetail(allowdId, model);
@@ -197,6 +206,15 @@ public class AccessRuleController { //파일 경로 관리
     		, Model model) {
     	allowgListService.allowgList(page, limitRow, searchWord, kind, model);
     	return "thymeleaf/allowGrade/allowgList";
+    }
+    @GetMapping("allowgSearch")
+    public String allowgSearch(@RequestParam (defaultValue="1") int page
+    		, @RequestParam (defaultValue="10") int limitRow
+    		, @RequestParam (required=false) String searchWord
+    		, @RequestParam (required=false) String kind
+    		, Model model) {
+    	allowgListService.allowgList(page, limitRow, searchWord, kind, model);
+    	return "thymeleaf/allowGrade/allowgSearch";
     }
     @GetMapping("allowgDetail")
     public String allowgDetail(@RequestParam String allowgId, Model model) {

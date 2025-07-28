@@ -20,7 +20,7 @@ select count(allowg_id) from allow_grade
 select * from (
 select row_number() over (order by allowg_id) as rn
 , allowg_id, allowg_name
-, ag.grade_id, grade_Name
+, ag.grade_id, grade_name, grade_level
 from allow_grade ag
 left join grade g 
 on ag.grade_id = g.grade_id
@@ -33,7 +33,7 @@ allowg_name like concat('%',#{searchWord},'%')
 
 <select id="allowgDetail" parameterType="String" resultType="gradeDTO">
 select allowg_id, allowg_name
-, ag.grade_id, grade_name 
+, ag.grade_id, grade_name, grade_level
 from allow_grade ag 
 left join grade g on
 ag.grade_id = ag.grade_id 
@@ -65,13 +65,16 @@ select count(grade_id) from grade
 <select id="gradeSelectAll" resultType="gradeDTO" parameterType="StartEndPageDTO">
 select * from (
 select row_number() over (order by grade_id) as rn
-, grade_id, grade_name
+, grade_id, grade_name, grade_level
 from grade
 <if test="searchWord!=null">
 where
 grade_name like concat('%',#{searchWord},'%')
 </if>
-) as sub where rn between #{startRow} and #{endRow}
+) as sub where rn 
+<if test="startRow!=null or endRow!=null">
+between #{startRow} and #{endRow}
+</if>
 </select>
 
 <select id="gradeDetail" resultType="gradeDTO" parameterType="String">
@@ -82,6 +85,7 @@ where grade_id = #{gradeId}
 <update id="gradeUpdate" parameterType="gradeDTO">
 update grade
 set grade_name = #{gradeName}
+, grade_level = #{gradeLevel}
 where grade_id = #{gradeId}
 </update>
 

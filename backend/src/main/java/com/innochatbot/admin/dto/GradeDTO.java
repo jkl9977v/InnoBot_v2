@@ -15,4 +15,6 @@ public class GradeDTO { //등급(직급)정보, 허용등급(직급) 규칙에 �
 	String allowgName;
 	String gradeId;
 	String gradeName;
+	
+	Integer gradeLevel;
 }

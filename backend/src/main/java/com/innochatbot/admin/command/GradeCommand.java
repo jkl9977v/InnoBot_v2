@@ -1,7 +1,5 @@
 package com.innochatbot.admin.command;
 
-import org.apache.ibatis.type.Alias;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,4 +13,5 @@ public class GradeCommand { //등급(직급)정보, 허용등급(직급) 규칙�
 	String gradeId;
 	String gradeName;
 	
+	Integer gradeLevel;
 }

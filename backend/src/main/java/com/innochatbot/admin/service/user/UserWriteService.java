@@ -21,7 +21,10 @@ public class UserWriteService {
 		dto.setUserPw(userCommand.getUserPw());
 		dto.setDepartmentId(userCommand.getDepartmentId());
 		dto.setGradeId(userCommand.getGradeId());
-		
+		if(userCommand.getManager()==null || userCommand.getManager()=="") {
+			dto.setManager("n");
+		}else dto.setManager(userCommand.getManager());
+			
 		userMapper.userInsert(dto);
 		
 	}

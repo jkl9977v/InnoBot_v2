@@ -14,8 +14,9 @@ public class UserDetailService {
 
 	public void userDetail(String userNum, Model model) {
 		UserDTO dto = new UserDTO();
-		dto=userMapper.userSelectOne(userNum);
+		dto=userMapper.userDetail(userNum);
 		model.addAttribute("dto", dto);
+		System.out.println(dto);
 		
 	}
 

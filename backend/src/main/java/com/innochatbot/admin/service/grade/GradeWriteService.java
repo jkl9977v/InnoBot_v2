@@ -17,6 +17,7 @@ public class GradeWriteService {
 
 		dto.setGradeId(gradeCommand.getGradeId());
 		dto.setGradeName(gradeCommand.getGradeName());
+		dto.setGradeLevel(gradeCommand.getGradeLevel());
 
 		gradeMapper.gradeInsert(dto);
 	}

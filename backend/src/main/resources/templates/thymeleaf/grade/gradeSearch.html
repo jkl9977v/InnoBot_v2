@@ -6,33 +6,19 @@
   <title>TiumBotAdmin</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 	<link href="/css/file.css" rel="stylesheet">
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+	<script type="text/javascript">
+	function gradeSelect(gradeId, gradeName){
+		$(opener.document).find("#gradeId").val(gradeId);
+		$(opener.document).find("#gradeName").val(gradeName);
+		window.self.close();
+	}
+	</script>
 </head>
 <body>
-  <aside>
-    <h2>폴더</h2>
-    <ul class="folder-tree">
-      <li>📁 기술문서</li>
-      <li>📁 영업자료</li>
-      <li>📁 인사정보</li>
-      <li>📁 보안기준</li>
-    </ul>
-  </aside>
-  <main>
-    <div class="toolbar">
-      <a class="button" th:href="@{/admin/file}">파일/경로 관리</a>
-      <a class="button" th:href="@{/admin/accessRule}">접근규칙 설정</a>
-      <a class="button" th:href="@{/admin/user}" >사용자 설정</a>
-      <a class="button" th:href="@{/admin/chatbot}">챗봇 설정</a>
-      <a class="button" th:href="@{/admin/logout}">로그아웃</a>
-      
-    </div>
-
-  <h2 >직급 관리</h2>
-  <p>
-  <a class="button" th:href="@{/admin/department/departmentList}">부서 관리</a> | 
-  <a class="button" th:href="@{/admin/grade/gradeWrite}">직급 생성</a><br/>
-  </p>
-    <form action="/admin/grade/gradeList" method="get">
+<main>
+  <h2 >직급 검색</h2>
+    <form action="/admin/grade/gradeSearch" method="get">
   	검색어 : <input type="text" name="searchWord" th:value="${searchWord}">
    	행: <select id="category" name="limitRow" >
       	<option value="10" th:selected="${limitRow==10 or limitRow == null or limitRow==''}">10개씩</option>
@@ -48,7 +34,6 @@
         <tr>
           <th>직급</th>
           <th>직급 이름</th>
-          <th>직급 레벨</th>
           <th>자세히</th>
         </tr>
       </thead>
@@ -56,11 +41,8 @@
         <tr th:each="dto:${list}">
           <td>[[${dto.gradeId}]]</td>
           <td>[[${dto.gradeName}]]</td>
-          <td>[[${dto.gradeLevel}]]</td>
           <td> <a class="button" 
-          th:href="@{/admin/grade/gradeUpdate?(gradeId=${dto.gradeId})}">자세히</a>
-          <a class="button" 
-          th:href="@{/admin/grade/gradeDelete?(gradeId=${dto.gradeId})}">삭제</a></td>
+          th:attr="onclick=|javascript:gradeSelect([['${dto.gradeId}']], [['${dto.gradeName}']])|">선택</a></td>
         </tr>
         <tr>
         <td th:if="${list.size()==0}" colspan="10" align="center"> 검색결과가 없습니다.</td>
@@ -68,13 +50,13 @@
       </tbody>
       <tr>
       	<td colspan="6" align="center">
-      	<!-- <span th:href="@{/admin/grade/gradeList(page=1,searchWord=${searchWord})}">[<<]</span> -->
+      	<!-- <span th:href="@{/admin/grade/gradeSearch(page=1,searchWord=${searchWord})}">[<<]</span> -->
       	<span th:if="${page<=1}">[이전]</span>
-      	<span th:if="${page>1}" th:href="@{/admin/grade/gradeList(page=${page-1},searchWord=${searchWord})}">[이전]</span>
+      	<span th:if="${page>1}" th:href="@{/admin/grade/gradeSearch(page=${page-1},searchWord=${searchWord})}">[이전]</span>
       	<th:block th:each="i:${#numbers.sequence(startPageNum, endPageNum)}">
-      		[<a th:href="@{/admin/grade/gradeList(page=${page},searchWord=${searchWord})}">[[${i}]]</a>]
+      		[<a th:href="@{/admin/grade/gradeSearch(page=${page},searchWord=${searchWord})}">[[${i}]]</a>]
       	</th:block>
-      	<span th:if="${page<maxPage}"th:href="@{/admin/grade/gradeList(page=${page+1},searchWord=${searchWord})}">[다음]</span>
+      	<span th:if="${page<maxPage}"th:href="@{/admin/grade/gradeSearch(page=${page+1},searchWord=${searchWord})}">[다음]</span>
       	<span th:if="${page>=maxPage}" >[다음]</span>
       	</td>
       </tr>

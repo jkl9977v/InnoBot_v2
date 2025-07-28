@@ -5,6 +5,22 @@
 
 <mapper namespace="com.innochatbot.admin.mapper.AccessRuleMapper">
 
+<resultMap id="accessRuleMap" type="accessRuleDTO">
+	<id property="accessId" column="access_id" javaType="java.lang.String"/>
+	<result property="accessName" column="access_name" javaType="java.lang.String"/>
+	<result property="accessType" column="access_type" javaType="java.lang.String"/>
+	
+	<association property="departmentDTO" javaType="com.innochatbot.admin.dto.DepartmentDTO" autoMapping="true">
+		<id property="allowdId" column="allowd_id" javaType="java.lang.String"/>
+		<result property="allowdName" column="allowd_name" javaType="java.lang.String"/>
+	</association>
+	
+	<association property="gradeDTO" javaType="com.innochatbot.admin.dto.GradeDTO" autoMapping="true">
+		<id property="allowgId" column="allowg_id" javaType="java.lang.String"/>
+		<result property="allowgName" column="allowg_name" javaType="java.lang.String"/>
+	</association>
+</resultMap>
+
 <select id="accessRuleSelectAll" resultType="accessRuleDTO" parameterType="StartEndPageDTO">
 select * from (
 select row_number() over (order by access_id) as rn

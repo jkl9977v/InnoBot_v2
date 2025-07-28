@@ -14,5 +14,7 @@ public class UserCommand {
 	String gradeId;
 	String departmentId;
 	String userName;
+	
+	String manager;
 }
 

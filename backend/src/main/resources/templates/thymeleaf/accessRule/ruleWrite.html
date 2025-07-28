@@ -2,16 +2,54 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+  <link rel="icon" type="image/svg+xml" href="/img/tiumBot1.png" />
+  <title>TiumBotAdmin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+	<link href="/css/file.css" rel="stylesheet">
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#allowdSearch").click(function(){
+		window.open("/admin/accessRule/allowdSearch", "부서규칙 검색"
+				, "width=620, height=400, left=30, top=50")
+	});
+	$("#allowgSearch").click(function(){
+		window.open("/admin/accessRule/allowgSearch", "직급규칙 검색"
+				, "width=620, height=400, left=300, top=50")
+	});
+})
+</script>
 </head>
 <body>
-	접근규칙 생성 <br/>
+  <aside>
+    <h2>폴더</h2>
+    <ul class="folder-tree">
+      <li>📁 기술문서</li>
+      <li>📁 영업자료</li>
+      <li>📁 인사정보</li>
+      <li>📁 보안기준</li>
+    </ul>
+  </aside>
+  <main>
+    <div class="toolbar">
+      <a class="button" th:href="@{/admin/file}">파일/경로 관리</a>
+      <a class="button" th:href="@{/admin/user}" >사용자 설정</a>
+      <a class="button" th:href="@{/admin/chatbot}">챗봇 설정</a>
+      <a class="button" th:href="@{/admin/logout}">로그아웃</a>
+      
+    </div>
+	<h2>접근규칙 생성</h2> 
+  <p>
+  <a class="button" th:href="@{/admin/accessRule/ruleWrite}">접근규칙 생성</a> | 
+  <a class="button" th:href="@{/admin/accessRule/allowdWrite}">허용 부서 규칙 생성</a> 
+  <a class="button" th:href="@{/admin/accessRule/allowdList}">허용 부서 규칙 설정</a> | 
+  <a class="button" th:href="@{/admin/accessRule/allowgWrite}">허용 직급 규칙 생성</a> 
+  <a class="button" th:href="@{/admin/accessRule/allowgList}">허용 직급 규칙 설정</a><br/>
+  </p>
 	<form action="/admin/accessRule/ruleWrite" method="post" >
 	access_id: <input type="text" name="accessId" th:value="${command.accessId}" readonly>[[${command.accessId}]]   번호 자동생성 <br/>
-	accessName: <input type="text" name="accessName" placeholder="규칙 이름"> <br/>
-	allowdId:  <input type="text" name="allowdId" placeholder="허용부서"> <br/>
-	allowgId: <input type="text" name="allowgId" placeholder="허용등급"> <br/>
-	accessType:  <select type="text" name="accessType">
+	접근규칙 이름: <input type="text" name="accessName" placeholder="규칙 이름"> <br/>
+	허용 타입:  <select type="text" name="accessType">
 		<option value="허용 안함" selected>허용 안함</option>
 		<option value="모두 허용" >모두 허용</option>
 		<option value="내부 전체 허용" >내부 전체 허용</option>
@@ -19,7 +57,14 @@
 		<option value="특정 직급 이상 허용" >특정 직급 이상 허용</option>
 		<option value="일부 부서의 특정 직급 이상 허용" >일부 부서의 특정 직급 이상 허용</option>
 	</select><br/>
-	<button type="submit">생성</button>
+	allowdId:  <input type="text" name="allowdId" placeholder="허용부서 규칙" id="allowdId">
+	<button type="button" class="button" id="allowdSearch">규칙 검색</button> <br/>
+	allowdName : <input type="text" name="allowdName" placeholder="허용부서 규칙" id="allowdName"><br/>
+	allowgId: <input type="text" name="allowgId" placeholder="허용직급 규칙" id="allowgId">
+	<button type="button" class="button" id="allowgSearch">규칙 검색</button> <br/>
+	allowgName : <input type="text" name="allowgName" placeholder="허용직급 규칙" id="allowgName"><br/>
+	<button type="submit" class="button">생성</button>
 	</form>
+	</main>
 </body>
 </html>

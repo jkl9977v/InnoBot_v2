@@ -17,4 +17,9 @@ public class UserDTO {
 	String gradeId;
 	String departmentId;
 	String userName;
+	
+	String manager;
+	
+	GradeDTO GradeDTO;
+	DepartmentDTO DepartmentDTO;
 }

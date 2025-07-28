@@ -2,19 +2,66 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+  <link rel="icon" type="image/svg+xml" href="/img/tiumBot1.png" />
+  <title>TiumBotAdmin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+	<link href="/css/file.css" rel="stylesheet">
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#departmentSearch").click(function(){
+		//var kind=$("#departmentId").val().substr(0,3);
+		window.open("/admin/department/departmentSearch", "부서 검색"
+				,"width=620, height=400, left=30, top=50");
+	});
+	$("#gradeSearch").click(function(){
+		window.open("/admin/grade/gradeSearch", "직급 검색"
+				, "width=620, height=400, left=30, top=50")
+	});
+});
+</script>
 </head>
 <body>
-	사용자 생성 <br/>
-	<form action="/admin/user/userWrite" method="post" readonly>
-	userNum: <input type="text" name="userNum" th:value="${command.userNum}" readonly>[[${command.userNum}]]   번호 자동생성 <br/>
-	userName: <input type="text" name="userName" placeholder="이름"> <br/>
-	userId: <input type="text" name="userId" placeholder="아이디"> <br/>
-	userPw:  <input type="text" name="userPw" placeholder="비밀번호"> <br/>
-	departmentId: <input type="text" name="departmentId" placeholder="부서"> <br/>
-	gradeId:  <input type="text" name="gradeId" placeholder="등급"><br/>
-	 <br/>
-	<button type="submit">생성</button>
+  <aside>
+    <h2>폴더</h2>
+    <ul class="folder-tree">
+      <li>📁 기술문서</li>
+      <li>📁 영업자료</li>
+      <li>📁 인사정보</li>
+      <li>📁 보안기준</li>
+    </ul>
+  </aside>
+  <main>
+    <div class="toolbar">
+      <a class="button" th:href="@{/admin/file}">파일/경로 관리</a>
+      <a class="button" th:href="@{/admin/accessRule}">접근규칙 설정</a>
+      <a class="button" th:href="@{/admin/chatbot}">챗봇 설정</a>
+      <a class="button" th:href="@{/admin/logout}">로그아웃</a>
+      
+    </div>
+	<h2>사용자 생성</h2> 
+	  <p>
+  <a class="button" th:href="@{/admin/user/userWrite}">사용자 추가</a> | 
+  <a class="button" th:href="@{/admin/department/departmentList}">부서 관리</a>
+  <a class="button" th:href="@{/admin/grade/gradeList}">직급 관리</a>
+
+  </p>
+ 
+	<form action="/admin/user/userWrite" method="post">
+	사용자 고유번호: <input type="text" name="userNum" th:value="${command.userNum}" readonly>[[${command.userNum}]]   번호 자동생성 <br/>
+	사용자 이름: <input type="text" name="userName" placeholder="이름"> <br/>
+	사용자 ID: <input type="text" name="userId" placeholder="아이디"> <br/>
+	사용자 PW:  <input type="text" name="userPw" placeholder="비밀번호"> <br/>
+	소속 부서ID: <input type="text" name="departmentId" id="departmentId" placeholder="부서"> 
+	<button type="button" class="button" id="departmentSearch">부서 검색</button> <br/>
+	소속 부서 이름 : <input type="text" name="departmentName" id="departmentName" placeholder="부서 명"><br/>
+	직급 ID:  <input type="text" name="gradeId" placeholder="직급" id="gradeId"> 
+	<button type="button" class="button" id="gradeSearch">직급 검색</button><br/>
+	직급 이름 : <input type="text" name="gradeName" placeholder="직급 명" id="gradeName"><br/>
+	관리자 여부: <input type="checkbox" name="manager" value="y"> <br/>
+	<button type="submit" class="button">생성</button>
 	</form>
+
+	</main>
 </body>
 </html>

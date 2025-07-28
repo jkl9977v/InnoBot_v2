@@ -17,6 +17,7 @@ public class GradeUpdateService {
 		
 		dto.setGradeId(gradeCommand.getGradeId());
 		dto.setGradeName(gradeCommand.getGradeName());
+		dto.setGradeLevel(gradeCommand.getGradeLevel());
 		
 		gradeMapper.gradeUpdate(dto);
 	}
