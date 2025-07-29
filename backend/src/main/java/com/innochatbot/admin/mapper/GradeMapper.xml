@@ -13,17 +13,19 @@ values(#{allowgId}, #{allowgName}, #{gradeId})
 </insert>
 
 <select id="allowgCount" resultType="Integer">
-select count(allowg_id) from allow_grade
+select count(distinct allowg_id) from allow_grade
 </select>
 
 <select id="allowgSelectAll" parameterType="StartEndPageDTO" resultType="gradeDTO">
 select * from (
 select row_number() over (order by allowg_id) as rn
 , allowg_id, allowg_name
-, ag.grade_id, grade_name, grade_level
-from allow_grade ag
+<!-- , ag.grade_id, grade_name, grade_level -->
+from 
+(select distinct allowg_id, allowg_name from allow_grade) as distinct_allowg
+<!-- allow_grade ag
 left join grade g 
-on ag.grade_id = g.grade_id
+on ag.grade_id = g.grade_id -->
 <if test="searchWord!=null">
 where
 allowg_name like concat('%',#{searchWord},'%')
@@ -35,8 +37,8 @@ allowg_name like concat('%',#{searchWord},'%')
 select allowg_id, allowg_name
 , ag.grade_id, grade_name, grade_level
 from allow_grade ag 
-left join grade g on
-ag.grade_id = ag.grade_id 
+join grade g on
+ag.grade_id = g.grade_id 
 where allowg_id=#{allowgId}
 </select>
 
@@ -54,26 +56,33 @@ where allowg_id=#{allowgId}
 
 <!-- grade -->
 <insert id="gradeInsert" parameterType="gradeDTO">
-insert into grade(grade_id, grade_name)
-values(#{gradeId}, #{gradeName})
+insert into grade(grade_id, grade_name, grade_level)
+values(#{gradeId}, #{gradeName}, #{gradeLevel})
 </insert>
 
-<select id="gradeCount" resultType="Integer">
+<select id="gradeCount" resultType="Integer" parameterType="Integer">
 select count(grade_id) from grade
+<if test="gradeLevel != null">
+where grade_level >= #{gradeLevel}
+</if>
 </select>
 
-<select id="gradeSelectAll" resultType="gradeDTO" parameterType="StartEndPageDTO">
+<select id="gradeSelectAll" resultType="gradeDTO"  >
 select * from (
 select row_number() over (order by grade_id) as rn
 , grade_id, grade_name, grade_level
 from grade
-<if test="searchWord!=null">
+<if test="dto != null and dto.searchWord != null">
 where
-grade_name like concat('%',#{searchWord},'%')
+grade_name like concat('%',#{dto.searchWord},'%')
 </if>
-) as sub where rn 
-<if test="startRow!=null or endRow!=null">
-between #{startRow} and #{endRow}
+) as sub 
+<if test="dto != null and dto.startRow!=null and dto.endRow!=null">
+where rn 
+between #{dto.startRow} and #{dto.endRow}
+</if>
+<if test="gradeLevel != null and gradeLevel != ''">
+where grade_level >= #{gradeLevel}
 </if>
 </select>
 

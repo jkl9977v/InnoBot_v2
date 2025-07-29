@@ -2,16 +2,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+  <link rel="icon" type="image/svg+xml" href="/img/tiumBot1.png" />
+  <title>TiumBotAdmin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+	<link href="/css/file.css" rel="stylesheet">
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#gradeSearch").click(function(){
+		window.open("/admin/grade/gradeSearch", "직급 검색"
+				, "width=620, height=400, left=30, top=50");
+	});
+})
+</script>
 </head>
 <body>
+<main>
 	허용 직급 규칙 생성 <br/>
 	<form action="/admin/accessRule/allowgWrite" method="post">
 	allowg_id: <input type="text" name="allowgId" th:value="${command.allowgId}" readonly>[[${command.allowgId}]]   번호 자동생성 <br/>
 	allowgName: <input type="text" name="allowgName" placeholder="규칙 이름"> <br/>
-	gradeId:  <input type="text" name="gradeId" placeholder="허용 직급"> <br/>
-	gradeName: <input type="text" name="gradeName" placeholder="직급 이름"> <br/>
-	<button type="submit">생성</button>
+	gradeId:  <input type="text" name="gradeId" placeholder="허용 직급" id="gradeId"> 
+	<button type="button" class="button" id="gradeSearch">직급 검색</button><br/>
+	gradeName: <input type="text" name="gradeName" placeholder="직급 이름" id="gradeName"> <br/>
+	gradeLevel: <input type="number" name="gradeLevel" placeholder="직급 레벨" id="gradeLevel"><br/>
+	<button type="submit" class="button">생성</button>
 	</form>
+	</main>
 </body>
 </html>

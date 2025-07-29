@@ -17,6 +17,6 @@ public class AccessRuleDTO {
 	String allowgId;
     String accessType;
     
-    DepartmentDTO DeaprtmentDTO;
+    DepartmentDTO DepartmentDTO;
     GradeDTO GradeDTO;
 }

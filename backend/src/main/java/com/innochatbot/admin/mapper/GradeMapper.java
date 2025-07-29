@@ -3,6 +3,7 @@ package com.innochatbot.admin.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.innochatbot.admin.dto.GradeDTO;
 import com.innochatbot.admin.dto.StartEndPageDTO;
@@ -27,9 +28,10 @@ public interface GradeMapper { //allowg, grade의 Mapper
 
 	public void gradeInsert(GradeDTO dto);
 
-	public Integer gradeCount();
+	public Integer gradeCount(Integer gradeLevel);
 
-	public List<GradeDTO> gradeSelectAll(StartEndPageDTO dto);
+	public List<GradeDTO> gradeSelectAll(@Param("dto") StartEndPageDTO dto
+			, @Param("gradeLevel") Integer gradeLevel);
 
 	public GradeDTO gradeDetail(String gradeId);
 

@@ -92,6 +92,18 @@ public class FilePathController { //파일 경로 관리
         filePathUpdateService.pathUpdate(filePathCommand);
         return "redirect:pathList";
     }
+    @GetMapping("addAccessRule")
+    public String addAccessRule(@RequestParam String pathId, Model model) {
+        filePathDetailService.pathDetail(pathId, model);
+        return "thymeleaf/path/addAccessRule";
+    }
+
+    @PostMapping("addAccessRule")
+    public String addAccessRule1(FilePathCommand filePathCommand) {
+        filePathUpdateService.pathUpdate(filePathCommand);
+        return "redirect:pathList";
+    }
+    
     
     @Autowired
     FilePathMapper filePathMapper;

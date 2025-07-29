@@ -42,7 +42,7 @@
           th:selected="${kind == dto.departmentId}">
   		</option>
   	</select>
-  	직급 : <select class="select" id="category" name="kind">
+  	직급 : <select class="select" id="category" name="kind2">
   		<option th:selected="${kind2 ==null or kind2==''}">전체</option>
   		<option th:each="dto : ${grade}"
           th:value="${dto.gradeId}"
@@ -91,11 +91,13 @@
       <tr>
       	<td colspan="6" align="center">
       	<span th:if="${page<=1}">[이전]</span>
-      	<span th:if="${page>1}" th:href="@{/admin/user/userList(page=${page-1},searchWord=${searchWord})}">[이전]</span>
+      	<span th:if="${page>1}" 
+      	th:href="@{/admin/user/userList(page=${page-1},searchWord=${searchWord},limitRow=${limitRow},kind=${kind}, kind2=${kind2})}">[이전]</span>
       	<th:block th:each="i:${#numbers.sequence(startPageNum,endPageNum)}">
-      		[<a th:href="@{/admin/user/userList(page=${page},searchWord=${searchWord})}">[[${i}]]</a>]
+      		[<a th:href="@{/admin/user/userList(page=${i},searchWord=${searchWord},limitRow=${limitRow},kind=${kind}, kind2=${kind2})}">[[${i}]]</a>]
       	</th:block>
-      	<span th:if="${page<maxPage}" th:href="@{/admin/user/userList(page=${page+1},searchWord=${searchWord})}">[다음]</span>
+      	<span th:if="${page<maxPage}" 
+      	th:href="@{/admin/user/userList(page=${page+1},searchWord=${searchWord},limitRow=${limitRow},kind=${kind}, kind2=${kind2})}">[다음]</span>
       	<span th:if="${page>=maxPage}">[다음]</span>
       	</td>
       </tr>

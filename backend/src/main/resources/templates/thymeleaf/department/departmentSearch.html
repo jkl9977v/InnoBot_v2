@@ -55,7 +55,7 @@
       	<span th:if="${page<=1}">[이전]</span>
       	<span th:if="${page>1}" th:href="@{/admin/department/departmentSearch(page=${page-1},searchWord=${searchWord})}">[이전]</span>
       	<th:block th:each="i:${#numbers.sequence(startPageNum,endPageNum)}">
-      		[<a th:href="@{/admin/?(page=${page},searchWord=${searchWord})}">[[${i}]]</a>]
+      		[<a th:href="@{/admin/department/departmentSearch?(page=${i},searchWord=${searchWord})}">[[${i}]]</a>]
       	</th:block>
       	<span th:if="${page<maxPage}" th:href="@{/admin/department/departmentSearch(page=${page+1},searchWord=${searchWord})}">[다음]</span>
       	<span th:if="${page>=maxPage}">[다음]</span>

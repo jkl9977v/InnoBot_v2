@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	접근권한 추가 <br/>
+	<form action="/admin/file/pathWrite" method="post">
+	path_id: <input type="text" name="pathId" th:value="${dto.pathId}" readonly hidden> <br/>
+	path: <input type="text" name="path" th:value="${dto.path}" readonly><br/>
+	access_id:  <input type="text" name="accessId" th:value="${dto.accessId}"><br/>
+	access_Name:  <input type="text" name="accessId" th:value="${dto.accessId}"> <br/>
+	depth: <input type="number" name="depth" th:value="${dto.depth}"><br/>
+	parent_id:  <input type="text" name="pathId" th:value="${dto.pathId}" ><br/>
+	<button type="submit">추가</button>
+	</form>
+</body>
+</html>

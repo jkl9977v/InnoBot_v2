@@ -82,7 +82,7 @@
       		th:href="@{/admin/accessRule/ruleList(page=${page-1},searchWord=${searchWord})}">
       		[이전]</span>
       		<th:block th:each="i:${#numbers.sequence(startPageNum, endPageNum)}">
-      			[<a th:href="@{/admin/accessRule/ruleList(page=${page},searchWord=${searchWord})}">[[${i}]]</a>]
+      			[<a th:href="@{/admin/accessRule/ruleList(page=${i},searchWord=${searchWord})}">[[${i}]]</a>]
       		</th:block>
       		<span th:if="${page<maxPage}" 
       		th:href="@{/admin/accessRule/ruleList(page=${page+1},searchWord=${searchWord})}">[다음]</span>

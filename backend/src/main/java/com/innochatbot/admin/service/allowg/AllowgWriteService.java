@@ -1,5 +1,7 @@
 package com.innochatbot.admin.service.allowg;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +15,21 @@ public class AllowgWriteService {
 	GradeMapper gradeMapper;
 
 	public void allowgWrite(GradeCommand gradeCommand) {
-		GradeDTO dto = new GradeDTO();
+		//사용자가 선택한 직급 레벨 이상 리스트 가져오기
+		List<GradeDTO> list = gradeMapper.gradeSelectAll(null, gradeCommand.getGradeLevel());
+		System.out.println(list);
 		
-		dto.setAllowgId(gradeCommand.getAllowgId());
-		dto.setAllowgName(gradeCommand.getAllowgName());
-		dto.setGradeId(gradeCommand.getGradeId());
+		//리스트에 담긴 gradeId 개수만큼 반복하여 insert
+		for(GradeDTO gDTO : list) {
+			GradeDTO dto = new GradeDTO();
+			dto.setAllowgId(gradeCommand.getAllowgId());
+			dto.setAllowgName(gradeCommand.getAllowgName());
+			dto.setGradeId(gDTO.getGradeId());
+			
+			gradeMapper.allowgInsert(dto);
+		}
+		
 		//dto.setGradeName(gradeCommand.getGradeName());
-		
-		gradeMapper.allowgInsert(dto);
 		
 	}
 

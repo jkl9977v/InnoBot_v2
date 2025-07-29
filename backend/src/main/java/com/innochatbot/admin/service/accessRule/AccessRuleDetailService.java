@@ -14,7 +14,9 @@ public class AccessRuleDetailService {
     AccessRuleMapper accessRuleMapper;
 
     public void ruleDetail(String accessId, Model model) {
-        AccessRuleDTO dto = accessRuleMapper.accessRuleSelectId(accessId);
+        AccessRuleDTO dto = accessRuleMapper.accessRuleDetail(accessId);
         model.addAttribute("dto", dto);
+        
+        System.out.println(dto);
     }
 }

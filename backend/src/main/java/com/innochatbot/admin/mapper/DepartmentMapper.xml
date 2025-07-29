@@ -13,7 +13,7 @@ values(#{allowdId}, #{allowdName}, #{departmentId})
 </insert>
 
 <select id="allowdCount" resultType="Integer">
-select count(allowd_id) from allow_departments
+select count(distinct allowd_id) from allow_departments
 </select>
 
 <select id="allowdSelectAll" parameterType="StartEndPageDTO" resultType="departmentDTO">
@@ -21,7 +21,9 @@ select * from (
 select row_number() over (order by allowd_id) as rn
  , allowd_id, allowd_name
  , ad.department_id, department_name 
-from allow_departments ad 
+from 
+<!-- (select distinct allowg_id, allowg_name from allow_grade) as distinct_allowg -->
+allow_departments ad 
 left join department d 
 on ad.department_id = d.department_id
 <if test="searchWord!=null">
@@ -41,14 +43,14 @@ where allowd_id=#{allowdId}
 </select>
 
 <update id="allowdUpdate" parameterType="departmentDTO">
-update allowd_departments
-set allowd_name=#{allowd_name}
+update allow_departments
+set allowd_name=#{allowdName}
 , department_id=#{departmentId}
 where allowd_id=#{allowdId}
 </update>
 
 <delete id="allowdDelete" parameterType="String">
-delete from allowd_departments
+delete from allow_departments
 where allowd_id=#{allowdId}
 </delete>
 

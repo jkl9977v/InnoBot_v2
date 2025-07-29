@@ -42,7 +42,7 @@ public class UserListService {
 		List<DepartmentDTO> department = departmentMapper.departmentSelectAll(null);
 		model.addAttribute("department", department);
 		
-		List<GradeDTO> grade = gradeMapper.gradeSelectAll(null);
+		List<GradeDTO> grade = gradeMapper.gradeSelectAll(null,null);
 		model.addAttribute("grade", grade);
 		
 	}

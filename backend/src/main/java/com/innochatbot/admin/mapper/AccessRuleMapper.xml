@@ -9,6 +9,8 @@
 	<id property="accessId" column="access_id" javaType="java.lang.String"/>
 	<result property="accessName" column="access_name" javaType="java.lang.String"/>
 	<result property="accessType" column="access_type" javaType="java.lang.String"/>
+	<result property="allowdId" column="allowd_id" javaType="java.lang.String"/>
+	<result property="allowgId" column="allowg_id" javaType="java.lang.String"/>
 	
 	<association property="departmentDTO" javaType="com.innochatbot.admin.dto.DepartmentDTO" autoMapping="true">
 		<id property="allowdId" column="allowd_id" javaType="java.lang.String"/>
@@ -49,8 +51,17 @@ select row_number() over (order by access_id) as rn
 select count(access_id) from access_rule
 </select>
 
-<select id="accessRuleSelectId" resultType="accessRuleDTO" parameterType="string">
-select * from access_rule where access_id=#{accessId}
+<select id="accessRuleDetail" resultMap="accessRuleMap" parameterType="string">
+select 
+access_id, access_name , access_type
+, ar.allowd_id, allowd_name
+, ar.allowg_id, allowg_name
+from access_rule ar
+left join allow_departments ad
+on ar.allowd_id = ad.allowd_id
+left join allow_grade ag
+on ar.allowg_id = ag.allowg_id
+where access_id = #{accessId}
 </select>
 
 <insert id="accessRuleInsert" parameterType="accessRuleDTO">

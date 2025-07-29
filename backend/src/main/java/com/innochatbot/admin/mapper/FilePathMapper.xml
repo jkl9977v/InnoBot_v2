@@ -36,7 +36,8 @@ select row_number() over (order by file_id) as rn
   , path, access_Id
   , depth, fp.parent_Id as parent_id
 from file_path fp
-join file f on fp.path_id=f.path_id
+left join file f 
+on fp.path_id=f.path_id
 where (f.path_id=#{idColumn} or parent_id=#{idColumn})
 
 <if test="searchWord != null">

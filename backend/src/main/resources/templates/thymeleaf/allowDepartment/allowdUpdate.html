@@ -2,16 +2,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+  <link rel="icon" type="image/svg+xml" href="/img/tiumBot1.png" />
+  <title>TiumBotAdmin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+	<link href="/css/file.css" rel="stylesheet">
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#departmentSearch").click(function(){
+		window.open("/admin/department/departmentSearch", "부서 검색"
+				, "width=620, height=400, left=50, top=30")
+	});
+})	
+</script>
 </head>
 <body>
+<main>
 	허용 부서 규칙 수정<br/>
 	<form action="/admin/accessRule/allowdUpdate" method="post">
 	allowd_id: <input type="text" name="allowdId" th:value="${dto.allowdId}" readonly>[[${dto.allowdId}]]   번호 자동생성 <br/>
 	allowdName: <input type="text" name="allowdName" placeholder="허용 부서 규칙 이름" th:value="${dto.allowdName}"> <br/>
-	departmentId:  <input type="text" name="departmentId" placeholder="허용부서" th:value="${dto.departmentId}"> <br/>
-	departmentName: <input type="text" name="departmentName" placeholder="허용 부서 이름" th:value="${dto.departmentName}" > <br/>
-	<button type="submit">수정</button>
+	departmentId:  <input type="text" name="departmentId" placeholder="허용부서" th:value="${dto.departmentId}" id="departmentId"> 
+	<button type="button" class="button" id="departmentSearch">부서 검색</button><br/>
+	departmentName: <input type="text" name="departmentName" placeholder="허용 부서 이름" th:value="${dto.departmentName}" id="departmentName"> <br/>
+	<button type="submit" class="button">수정</button>
 	</form>
+	</main>
 </body>
 </html>

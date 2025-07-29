@@ -2,17 +2,33 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+  <link rel="icon" type="image/svg+xml" href="/img/tiumBot1.png" />
+  <title>TiumBotAdmin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+	<link href="/css/file.css" rel="stylesheet">
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#gradeSearch").click(function(){
+		window.open("/admin/grade/gradeSearch", "직급 검색"
+				, "width=620, height=400, left=30, top=50");
+	});
+})
+</script>
 </head>
 <body>
+<main>
 	허용 직급 규칙 수정<br/>
 	<form action="/admin/accessRule/allowgUpdate" method="post">
 	allowg_id: <input type="text" name="allowgId" th:value="${dto.allowgId}" readonly>[[${dto.allowgId}]]   번호 자동생성 <br/>
 	allowgName: <input type="text" name="allowgName" placeholder="규칙 이름" th:value="${dto.allowgName}"> <br/>
-	gradeId:  <input type="text" name="gradeId" placeholder="허용 등급" th:value="${dto.gradeId}"> <br/>
-	gradeName: <input type="text" name="gradeName" placeholder="등급 이름" th:value="${dto.gradeName}" > <br/>
+	gradeId:  <input type="text" name="gradeId" placeholder="직급" th:value="${dto.gradeId}" id="gradeId"> 
+	<button type="button" class="button" id="gradeSearch">직급 검색</button><br/>
+	gradeName: <input type="text" name="gradeName" placeholder="직급 이름" th:value="${dto.gradeName}" id="gradeName"> <br/>
+	gradeLevel: <input type="number" name="gradeLevel" placeholder="직급 레벨" th:value="${dto.gradeLevel}" id="gradeLevel"><br/>
 
-	<button type="submit">수정</button>
+	<button type="submit" class="button">수정</button>
 	</form>
+	</main>
 </body>
 </html>

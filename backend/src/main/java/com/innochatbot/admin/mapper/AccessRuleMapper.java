@@ -12,7 +12,7 @@ public interface AccessRuleMapper {
 
     public List<AccessRuleDTO> accessRuleSelectAll(StartEndPageDTO dto);
 
-    public AccessRuleDTO accessRuleSelectId(String accessId);
+    public AccessRuleDTO accessRuleDetail(String accessId);
 
     public void accessRuleInsert(AccessRuleDTO dto);
 

@@ -234,7 +234,7 @@ public class AccessRuleController { //파일 경로 관리
     @Autowired
     GradeMapper gradeMapper;
     
-    @GetMapping("allowgDelte")
+    @GetMapping("allowgDelete")
     public String allowgDelete(@RequestParam String allowgId) {
     	gradeMapper.allowgDelete(allowgId);
     	return "redirect:/admin/accessRule/allowgList";
