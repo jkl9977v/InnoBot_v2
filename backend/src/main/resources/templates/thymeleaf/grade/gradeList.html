@@ -70,11 +70,11 @@
       	<td colspan="6" align="center">
       	<!-- <span th:href="@{/admin/grade/gradeList(page=1,searchWord=${searchWord})}">[<<]</span> -->
       	<span th:if="${page<=1}">[이전]</span>
-      	<span th:if="${page>1}" th:href="@{/admin/grade/gradeList(page=${page-1},searchWord=${searchWord})}">[이전]</span>
+      	<span th:if="${page>1}" th:href="@{/admin/grade/gradeList(page=${page-1},searchWord=${searchWord},limitRow=${limitRow})}">[이전]</span>
       	<th:block th:each="i:${#numbers.sequence(startPageNum, endPageNum)}">
-      		[<a th:href="@{/admin/grade/gradeList(page=${i},searchWord=${searchWord})}">[[${i}]]</a>]
+      		[<a th:href="@{/admin/grade/gradeList(page=${i},searchWord=${searchWord},limitRow=${limitRow})}">[[${i}]]</a>]
       	</th:block>
-      	<span th:if="${page<maxPage}"th:href="@{/admin/grade/gradeList(page=${page+1},searchWord=${searchWord})}">[다음]</span>
+      	<span th:if="${page<maxPage}"th:href="@{/admin/grade/gradeList(page=${page+1},searchWord=${searchWord},limitRow=${limitRow})}">[다음]</span>
       	<span th:if="${page>=maxPage}" >[다음]</span>
       	</td>
       </tr>

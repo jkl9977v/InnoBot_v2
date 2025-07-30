@@ -20,12 +20,8 @@ select count(distinct allowg_id) from allow_grade
 select * from (
 select row_number() over (order by allowg_id) as rn
 , allowg_id, allowg_name
-<!-- , ag.grade_id, grade_name, grade_level -->
 from 
 (select distinct allowg_id, allowg_name from allow_grade) as distinct_allowg
-<!-- allow_grade ag
-left join grade g 
-on ag.grade_id = g.grade_id -->
 <if test="searchWord!=null">
 where
 allowg_name like concat('%',#{searchWord},'%')

@@ -18,7 +18,7 @@ function allowdSelect(allowdId, allowdName){
 <body>
 <main>
   <h2 >허용 부서 규칙 검색</h2>
-  <form action="/admin/accessRule/allowdList" method="get">
+  <form action="/admin/accessRule/allowdSearch" method="get">
   	검색어 : <input type="text" name="searchWord" th:value="${searchWord}">
   	행: <select id="category" name="limitRow" >
       	<option value="10" th:selected="${limitRow==10 or limitRow == null or limitRow==''}">10개씩</option>
@@ -55,11 +55,11 @@ function allowdSelect(allowdId, allowdName){
       <tr>
       	<td colspan="6" align="center">
       	<span th:if="${page<=1}">[이전]</span>
-      	<span th:if="${page>1}" th:href="@{/admin/accessRule/allowdList(page=${page-1},searchWord=${searchWord})}">[이전]</span>
+      	<span th:if="${page>1}" th:href="@{/admin/accessRule/allowdSearch(page=${page-1},searchWord=${searchWord},limitRow=${limitRow})}">[이전]</span>
       	<th:block th:each="i:${#numbers.sequence(startPageNum, endPageNum)}">
-      		[<a th:href="@{/admin/accessRule/allowdList(page=${i},searchWord=${searchWord})}">[[${i}]]</a>]
+      		[<a th:href="@{/admin/accessRule/allowdSearch(page=${i},searchWord=${searchWord},limitRow=${limitRow})}">[[${i}]]</a>]
       	</th:block>
-      	<span th:if="${page<maxPage}" th:href="@{/admin/accessRule/allowdList(page=${page+1},searchWord=${searchWord})}">[다음]</span>
+      	<span th:if="${page<maxPage}" th:href="@{/admin/accessRule/allowdSearch(page=${page+1},searchWord=${searchWord},limitRow=${limitRow})}">[다음]</span>
       	<span th:if="${page>=maxPage}">[다음]</span>
       	</td>
       </tr>

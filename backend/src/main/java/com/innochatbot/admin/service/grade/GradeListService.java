@@ -20,7 +20,7 @@ public class GradeListService {
 	
 	public void gradeList(int page, int limitRow, String searchWord, String kind, Model model) {
 		//1. 
-		StartEndPageDTO dto = listPageService.StartEndRow(page, limitRow, null, searchWord, kind);
+		StartEndPageDTO dto = listPageService.StartEndRow(page, limitRow, null, searchWord, kind , null);
 		
 		//2.
 		Integer count = gradeMapper.gradeCount(null);

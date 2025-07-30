@@ -22,7 +22,7 @@ public class FilePathListService {
 
 	public void filePathList(int page, int limitRow, String pathId, String searchWord, Model model, String kind) {
 		
-		StartEndPageDTO dto=listPageService.StartEndRow(page,limitRow, pathId, searchWord, kind ); //kind=null;
+		StartEndPageDTO dto=listPageService.StartEndRow(page,limitRow, pathId, searchWord, kind, null ); //kind=null;
 		
 		List<FilePathDTO> list = filePathMapper.filePathSelectAll(dto);
 		Integer count = filePathMapper.filePathCount(pathId);

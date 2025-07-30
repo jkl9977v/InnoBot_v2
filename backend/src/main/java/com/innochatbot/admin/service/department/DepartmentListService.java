@@ -21,11 +21,13 @@ public class DepartmentListService {
 
 	public void departmentList(int page, int limitPage, String searchWord, String kind, Model model) {
 		//1. 
-		StartEndPageDTO dto = listPageService.StartEndRow(page, limitPage, null, searchWord, kind);
+		StartEndPageDTO dto = listPageService.StartEndRow(page, limitPage, null, searchWord, kind, null);
 		
 		Integer count = departmentMapper.departmentCount();
 		
 		List<DepartmentDTO> list = departmentMapper.departmentSelectAll(dto);
+		System.out.println(dto);
+		System.out.println(list);
 		
 		listPageService.ShowList(page, limitPage, count, searchWord, list, model, null, kind);
 		

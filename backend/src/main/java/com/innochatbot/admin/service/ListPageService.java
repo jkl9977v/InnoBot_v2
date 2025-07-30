@@ -10,16 +10,21 @@ import com.innochatbot.admin.dto.StartEndPageDTO;
 @Service
 public class ListPageService {
 
-	public StartEndPageDTO StartEndRow(int page, int limitRow, String pathId, String searchWord, String kind) {
-		int startRow=(page-1)*limitRow+1;
-		int endRow=startRow+limitRow-1;
-		
+	public StartEndPageDTO StartEndRow(int page, int limitRow, String pathId, String searchWord, String kind, String kind2) {
 		StartEndPageDTO dto = new StartEndPageDTO();
-		dto.setStartRow(startRow);
-		dto.setEndRow(endRow);
+		if (limitRow != 0) {
+			int startRow=(page-1)*limitRow+1;
+			int endRow=startRow+limitRow-1;
+			dto.setStartRow(startRow);
+			dto.setEndRow(endRow);
+		}else {
+			dto.setStartRow(0);
+			dto.setEndRow(0);
+		}
 		dto.setIdColumn(pathId);
 		dto.setSearchWord(searchWord);
 		dto.setKind(kind);
+		dto.setKind2(kind2);
 		
 		return dto;
 		
@@ -27,13 +32,19 @@ public class ListPageService {
 
 	public void ShowList(int page, int limitRow, Integer count, String searchWord, List list,
 			Model model, String pathId, String kind) {
-		Integer limitPage=10;
-		Integer startPageNum=(int)((double)page/limitPage-0.05)*limitPage+1;
-		Integer endPageNum=startPageNum+limitPage-1;
-		Integer maxPageNum=(int)Math.ceil((double)count/limitRow);
-		System.out.println("최대 페이지: "+maxPageNum);
+		Integer startPageNum=0;
+		Integer endPageNum=0;
+		Integer maxPageNum=0;
+		if (page != 0 && limitRow !=0) {
+			Integer limitPage=10;
+			startPageNum=(int)((double)page/limitPage-0.05)*limitPage+1;
+			endPageNum=startPageNum+limitPage-1;
+			maxPageNum=(int)Math.ceil((double)count/limitRow);
+			System.out.println("최대 페이지: "+maxPageNum);
+			
+			if(endPageNum>maxPageNum) endPageNum=maxPageNum;
+		}
 		
-		if(endPageNum>maxPageNum) endPageNum=maxPageNum;
 		if(searchWord==null) searchWord="";
 		//if(kind==null) kind="";
 		model.addAttribute("page", page);

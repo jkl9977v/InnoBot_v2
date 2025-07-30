@@ -79,13 +79,13 @@
       	<td colspan="5" align="center">
       		<span th:if="${page<=1}">[이전]</span>
       		<span th:if="${page>1}" 
-      		th:href="@{/admin/accessRule/ruleList(page=${page-1},searchWord=${searchWord})}">
+      		th:href="@{/admin/accessRule/ruleList(page=${page-1},searchWord=${searchWord},limitRow=${limitRow},kind=${kind})}">
       		[이전]</span>
       		<th:block th:each="i:${#numbers.sequence(startPageNum, endPageNum)}">
-      			[<a th:href="@{/admin/accessRule/ruleList(page=${i},searchWord=${searchWord})}">[[${i}]]</a>]
+      			[<a th:href="@{/admin/accessRule/ruleList(page=${i},searchWord=${searchWord},limitRow=${limitRow},kind=${kind})}">[[${i}]]</a>]
       		</th:block>
       		<span th:if="${page<maxPage}" 
-      		th:href="@{/admin/accessRule/ruleList(page=${page+1},searchWord=${searchWord})}">[다음]</span>
+      		th:href="@{/admin/accessRule/ruleList(page=${page+1},searchWord=${searchWord},limitRow=${limitRow},kind=${kind})}">[다음]</span>
       		<span th:if="${page>=maxPage}">[다음]</span>
       	</td>
       </tr>

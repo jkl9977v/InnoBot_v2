@@ -64,6 +64,15 @@ public class DepartmentController {
 		departmentListService.departmentList(page, limitPage, searchWord, kind, model);
 		return "thymeleaf/department/departmentSearch";
 	}
+	@GetMapping("departmentMultiSelect")
+	public String departmemtMultiSelect(@RequestParam(defaultValue="0") int page
+			, @RequestParam(defaultValue = "0") int limitPage
+			, @RequestParam(required = false) String searchWord
+			, @RequestParam(required = false) String kind
+			, Model model) {
+		departmentListService.departmentList(page, limitPage, searchWord, kind, model);
+		return "thymeleaf/department/departmentMultiSelect";
+	}
 	@GetMapping("departmentDetail")
 	public String departmentDetail(@RequestParam String departmentId, Model model) {
 		departmentDetailService.departmentDetail(departmentId, model);

@@ -18,7 +18,7 @@ public interface DepartmentMapper { //allowd와 department
 
 	public List<DepartmentDTO> allowdSelectAll(StartEndPageDTO dto);
 
-	public DepartmentDTO allowdDetail(String allowdId);
+	public List<DepartmentDTO> allowdDetail(String allowdId);
 
 	public void allowdUpdate(DepartmentDTO dto);
 

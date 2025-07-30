@@ -33,13 +33,25 @@ select row_number() over (order by user_num) as rn
 , u.grade_id, grade_name as grade_name
  from user u
  left join department d 
- on u.department_id=d.department_id
+ on u.department_id = d.department_id
  left join grade g
- on u.grade_id=g.grade_id
-<if test="searchWord!=null">
+ on u.grade_id = g.grade_id
+<if test="(searchWord != null and searchWord != '') or (kind != null and kind != '' ) or (kind2 != null and kind2 != '' ) ">
 where 
-user_name like concat('%',#{searchWord},'%')
-or user_id like concat('%',#{searchWord},'%')
+	<if test="searchWord != null and searchWord != ''">
+	(user_name like concat('%',#{searchWord},'%')
+	or user_id like concat('%',#{searchWord},'%')
+	)
+	</if>
+	<if test="(searchWord != null and searchWord != '') and 
+	((kind != null and kind != '') or (kind2 != null and kind2 != '' ))">and</if>
+	<if test="kind != null and kind != ''">
+	u.department_id = #{kind}
+	</if>
+	<if test="kind != null and  kind != ''and kind2 != null and kind2 != ''">and</if>
+	<if test="kind2 != null and kind2 != ''">
+	u.grade_id = #{kind2}
+	</if>
 </if>
 ) as sub where rn between #{startRow} and #{endRow}
 </select>

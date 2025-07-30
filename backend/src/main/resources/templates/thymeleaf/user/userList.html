@@ -35,7 +35,7 @@
   </p>
     <form action="/admin/user/userList" method="get">
   	부서 : <select class="select" id="category" name="kind">
-  		<option th:selected="${kind ==null or kind==''}">전체</option>
+  		<option value="" th:selected="${kind ==null or kind==''}">전체</option>
   		<option th:each="dto : ${department}"
           th:value="${dto.departmentId}"
           th:text="${dto.departmentName}"
@@ -43,7 +43,7 @@
   		</option>
   	</select>
   	직급 : <select class="select" id="category" name="kind2">
-  		<option th:selected="${kind2 ==null or kind2==''}">전체</option>
+  		<option value="" th:selected="${kind2 == null or kind2 == ''}">전체</option>
   		<option th:each="dto : ${grade}"
           th:value="${dto.gradeId}"
           th:text="${dto.gradeName}"
@@ -52,7 +52,7 @@
   	</select>
   	검색어 : <input type="text" name="searchWord" th:value="${searchWord}">
   	행: <select id="category" name="limitRow" >
-      	<option value="10" th:selected="${limitRow==10 or limitRow == null or limitRow==''}">10개씩</option>
+      	<option value="10" th:selected="${limitRow==10 or limitRow == null or limitRow == ''}">10개씩</option>
       	<option value="15" th:selected="${limitRow==15}">15개씩</option>
       	<option value="20" th:selected="${limitRow==20}">20개씩</option>
       	<option value="25" th:selected="${limitRow==25}">25개씩</option>

@@ -51,8 +51,9 @@ public class UserController {
 			, @RequestParam (defaultValue = "10") int limitRow
 			, @RequestParam (required = false) String searchWord
 			, @RequestParam (required = false) String kind
+			, @RequestParam (required = false) String kind2
 			, Model model) {
-		userListService.userList(page, limitRow, searchWord, kind, model);
+		userListService.userList(page, limitRow, searchWord, kind, model, kind2);
 		return "thymeleaf/user/userList";
 	}
 	@GetMapping("userDetail")

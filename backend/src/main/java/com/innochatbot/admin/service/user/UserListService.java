@@ -26,15 +26,17 @@ public class UserListService {
 	@Autowired
 	GradeMapper gradeMapper;
 
-	public void userList(int page, int limitRow, String searchWord, String kind, Model model) {
+	public void userList(int page, int limitRow, String searchWord, String kind, Model model, String kind2) {
 		//1.
-		StartEndPageDTO dto = listPageService.StartEndRow(page, limitRow, null, searchWord, kind);
+		StartEndPageDTO dto = listPageService.StartEndRow(page, limitRow, null, searchWord, kind, kind2);
 		
 		//2.
 		Integer count = userMapper.userCount();
 		
 		//3.
 		List<UserDTO> list = userMapper.userSelectAll(dto);
+		System.out.println(dto);
+		System.out.println(list);
 		
 		//4. 
 		listPageService.ShowList(page, limitRow, count, searchWord, list, model, null, kind);
@@ -44,6 +46,7 @@ public class UserListService {
 		
 		List<GradeDTO> grade = gradeMapper.gradeSelectAll(null,null);
 		model.addAttribute("grade", grade);
+		model.addAttribute("kind2", kind2);
 		
 	}
 

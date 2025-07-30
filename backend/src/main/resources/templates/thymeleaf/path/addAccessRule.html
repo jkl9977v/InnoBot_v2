@@ -2,18 +2,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+  <link rel="icon" type="image/svg+xml" href="/img/tiumBot1.png" />
+  <title>TiumBotAdmin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+	<link href="/css/file.css" rel="stylesheet">
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#accessRuleSearch").click(function(){
+		
+	});
+});
+</script>
 </head>
 <body>
+<main>
 	접근권한 추가 <br/>
 	<form action="/admin/file/pathWrite" method="post">
 	path_id: <input type="text" name="pathId" th:value="${dto.pathId}" readonly hidden> <br/>
 	path: <input type="text" name="path" th:value="${dto.path}" readonly><br/>
-	access_id:  <input type="text" name="accessId" th:value="${dto.accessId}"><br/>
-	access_Name:  <input type="text" name="accessId" th:value="${dto.accessId}"> <br/>
+	access_id:  <input type="text" name="accessId" th:value="${dto.accessId}" id="accessId">
+	<button type="button" class="button" id="accessRuleSearch">접근규칙 검색</button><br/>
+	access_Name:  <input type="text" name="accessName"  id="accessName"> <br/> <!-- th:value="${dto.accessName}" -->
 	depth: <input type="number" name="depth" th:value="${dto.depth}"><br/>
-	parent_id:  <input type="text" name="pathId" th:value="${dto.pathId}" ><br/>
+	parent_id:  <input type="text" name="pathId" th:value="${dto.pathId}"  ><br/>
 	<button type="submit">추가</button>
 	</form>
+	</main>
 </body>
 </html>

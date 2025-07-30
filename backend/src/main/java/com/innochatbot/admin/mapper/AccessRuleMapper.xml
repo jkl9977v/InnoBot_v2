@@ -27,14 +27,16 @@
 select * from (
 select row_number() over (order by access_id) as rn
 , access_id, access_name
-, ar.allowd_id, ar.allowg_id
+<!-- , ar.allowd_id, ar.allowg_id -->
 , access_type
- from access_rule ar
+ from 
+ (select distinct access_id, access_name, access_type from access_rule ) as distinct_access
+ <!-- access_rule ar
  left join allow_departments ad
  on ar.allowd_id = ad.allowd_id
  left join allow_grade ag
- on ar.allowg_id = ag.allowg_id 
- <if test="searchWord !=null or kind!=null">
+ on ar.allowg_id = ag.allowg_id  -->
+ <if test="searchWord !=null or (kind!=null and kind!='')">
  where
 	 <if test="searchWord != null">
 	 	access_name like concat('%',#{searchWord},'%')

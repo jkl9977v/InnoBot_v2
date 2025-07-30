@@ -16,8 +16,8 @@ public class AllowdDetailService {
 
 	public void allowdDetail(String allowdId, Model model) {
 		//List<DepartmentDTO> list = departmentMapper.allowdDetail(allowdId);
-		DepartmentDTO dto = departmentMapper.allowdDetail(allowdId);
-		model.addAttribute("dto", dto);
+		List<DepartmentDTO> list = departmentMapper.allowdDetail(allowdId);
+		model.addAttribute("list", list);
 		
 	}
 }

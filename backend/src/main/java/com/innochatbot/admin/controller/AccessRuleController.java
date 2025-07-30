@@ -1,5 +1,7 @@
 package com.innochatbot.admin.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -126,8 +128,9 @@ public class AccessRuleController { //파일 경로 관리
     	return "thymeleaf/allowDepartment/allowdWrite";
     }
     @PostMapping("allowdWrite")
-    public String allowdWrite1(DepartmentCommand departmentCommand) {
-    	allowdWriteService.allowdWrite(departmentCommand);
+    public String allowdWrite1(DepartmentCommand departmentCommand
+    		, @RequestParam("departmentId") List<String> departmentId) {
+    	allowdWriteService.allowdWrite(departmentCommand, departmentId);
     	return "redirect:/admin/accessRule/allowdList";
     }
     @GetMapping("allowdList")
@@ -159,8 +162,9 @@ public class AccessRuleController { //파일 경로 관리
     	return "thymeleaf/allowDepartment/allowdUpdate";
     }
     @PostMapping("allowdUpdate")
-    public String allowdUpdate1(DepartmentCommand departmentCommand) {
-    	allowdUpdateService.allowdUpdate(departmentCommand);
+    public String allowdUpdate1(DepartmentCommand departmentCommand
+    		, @RequestParam("departmentId") List<String> departmentId) {
+    	allowdUpdateService.allowdUpdate(departmentCommand, departmentId);
     	return "redirect:/admin/accessRule/allowdList";
     }
     @Autowired
