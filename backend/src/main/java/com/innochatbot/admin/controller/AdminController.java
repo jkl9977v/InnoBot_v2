@@ -80,7 +80,14 @@ public class AdminController {
     		) {
         return "redirect:/admin/accessRule/accessList";
     }
-    
+    @GetMapping("getHeader")
+    public String getHeader() {
+    	return "thymeleaf/getAll/getHeader";
+    }
+    @GetMapping("getMain2")
+    public String getMain2() {
+    	return "thymeleaf/getAll/getMain2";
+    }
     @GetMapping("chatbot")
     public String chatbot() {
     	return "thymeleaf/main";
