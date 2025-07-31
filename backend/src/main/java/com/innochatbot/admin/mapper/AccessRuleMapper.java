@@ -10,7 +10,7 @@ import com.innochatbot.admin.dto.StartEndPageDTO;
 @Mapper
 public interface AccessRuleMapper {
 
-    public List<AccessRuleDTO> accessRuleSelectAll(StartEndPageDTO dto);
+    public List<AccessRuleDTO> accessRuleList(StartEndPageDTO dto);
 
     public AccessRuleDTO accessRuleDetail(String accessId);
 

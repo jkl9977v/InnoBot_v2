@@ -8,23 +8,23 @@ import org.springframework.stereotype.Service;
 
 import com.innochatbot.admin.command.DepartmentCommand;
 import com.innochatbot.admin.dto.DepartmentDTO;
-import com.innochatbot.admin.mapper.DepartmentMapper;
+import com.innochatbot.admin.mapper.AllowdMapper;
 
 @Service
 //@Transactional
 public class AllowdWriteService {
 	@Autowired
-	DepartmentMapper departmentMapper;
+	AllowdMapper allowdMapper;
 
 	public void allowdWrite(DepartmentCommand departmentCommand
-			, List<String> departmentId) {
-		for(String departmentId1 : departmentId) {
+			, List<String> departmentIds) {
+		for(String departmentId1 : departmentIds) {
 			DepartmentDTO dto = new DepartmentDTO();
 			
 			dto.setAllowdId(departmentCommand.getAllowdId());
 			dto.setAllowdName(departmentCommand.getAllowdName());
 			dto.setDepartmentId(departmentId1);
-			departmentMapper.allowdInsert(dto);
+			allowdMapper.allowdInsert(dto);
 			
 			System.out.println("AllowDept Insert: "+departmentId1);
 		}

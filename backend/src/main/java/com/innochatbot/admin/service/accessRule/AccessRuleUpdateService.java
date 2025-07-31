@@ -13,7 +13,7 @@ public class AccessRuleUpdateService {
     @Autowired
     AccessRuleMapper accessRuleMapper;
 
-    public void ruleUpdate(AccessRuleCommand accessRuleCommand) {
+    public void accessUpdate(AccessRuleCommand accessRuleCommand) {
         AccessRuleDTO dto = new AccessRuleDTO();
 
         dto.setAccessId(accessRuleCommand.getAccessId());

@@ -13,7 +13,7 @@ public class AccessRuleDetailService {
     @Autowired
     AccessRuleMapper accessRuleMapper;
 
-    public void ruleDetail(String accessId, Model model) {
+    public void accessDetail(String accessId, Model model) {
         AccessRuleDTO dto = accessRuleMapper.accessRuleDetail(accessId);
         model.addAttribute("dto", dto);
         

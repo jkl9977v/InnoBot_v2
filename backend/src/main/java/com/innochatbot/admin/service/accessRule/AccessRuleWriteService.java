@@ -13,7 +13,7 @@ public class AccessRuleWriteService {
     @Autowired
     AccessRuleMapper accessRuleMapper;
 
-    public void ruleWrite(AccessRuleCommand accessRuleCommand) {
+    public void accessWrite(AccessRuleCommand accessRuleCommand) {
         AccessRuleDTO dto = new AccessRuleDTO();
 
         dto.setAccessId(accessRuleCommand.getAccessId());

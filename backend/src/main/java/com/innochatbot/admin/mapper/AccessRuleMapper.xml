@@ -23,7 +23,7 @@
 	</association>
 </resultMap>
 
-<select id="accessRuleSelectAll" resultType="accessRuleDTO" parameterType="StartEndPageDTO">
+<select id="accessRuleList" resultType="accessRuleDTO" parameterType="StartEndPageDTO">
 select * from (
 select row_number() over (order by access_id) as rn
 , access_id, access_name

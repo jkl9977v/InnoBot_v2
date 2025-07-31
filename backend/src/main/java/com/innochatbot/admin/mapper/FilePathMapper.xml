@@ -68,7 +68,7 @@ where f.path_id=#{pathId}
 select path_id from file_path where path=#{fullFilePath}
 </select>
 
-<select id="filePathSelectId" resultType="pathDTO" parameterType="string">
+<select id="filePathDetail" resultType="pathDTO" parameterType="string">
 select * from file_path where path_id=#{pathId}
 </select>
 

@@ -9,22 +9,7 @@ import com.innochatbot.admin.dto.GradeDTO;
 import com.innochatbot.admin.dto.StartEndPageDTO;
 
 @Mapper
-public interface GradeMapper { //allowg, grade의 Mapper
-	// allowg
-
-	public void allowgInsert(GradeDTO dto);
-
-	public Integer allowgCount();
-
-	public List<GradeDTO> allowgSelectAll(StartEndPageDTO dto);
-
-	public GradeDTO allowgDetail(String allowgId);
-
-	public void allowgUpdate(GradeDTO dto);
-
-	public void allowgDelete(String allowgId);
-	
-	// grade
+public interface GradeMapper { 
 
 	public void gradeInsert(GradeDTO dto);
 

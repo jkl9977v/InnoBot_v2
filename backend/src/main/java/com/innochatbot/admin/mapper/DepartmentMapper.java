@@ -8,23 +8,7 @@ import com.innochatbot.admin.dto.DepartmentDTO;
 import com.innochatbot.admin.dto.StartEndPageDTO;
 
 @Mapper
-public interface DepartmentMapper { //allowd와 department
-	
-	//allowd
-
-	public void allowdInsert(DepartmentDTO dto);
-
-	public Integer allowdCount();
-
-	public List<DepartmentDTO> allowdSelectAll(StartEndPageDTO dto);
-
-	public List<DepartmentDTO> allowdDetail(String allowdId);
-
-	public void allowdUpdate(DepartmentDTO dto);
-
-	public void allowdDelete(String allowdId);
-	
-	//department
+public interface DepartmentMapper { 
 
 	public void departmentInsert(DepartmentDTO dto);
 

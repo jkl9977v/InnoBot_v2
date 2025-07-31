@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.innochatbot.admin.dto.GradeDTO;
-import com.innochatbot.admin.mapper.GradeMapper;
+import com.innochatbot.admin.mapper.AllowgMapper;
 
 @Service
 public class AllowgDetailService {
 	@Autowired
-	GradeMapper gradeMapper;
+	AllowgMapper allowgMapper;
 
 	public void allowgDetail(String allowgId, Model model) {
-		GradeDTO dto = gradeMapper.allowgDetail(allowgId);
+		GradeDTO dto = allowgMapper.allowgDetail(allowgId);
 		model.addAttribute("dto", dto);
 	}
 }

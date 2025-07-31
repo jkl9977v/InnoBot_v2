@@ -52,7 +52,7 @@ public class AdminController {
     public String login1(LoginCommand loginCommand
     		, HttpSession session, HttpServletResponse response) {
     	//로그인 처리 과정
-    	Boolean LoginStatus= userLoginService.userLogin(loginCommand, session, response);
+    	Boolean LoginStatus= userLoginService.adminLogin(loginCommand, session, response);
     	if(LoginStatus) {
     		return "redirect:/admin/file";
     	}
@@ -78,7 +78,7 @@ public class AdminController {
     @GetMapping("accessRule") //접근권한 규칙 설정
     public String accessRule(
     		) {
-        return "redirect:/admin/accessRule/ruleList";
+        return "redirect:/admin/accessRule/accessList";
     }
     
     @GetMapping("chatbot")

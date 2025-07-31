@@ -15,4 +15,6 @@ public class LoginDTO {
 	String userPw;
 	String departmentId;
 	String gradeId;
+	
+	String manager;
 }

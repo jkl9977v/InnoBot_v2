@@ -8,13 +8,13 @@ import org.springframework.ui.Model;
 
 import com.innochatbot.admin.dto.DepartmentDTO;
 import com.innochatbot.admin.dto.StartEndPageDTO;
-import com.innochatbot.admin.mapper.DepartmentMapper;
+import com.innochatbot.admin.mapper.AllowdMapper;
 import com.innochatbot.admin.service.ListPageService;
 
 @Service
 public class AllowdListService {
 	@Autowired
-	DepartmentMapper departmentMapper;
+	AllowdMapper allowdMapper;
 	@Autowired
 	ListPageService listPageService;
 
@@ -23,10 +23,10 @@ public class AllowdListService {
 		StartEndPageDTO dto = listPageService.StartEndRow(page, limitRow, null, searchWord, kind, null);
 		
 		//2. 출력하고자 하는 행의 전체 값을 가져온다.
-		Integer count = departmentMapper.allowdCount();
+		Integer count = allowdMapper.allowdCount();
 		
 		//3. dto를 Mapper에 넘겨서 각 페이지에 보여줄 값을 조회해서 List에 담아온다.
-		List<DepartmentDTO> list = departmentMapper.allowdSelectAll(dto); 
+		List<DepartmentDTO> list = allowdMapper.allowdSelectAll(dto); 
 		
 		//4. 파라미터로 받아온 값, count, list를 listPageService에 넘겨서 화면에 출력한다.
 		listPageService.ShowList(page, limitRow, count, searchWord, list, model,null, kind);

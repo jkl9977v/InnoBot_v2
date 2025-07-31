@@ -14,7 +14,7 @@ public interface FilePathMapper {
     
     public Integer filePathCount(String pathId);
 
-    public FilePathDTO filePathSelectId(String pathId);
+    public FilePathDTO filePathDetail(String pathId);
 
     public void filePathInsert(FilePathDTO dto);
 

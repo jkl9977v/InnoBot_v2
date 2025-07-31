@@ -7,10 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.innochatbot.admin.command.GradeCommand;
 import com.innochatbot.admin.dto.GradeDTO;
+import com.innochatbot.admin.mapper.AllowgMapper;
 import com.innochatbot.admin.mapper.GradeMapper;
 
 @Service
 public class AllowgWriteService {
+	@Autowired
+    AllowgMapper allowgMapper;
 	@Autowired
 	GradeMapper gradeMapper;
 
@@ -22,15 +25,13 @@ public class AllowgWriteService {
 		//리스트에 담긴 gradeId 개수만큼 반복하여 insert
 		for(GradeDTO gDTO : list) {
 			GradeDTO dto = new GradeDTO();
+			
 			dto.setAllowgId(gradeCommand.getAllowgId());
 			dto.setAllowgName(gradeCommand.getAllowgName());
 			dto.setGradeId(gDTO.getGradeId());
 			
-			gradeMapper.allowgInsert(dto);
-		}
-		
-		//dto.setGradeName(gradeCommand.getGradeName());
-		
+			allowgMapper.allowgInsert(dto);
+		}		
 	}
 
 }

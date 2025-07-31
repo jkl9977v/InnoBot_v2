@@ -10,7 +10,8 @@
 <script type="text/javascript">
 $(function(){
 	$("#accessRuleSearch").click(function(){
-		
+		window.open("/admin/accessRule/accessSearch", "접근규칙 검색"
+				, "width=620, height=400, left=50, top=30")
 	});
 });
 </script>
@@ -18,14 +19,21 @@ $(function(){
 <body>
 <main>
 	접근권한 추가 <br/>
-	<form action="/admin/file/pathWrite" method="post">
-	path_id: <input type="text" name="pathId" th:value="${dto.pathId}" readonly hidden> <br/>
+	<form action="/admin/file/addAccessRule" method="post">
+	path_id: <input type="text" name="pathId" th:value="${dto.pathId}" readonly> <br/>
 	path: <input type="text" name="path" th:value="${dto.path}" readonly><br/>
-	access_id:  <input type="text" name="accessId" th:value="${dto.accessId}" id="accessId">
-	<button type="button" class="button" id="accessRuleSearch">접근규칙 검색</button><br/>
-	access_Name:  <input type="text" name="accessName"  id="accessName"> <br/> <!-- th:value="${dto.accessName}" -->
 	depth: <input type="number" name="depth" th:value="${dto.depth}"><br/>
-	parent_id:  <input type="text" name="pathId" th:value="${dto.pathId}"  ><br/>
+	parent_id:  <input type="text" name="parentId" th:value="${dto.parentId}"  ><br/>
+	<span th:if="${dto2 != null}">
+	access_id:  <input type="text" name="accessId" th:value="${dto2.accessId}" id="accessId">
+	<button type="button" class="button" id="accessRuleSearch">접근규칙 검색</button><br/>
+	access_Name:  <input type="text" name="accessName"  th:value="${dto2.accessName}" id="accessName"> <br/>
+	</span>
+	<span th:if="${dto2 == null}">
+	access_id:  <input type="text" name="accessId" id="accessId">
+	<button type="button" class="button" id="accessRuleSearch">접근규칙 검색</button><br/>
+	access_Name:  <input type="text" name="accessName" id="accessName"> <br/>
+	</span>
 	<button type="submit">추가</button>
 	</form>
 	</main>

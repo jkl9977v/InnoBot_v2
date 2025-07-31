@@ -20,4 +20,5 @@ public class FilePathDTO {
     String parentId;
     
     FileDTO FileDTO;
+    AccessRuleDTO AccessRuleDTO;
 }
