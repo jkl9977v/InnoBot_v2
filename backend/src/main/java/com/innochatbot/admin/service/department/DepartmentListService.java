@@ -25,7 +25,7 @@ public class DepartmentListService {
 		
 		Integer count = departmentMapper.departmentCount();
 		
-		List<DepartmentDTO> list = departmentMapper.departmentSelectAll(dto);
+		List<DepartmentDTO> list = departmentMapper.departmentList(dto);
 		System.out.println(dto);
 		System.out.println(list);
 		

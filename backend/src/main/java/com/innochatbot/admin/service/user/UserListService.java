@@ -34,15 +34,15 @@ public class UserListService {
 		Integer count = userMapper.userCount();
 		
 		//3.
-		List<UserDTO> list = userMapper.userSelectAll(dto);
+		List<UserDTO> list = userMapper.userList(dto);
 		
 		//4. 
 		listPageService.ShowList(page, limitRow, count, searchWord, list, model, null, kind);
 		
-		List<DepartmentDTO> department = departmentMapper.departmentSelectAll(null);
+		List<DepartmentDTO> department = departmentMapper.departmentList(null);
 		model.addAttribute("department", department);
 		
-		List<GradeDTO> grade = gradeMapper.gradeSelectAll(null,null);
+		List<GradeDTO> grade = gradeMapper.gradeList(null,null);
 		model.addAttribute("grade", grade);
 		model.addAttribute("kind2", kind2);
 		

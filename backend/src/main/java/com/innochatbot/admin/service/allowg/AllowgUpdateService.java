@@ -18,7 +18,7 @@ public class AllowgUpdateService {
 	GradeMapper gradeMapper;
 
 	public void allowgUpdate(GradeCommand gradeCommand) {
-		List<GradeDTO> list = gradeMapper.gradeSelectAll(null, gradeCommand.getGradeLevel());
+		List<GradeDTO> list = gradeMapper.gradeList(null, gradeCommand.getGradeLevel());
 		allowgMapper.allowgDelete(gradeCommand.getAllowgId());
 		for(GradeDTO gDTO : list) {
 			GradeDTO dto = new GradeDTO();

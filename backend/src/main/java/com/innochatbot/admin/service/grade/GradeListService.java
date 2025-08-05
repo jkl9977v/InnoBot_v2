@@ -26,7 +26,7 @@ public class GradeListService {
 		Integer count = gradeMapper.gradeCount(null);
 		
 		//3. 
-		List<GradeDTO> list = gradeMapper.gradeSelectAll(dto, null);
+		List<GradeDTO> list = gradeMapper.gradeList(dto, null);
 		System.out.println(dto);
 		
 		//4. 

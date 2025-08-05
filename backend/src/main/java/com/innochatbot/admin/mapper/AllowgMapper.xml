@@ -14,7 +14,7 @@ values(#{allowgId}, #{allowgName}, #{gradeId})
 select count(distinct allowg_id) from allow_grade
 </select>
 
-<select id="allowgSelectAll" parameterType="StartEndPageDTO" resultType="gradeDTO">
+<select id="allowgList" parameterType="StartEndPageDTO" resultType="gradeDTO">
 select * from (
 select row_number() over (order by allowg_id) as rn
 , allowg_id, allowg_name

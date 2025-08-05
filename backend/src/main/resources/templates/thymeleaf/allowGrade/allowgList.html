@@ -112,9 +112,9 @@
           <td>[[${dto.allowgName}]]</td>
           <td>
             <a class="btn btn-sm btn-outline-primary"
-               th:href="@{/admin/accessRule/accessUpdate(allowgId=${dto.allowgId})}">자세히</a>
+               th:href="@{/admin/accessRule/allowgUpdate(allowgId=${dto.allowgId})}">자세히</a>
             <a class="btn btn-sm btn-outline-danger"
-               th:href="@{/admin/accessRule/accessDelete(allowgId=${dto.allowgId})}">삭제</a>
+               th:href="@{/admin/accessRule/aallowgDelete(allowgId=${dto.allowgId})}">삭제</a>
           </td>
         </tr>
         <tr th:if="${list.size() <= 0}">

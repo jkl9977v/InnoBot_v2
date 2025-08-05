@@ -13,7 +13,7 @@ public interface AllowgMapper {
 
 	public Integer allowgCount();
 
-	public List<GradeDTO> allowgSelectAll(StartEndPageDTO dto);
+	public List<GradeDTO> allowgList(StartEndPageDTO dto);
 
 	public GradeDTO allowgDetail(String allowgId);
 

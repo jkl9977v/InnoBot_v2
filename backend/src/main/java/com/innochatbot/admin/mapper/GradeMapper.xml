@@ -18,7 +18,7 @@ where grade_level >= #{gradeLevel}
 </if>
 </select>
 
-<select id="gradeSelectAll" resultType="gradeDTO"  >
+<select id="gradeList" resultType="gradeDTO"  >
 select * from (
 select row_number() over (order by grade_id) as rn
 , grade_id, grade_name, grade_level

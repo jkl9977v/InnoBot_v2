@@ -24,15 +24,18 @@ $(function(){
 	path: <input type="text" name="path" th:value="${dto.path}" readonly><br/>
 	depth: <input type="number" name="depth" th:value="${dto.depth}"><br/>
 	parent_id:  <input type="text" name="parentId" th:value="${dto.parentId}"  ><br/>
+	
 	<span th:if="${dto2 != null}">
-	access_id:  <input type="text" name="accessId" th:value="${dto2.accessId}" id="accessId">
-	<button type="button" class="button" id="accessRuleSearch">접근규칙 검색</button><br/>
-	access_Name:  <input type="text" name="accessName"  th:value="${dto2.accessName}" id="accessName"> <br/>
+	<!-- access_id: -->  <input type="text" name="accessId" th:value="${dto2.accessId}" id="accessId" hidden><!-- <br/> -->
+	access_Name:  <input type="text" name="accessName"  th:value="${dto2.accessName}" id="accessName">
+	<button type="button" class="button" id="accessRuleSearch">접근규칙 검색</button> <br/>
+	accessType : <input type="text" name="accessType" th:value="${dto2.accessType}" id="accessType"><br/>
 	</span>
 	<span th:if="${dto2 == null}">
-	access_id:  <input type="text" name="accessId" id="accessId">
-	<button type="button" class="button" id="accessRuleSearch">접근규칙 검색</button><br/>
-	access_Name:  <input type="text" name="accessName" id="accessName"> <br/>
+	<!-- access_id:  --> <input type="text" name="accessId" id="accessId" hidden>
+	access_Name:  <input type="text" name="accessName" id="accessName"> 
+	<button type="button" class="button" id="accessRuleSearch">접근규칙 검색</button> <br/>
+	accessType : <input type="text" name="accessType" id="accessType"> <br/>
 	</span>
 	<button type="submit">추가</button>
 	</form>

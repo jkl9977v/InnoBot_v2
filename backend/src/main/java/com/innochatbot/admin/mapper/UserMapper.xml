@@ -25,7 +25,7 @@
 	</association>
 </resultMap>
 
-<select id="userSelectAll" resultMap="userDepGraMap" parameterType="StartEndPageDTO">
+<select id="userList" resultMap="userDepGraMap" parameterType="StartEndPageDTO">
 select * from (
 select row_number() over (order by user_num) as rn
 , user_num, user_name, user_id

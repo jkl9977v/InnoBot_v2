@@ -24,7 +24,7 @@ public class FilePathListService {
 		
 		StartEndPageDTO dto=listPageService.StartEndRow(page,limitRow, pathId, searchWord, kind, null ); //kind=null;
 		
-		List<FilePathDTO> list = filePathMapper.filePathSelectAll(dto);
+		List<FilePathDTO> list = filePathMapper.filePathList(dto);
 		Integer count = filePathMapper.filePathCount(pathId);
 		
 		listPageService.ShowList(page, limitRow, count,searchWord, list, model, pathId, kind);

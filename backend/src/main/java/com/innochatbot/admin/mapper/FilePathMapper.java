@@ -10,7 +10,7 @@ import com.innochatbot.admin.dto.StartEndPageDTO;
 @Mapper
 public interface FilePathMapper {
 
-    public List<FilePathDTO> filePathSelectAll(StartEndPageDTO dto);
+    public List<FilePathDTO> filePathList(StartEndPageDTO dto);
     
     public Integer filePathCount(String pathId);
 

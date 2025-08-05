@@ -13,7 +13,7 @@ public interface AllowdMapper {
 
 	public Integer allowdCount();
 
-	public List<DepartmentDTO> allowdSelectAll(StartEndPageDTO dto);
+	public List<DepartmentDTO> allowdList(StartEndPageDTO dto);
 
 	public List<DepartmentDTO> allowdDetail(String allowdId);
 

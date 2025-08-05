@@ -26,7 +26,7 @@ public class AllowgListService {
 		Integer count = allowgMapper.allowgCount();
 		
 		//3. dto를 Mapper에 넘겨서 각 페이지에 보여줄 값을 조회해서 List에 담아온다.
-		List<GradeDTO> list = allowgMapper.allowgSelectAll(dto);
+		List<GradeDTO> list = allowgMapper.allowgList(dto);
 		System.out.println(dto);
 		//System.out.println(list);
 		

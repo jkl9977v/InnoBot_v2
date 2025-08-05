@@ -24,7 +24,7 @@
 	</association>
 </resultMap>
 
-<select id="filePathSelectAll" resultMap="filePathWithFileMap"  parameterType="StartEndPageDTO"> <!-- resultType="pathDTO" -->
+<select id="filePathList" resultMap="filePathWithFileMap"  parameterType="StartEndPageDTO"> <!-- resultType="pathDTO" -->
 select * 
 from (
 select row_number() over (order by file_id) as rn

@@ -16,7 +16,7 @@ values(#{allowdId}, #{allowdName}, #{departmentId})
 select count(distinct allowd_id) from allow_departments
 </select>
 
-<select id="allowdSelectAll" parameterType="StartEndPageDTO" resultType="departmentDTO">
+<select id="allowdList" parameterType="StartEndPageDTO" resultType="departmentDTO">
 select * from (
 select row_number() over (order by allowd_id) as rn
  , allowd_id, allowd_name
