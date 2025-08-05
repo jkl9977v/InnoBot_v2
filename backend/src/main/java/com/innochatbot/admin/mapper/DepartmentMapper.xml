@@ -23,9 +23,10 @@ from department
 where
 department_name like concat('%',#{searchWord},'%')
 </if>
-) as sub where rn 
-<if test="startRow!=0 and endRow!=0">
-between #{startRow} and #{endRow}
+) as sub 
+<if test="(startRow!=0 and endRow!=0) and (startRow!=null and endRow!=null)">
+ where rn 
+ between #{startRow} and #{endRow}
 </if>
 </select>
 

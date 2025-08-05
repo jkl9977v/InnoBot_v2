@@ -35,8 +35,6 @@ public class UserListService {
 		
 		//3.
 		List<UserDTO> list = userMapper.userSelectAll(dto);
-		System.out.println(dto);
-		System.out.println(list);
 		
 		//4. 
 		listPageService.ShowList(page, limitRow, count, searchWord, list, model, null, kind);
