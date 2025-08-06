@@ -69,7 +69,13 @@ select path_id from file_path where path=#{fullFilePath}
 </select>
 
 <select id="filePathDetail" resultType="pathDTO" parameterType="string">
-select * from file_path where path_id=#{pathId}
+select 
+fp1.path_id, fp1.path
+, fp1.depth, fp1.parent_id, fp2.path as parentPath
+from file_path fp1
+left join file_path fp2
+on fp1.parent_id = fp2.path_id
+where fp1.path_id=#{pathId}
 </select>
 
 <insert id="filePathInsert" parameterType="pathDTO">

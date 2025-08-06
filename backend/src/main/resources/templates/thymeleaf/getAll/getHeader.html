@@ -26,10 +26,14 @@
                 <img src="/img/tiumBot1.png" alt="..." class="avatar-img rounded-circle">
               </span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Profile</a>
-              <a class="dropdown-item" href="#">Settings</a>
-              <a class="dropdown-item" href="#">Activities</a>
+            <div class="dropdown-menu dropdown-menu-right p-3" aria-labelledby="navbarDropdownMenuLink">
+                  <div class="mb-2" th:if="${user != null}">
+				      <div><strong>사용자ID:</strong> [[${user.userId}]]</div>
+				      <div><strong>이름:</strong> [[${user.userName}]]</div>
+				      <div><strong>부서:</strong> [[${user.DepartmentDTO.departmentName}]]</div>
+				      <div><strong>직급:</strong> [[${user.GradeDTO.gradeName}]]</div>
+				    </div>
+              <button type="button" class="btn btn-sm btn-primary ml-2" th:onclick="|location.href='@{/admin/logout}'|">로그아웃</button>
             </div>
           </li>
         </ul>

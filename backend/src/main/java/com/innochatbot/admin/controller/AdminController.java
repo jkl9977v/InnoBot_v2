@@ -1,5 +1,6 @@
 package com.innochatbot.admin.controller;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.innochatbot.admin.command.LoginCommand;
+import com.innochatbot.admin.dto.LoginDTO;
+import com.innochatbot.admin.dto.UserDTO;
+import com.innochatbot.admin.mapper.UserMapper;
 import com.innochatbot.admin.service.ListPageService;
 import com.innochatbot.admin.service.UserLoginService;
 import com.innochatbot.admin.service.filePath.FilePathListService;
@@ -46,7 +50,7 @@ public class AdminController {
     }
     @GetMapping("login")
     public String login() {
-    	return "thymeleaf/login";
+    	return "thymeleaf/auth-login";
     }
     @PostMapping("login")
     public String login1(LoginCommand loginCommand
@@ -80,8 +84,20 @@ public class AdminController {
     		) {
         return "redirect:/admin/accessRule/accessList";
     }
+    @Autowired
+    UserMapper userMapper;
     @GetMapping("getHeader")
-    public String getHeader() {
+    public String getHeader(HttpServletResponse response, HttpSession session
+    		, Model model) {
+    	LoginDTO loginSession = (LoginDTO) session.getAttribute("loginSession");
+    	System.out.println(loginSession);
+    	System.out.println(loginSession.getUserNum());
+    	if (loginSession != null) {
+        	UserDTO dto = userMapper.userDetail(loginSession.getUserNum());
+        	model.addAttribute("user", dto);
+    	}else if (loginSession == null) {
+    		model.addAttribute("user", null);
+    	}
     	return "thymeleaf/getAll/getHeader";
     }
     @GetMapping("getMain2")

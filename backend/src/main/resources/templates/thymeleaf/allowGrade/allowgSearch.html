@@ -95,12 +95,16 @@ function allowgSelect(allowgId, allowgName){
       <thead>
         <tr role="row">
           <th>정책 이름</th>
+          <th>기준 직급</th>
+          <th>직급 레벨</th>
           <th>선택</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="dto : ${list}">
           <td>[[${dto.allowgName}]]</td>
+          <td>[[${dto.gradeName}]]</td>
+          <td>[[${dto.gradeLevel}]]</td>
           <td>
             <a class="btn btn-sm btn-outline-primary" 
                th:attr="onclick=|javascript:allowgSelect([['${dto.allowgId}']], [['${dto.allowgName}']])|">선택</a>

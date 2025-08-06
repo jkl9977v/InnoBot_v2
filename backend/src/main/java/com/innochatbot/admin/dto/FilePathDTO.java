@@ -18,6 +18,7 @@ public class FilePathDTO {
     String accessId;
     int depth;
     String parentId;
+    String parentPath;
     
     FileDTO FileDTO;
     AccessRuleDTO AccessRuleDTO;

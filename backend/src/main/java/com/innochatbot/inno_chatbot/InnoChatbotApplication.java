@@ -19,7 +19,7 @@ public class InnoChatbotApplication {
     @RequestMapping("/")
     public String index() {
     //나중에 챗봇은 여기에 띄우면 좋겠다.
-    	return "thymeleaf/WriteUpdate";
+    	return "thymeleaf/auth-login";
     } 
 
 }

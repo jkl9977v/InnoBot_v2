@@ -104,12 +104,16 @@
       <thead>
         <tr role="row">
           <th>정책 이름</th>
+          <th>기준 직급</th>
+          <th>직급 레벨</th>
           <th>자세히</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="dto : ${list}">
           <td>[[${dto.allowgName}]]</td>
+          <td>[[${dto.gradeName}]]</td>
+          <td>[[${dto.gradeLevel}]]</td>
           <td>
             <a class="btn btn-sm btn-outline-primary"
                th:href="@{/admin/accessRule/allowgUpdate(allowgId=${dto.allowgId})}">자세히</a>

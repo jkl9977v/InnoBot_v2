@@ -60,7 +60,7 @@ where
 select user_num, user_name
 , user_id, user_pw, manager
 , u.department_id, department_name as department_name
-, g.grade_id, grade_name as grade_name
+, g.grade_id, grade_name as grade_name, grade_level as gradeLevel
  from user u
  left join department d
  on u.department_id = d.department_id

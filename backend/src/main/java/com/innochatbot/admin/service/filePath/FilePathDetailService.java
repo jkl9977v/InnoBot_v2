@@ -24,5 +24,6 @@ public class FilePathDetailService {
         System.out.println(dto2);
         model.addAttribute("dto", dto);
         model.addAttribute("dto2", dto2);
+        
     }
 }

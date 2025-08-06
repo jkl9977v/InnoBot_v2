@@ -115,7 +115,7 @@
               <table class="table datatables dataTable no-footer" id="dataTable-1" role="grid">
                 <thead>
                   <tr role="row">
-                    <th>파일명</th>
+                    <th>파일 / 폴더명</th>
                     <th>크기</th>
                     <th>수정일</th>
                     <th>자세히</th>
@@ -128,7 +128,7 @@
                     <td>[[${dto.fileDTO.updateTime}]]</td>
                     <td>
                       <a class="btn btn-sm btn-outline-primary"
-                         th:href="@{/admin/file/fileDetail(fileId=${dto.fileDTO.fileId})}">자세히</a>
+                         href="#">자세히 기능 개발 예정</a> <!-- th:href="@{/admin/file/fileDetail(fileId=${dto.fileDTO.fileId})}" -->
                     </td>
                   </tr>
                   <tr th:if="${list.size() <= 0}">

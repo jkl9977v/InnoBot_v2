@@ -133,35 +133,7 @@ $(function(){
         </div> <!-- dataTable wrapper -->
       </div> <!-- card-body -->
     </div> <!-- card -->
-              <nav aria-label="Table Paging" class="my-3">
-                <ul class="pagination justify-content-end mb-0">
-                  <!-- 이전 -->
-        <li class="paginate_button page-item" th:classappend="${page <= 1} ? 'disabled'">
-          <a class="page-link"
-             th:href="${page > 1} ? @{/admin/department/departmentMultiSelect(page=${page-1},searchWord=${searchWord},limitRow=${limitRow})} : '#'">
-            이전
-          </a>
-        </li>
-
-        <!-- 페이지 번호 -->
-        <li class="paginate_button page-item"
-            th:each="i : ${#numbers.sequence(startPageNum, endPageNum)}"
-            th:classappend="${i == page} ? 'active'">
-          <a class="page-link"
-             th:href="@{/admin/department/departmentMultiSelect(page=${i},searchWord=${searchWord},limitRow=${limitRow})}">
-            [[${i}]]
-          </a>
-        </li>
-
-        <!-- 다음 -->
-        <li class="paginate_button page-item" th:classappend="${page >= maxPage} ? 'disabled'">
-          <a class="page-link"
-             th:href="${page < maxPage} ? @{/admin/department/departmentMultiSelect(page=${page+1},searchWord=${searchWord},limitRow=${limitRow})} : '#'">
-            다음
-          </a>
-        </li>
-                </ul>
-              </nav>
+             
             </div> <!-- .col-12 -->
           </div> <!-- .row -->
         </div> <!-- .container-fluid -->
