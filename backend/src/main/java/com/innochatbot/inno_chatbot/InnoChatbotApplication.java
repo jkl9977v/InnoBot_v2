@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @SpringBootApplication(scanBasePackages = "com.innochatbot")
 @MapperScan("com.innochatbot.admin.mapper")
+@MapperScan("com.innochatbot.api.mapper")
 @Controller
 //@PropertySource(value = "classpath:.env", ignoreResourceNotFound = true)
 public class InnoChatbotApplication {

@@ -1,4 +1,4 @@
-package com.innochatbot.inno_chatbot.cli;
+package com.innochatbot.api.component;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -25,7 +25,7 @@ import com.innochatbot.api.service.EmbeddingService;
  * 추출 → 청크 분할 → 임베딩 벡터 생성 3. DB의 chunk 테이블에 저장
  */
 @Component
-public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임베딩 기능을 수행한다.
+public class EmbeddingCli_old implements CommandLineRunner {        // 텍스트 임베딩 기능을 수행한다.
     //PDF파일을 읽고, 400자 단위로 나눈 다음, OpenAI 임베딩 벡터를 생성하고, chunk테이블에 저장하는 일괄처리(batch)파일
 
     @Value("${openai.api.key}")         // application.properties 또는 .env에서 API 키 주입
@@ -150,28 +150,7 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
         }
         return result;
     }
-
-    /*  //오류 발생할 수 있는 코드
-    // fileName 기준으로 file 테이블에서 file_id 조회
-    private Long getFileId(String fileName) {
-        String sql = "SELECT fileId FROM file WHERE file_name LIKE ?";
-        return jdbc.queryForObject(sql, Long.class, "%" + fileName);
-    }
-//
-    // chunk 테이블에 임베딩된 청크 삽입
-    private void saveChunk(Long fileId, int pageNo, String content, float[] embedding) {
-        String sql = "INSERT INTO chunk(manual_id, page_no, content, embedding) VALUES(?,?,?,?)";
-        jdbc.update(con -> {
-            var ps = con.prepareStatement(sql);
-            ps.setLong(1, fileId);
-            ps.setInt(2, pageNo);
-            ps.setString(3, content);
-            ps.setBytes(4, toBytes(embedding));  // float[] → byte[]
-            return ps;
-        }
-        );
-    }
-     */
+    
     //기존 코드에서 발생할 수 있는 오류 보완 가능한 코드, UUID를 활용, 양수를 보장하여 chunkId에 양수만 들어가게 함
     // fileName 기준으로 file 테이블에서 file_id 조회
     private String getFileId(String fileName, Path filePath) {

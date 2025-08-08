@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>챗봇 관리 메인</title>
+  <script type="text/javascript">
+document.getElementById("chatbotSettingForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const data = {
+    model_name: document.querySelector('[name="model_name"]').value,
+    embedding_model: document.querySelector('[name="embedding_model"]').value,
+    refresh_cycle_min: document.querySelector('[name="refresh_cycle_min"]').value,
+    file_extensions: document.querySelector('[name="file_extensions"]').value
+  };
+
+  fetch('/admin/chatbot-setting', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(msg => alert(msg))
+  .catch(err => alert('저장 실패: ' + err));
+});
+</script>
+</head>
+<body>
+  <h1>챗봇 관리 메인</h1>
+<form id="chatbotSettingForm" action="/admin/chatbot-setting" method="post">
+  <label>LLM API 모델</label>
+  <select name="model_name">
+    <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+    <option value="gpt-4">gpt-4</option>
+    <option value="gpt-4o">gpt-4o</option>
+  </select>
+<br/>
+
+  <label>임베딩 모델</label>
+  <select name="embedding_model">
+    <option value="text-embedding-3-small">text-embedding-3-small</option>
+    <option value="text-embedding-ada-002">text-embedding-ada-002</option>
+  </select>
+<br/>
+
+  <label>임베딩 주기 (분)</label>
+  <input type="number" name="refresh_cycle_min" value="60" min="1" />
+<br/>
+
+  <label>임베딩 허용 확장자</label>
+  <input type="text" name="file_extensions" placeholder=".pdf,.txt,.md" />
+<br/>
+
+  <button type="submit">저장</button>
+</form>
+
+
+</body>
+</html>

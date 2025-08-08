@@ -129,15 +129,17 @@
           <th>아이디</th>
           <th>부서</th>
           <th>직급</th>
+          <th>관리자 여부</th>
           <th>자세히</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="dto : ${list}">
           <td>[[${dto.userName}]]</td>
-          <td>[[${dto.userNum}]]</td>
+          <td>[[${dto.userId}]]</td>
           <td>[[${dto.departmentDTO.departmentName}]]</td>
           <td>[[${dto.gradeDTO.gradeName}]]</td>
+          <td>[[${dto.manager == 'y' ? 'O' : 'X'}]]</td>
           <td>
             <a class="btn btn-sm btn-outline-primary"
                th:href="@{/admin/user/userUpdate(userNum=${dto.userNum})}">자세히</a>

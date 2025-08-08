@@ -28,7 +28,7 @@
 <select id="userList" resultMap="userDepGraMap" parameterType="StartEndPageDTO">
 select * from (
 select row_number() over (order by user_num) as rn
-, user_num, user_name, user_id
+, user_num, user_name, user_id, manager
 , u.department_id, department_name as department_name
 , u.grade_id, grade_name as grade_name
  from user u
