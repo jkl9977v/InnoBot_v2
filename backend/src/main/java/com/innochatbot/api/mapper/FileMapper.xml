@@ -3,19 +3,25 @@
         "-//mybatis.org//DTD Mapper 3.//EN"
      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.innochatbot.api.mapper.File_FilePathMapper">
+<mapper namespace="com.innochatbot.api.mapper.FileMapper">
 
 <select id="filehashSelect" resultType="string" parameterType="string">
 select hash from file where file_id = #{fileId}
 </select>
 
-<select id="fileIdSelect" parameterType="string">
+<select id="fileIdSelect" parameterType="string" resultType="string">
 select file_id
 from file f
-join file_path fp
+left join file_path fp
 on f.path_id = fp.path_id
-where file_name like ('%', #{fileName},'%') 
+where file_name like concat('%', #{fileName},'%') 
 and fp.path = #{path} 
 </select>
+
+<update id="updateFileHash" >
+update file 
+set hash = #{newHash}
+where file_Id = #{fileId}
+</update>
 
 </mapper>

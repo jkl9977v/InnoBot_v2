@@ -24,6 +24,7 @@ import com.innochatbot.api.service.EmbeddingService;
  * Spring Boot 애플리케이션 실행 직후 자동 실행되는 일괄처리 컴포넌트 1. docs 폴더 내 PDF 파일을 순회하며 2. 텍스트
  * 추출 → 청크 분할 → 임베딩 벡터 생성 3. DB의 chunk 테이블에 저장
  */
+/*
 @Component
 public class EmbeddingCli_old implements CommandLineRunner {        // 텍스트 임베딩 기능을 수행한다.
     //PDF파일을 읽고, 400자 단위로 나눈 다음, OpenAI 임베딩 벡터를 생성하고, chunk테이블에 저장하는 일괄처리(batch)파일
@@ -37,21 +38,6 @@ public class EmbeddingCli_old implements CommandLineRunner {        // 텍스트
     @Autowired
     private EmbeddingService embeddingService;
 
-    // public void EmbeddingCli(EmbeddingService embeddingService) {
-    //     this.embeddingService = embeddingService;
-    // }
-    public EmbeddingService getEmbeddingService() {
-        return embeddingService;
-    }
-
-    /*
-    String chunkId
-    String fileId
-    int sequence
-    string content
-    varbinary(3027) embedding 벡터데이터
-    String summary 
-     */
     @Override
     public void run(String... args) throws Exception {
         // 시작 시 기존 chunk 테이블 데이터 삭제 (테스트 용도일 수 있음)
@@ -176,7 +162,7 @@ public class EmbeddingCli_old implements CommandLineRunner {        // 텍스트
         Long chunkId = generateChunkId(); // 또는 UUID를 long으로 변환하거나 sequence 활용
         String sql = "INSERT INTO chunk(chunk_id, file_id, sequence, content, embedding) VALUES(?,?,?,?,?)";
         //System.out.println(sql);
-        /*summary*/
+        //summary
         jdbc.update(con -> {
             var ps = con.prepareStatement(sql);
             ps.setLong(1, chunkId);
@@ -201,3 +187,4 @@ public class EmbeddingCli_old implements CommandLineRunner {        // 텍스트
     }
 
 }
+*/

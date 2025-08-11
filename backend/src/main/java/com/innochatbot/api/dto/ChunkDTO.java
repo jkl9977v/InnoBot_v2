@@ -16,5 +16,5 @@ public class ChunkDTO {
 	String fileId;
 	Integer sequence;
 	String content;
-	Bytes embeddeing;
+	byte[] embeddeing;
 }

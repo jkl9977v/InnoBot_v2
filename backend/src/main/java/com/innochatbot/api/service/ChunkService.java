@@ -22,7 +22,7 @@ public class ChunkService {
 	@Autowired
 	ChunkMapper chunkMapper;
 	
-	//청크 분할
+	//청크 분할, 문자열을 지정 길이(size)로 분할하는 유틸 함수
 	public List<String> split(String text, int size){
 		List<String> result = new ArrayList<>();
 		int pos = 0;
@@ -45,22 +45,28 @@ public class ChunkService {
 		}
 	}
 	
+	//chunkId 생성 및 값 부여
 	private Long generateChunkId() {
-		return Math.abs(UUID.randomUUID().getMostSignificantBits());
+		UUID uuid = UUID.randomUUID();
+		Long chunkId = Math.abs(uuid.getMostSignificantBits());
+		return chunkId;
 	}
 	
-	private void saveChunk(String fileId, int sequence, String content, float[] embedding) {
-		Long chunkId = generateChunkId();
+	// chunk 테이블에 임베딩된 청크 삽입
+	//private
+	public void saveChunk(String fileId, int sequence, String content, float[] embedding) {
+		Long chunkId = generateChunkId(); // 또는 UUID를 long으로 변환하거나 sequence 활용
 		ChunkDTO dto = new ChunkDTO();
 		dto.setChunkId(chunkId);
 		dto.setFileId(fileId);
 		dto.setSequence(sequence);
-		dto.setContent(content);
-		dto.setEmbeddeing(toBytes(embedding));
+		dto.setContent(content); 
+		dto.setEmbeddeing(toBytes(embedding)); // float[] → byte[]
 		
 		chunkMapper.chunkInsert(dto);
 	}
 	
+	// float[] → byte[] 변환 (PostgreSQL pgvector용, LE 방식)
 	private byte[] toBytes(float[] vec) {
 		ByteBuffer buffer = ByteBuffer.allocate(vec.length * 4);
 		buffer.order(ByteOrder.LITTLE_ENDIAN);
