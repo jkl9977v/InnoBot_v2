@@ -1,7 +1,6 @@
 package com.innochatbot.api.dto;
 
 import org.apache.ibatis.type.Alias;
-import org.springframework.security.web.webauthn.api.Bytes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,5 +15,5 @@ public class ChunkDTO {
 	String fileId;
 	Integer sequence;
 	String content;
-	byte[] embeddeing;
+	byte[] embedding;
 }

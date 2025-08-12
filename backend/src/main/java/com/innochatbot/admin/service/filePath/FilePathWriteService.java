@@ -1,6 +1,4 @@
 package com.innochatbot.admin.service.filePath;
-import com.innochatbot.admin.service.UserLoginService;
-import com.innochatbot.config.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,17 +9,8 @@ import com.innochatbot.admin.mapper.FilePathMapper;
 @Service
 public class FilePathWriteService {
 
-    private final SecurityConfig securityConfig;
-
-    private final UserLoginService userLoginService;
-
     @Autowired
     FilePathMapper filePathMapper;
-
-    FilePathWriteService(UserLoginService userLoginService, SecurityConfig securityConfig) {
-        this.userLoginService = userLoginService;
-        this.securityConfig = securityConfig;
-    }
 
     public void pathWrite(FilePathCommand filePathCommand) {
         FilePathDTO dto = new FilePathDTO();

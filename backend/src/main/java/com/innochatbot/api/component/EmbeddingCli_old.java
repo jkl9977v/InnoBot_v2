@@ -119,7 +119,7 @@ public class EmbeddingCli_old implements CommandLineRunner {        // 텍스트
                 jdbc.update("UPDATE file SET hash = ? WHERE file_id = ?", currentHash, fileId);
                 System.out.printf("  • 처리 완료: %s (%d 청크)%n", filePath.getFileName(), chunks.size());
 
-            }
+            } 
         } catch (Exception e) {
             System.err.printf("  ! 오류: %s → %s%n", filePath.getFileName(), e.getMessage());
         }

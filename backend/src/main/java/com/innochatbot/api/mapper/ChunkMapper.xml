@@ -6,7 +6,7 @@
 <mapper namespace="com.innochatbot.api.mapper.ChunkMapper">
 
 <insert id="chunkInsert" parameterType="chunkDTO">
-insert chunk into (chunk_id, file_id, sequence, content, embedding)
+insert into chunk (chunk_id, file_id, sequence, content, embedding)
 values (#{chunkId}, #{fileId}, #{sequence}, #{content}, #{embedding})
 </insert>
 

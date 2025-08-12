@@ -1,6 +1,6 @@
 package com.innochatbot.admin.dto;
 
-import java.sql.Date;
+import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
@@ -21,4 +21,5 @@ public class FileDTO {
     String hash; //파일의 해시값
     Long size;
     Date updateTime;
+    //embedding
 }

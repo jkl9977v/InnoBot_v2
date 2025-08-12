@@ -18,10 +18,19 @@ where file_name like concat('%', #{fileName},'%')
 and fp.path = #{path} 
 </select>
 
-<update id="updateFileHash" >
+<insert id="fileInsert" parameterType="fileDTO">
+insert into file (file_id, file_name, extension, 
+path_id, size, hash, update_time)
+values (#{fileId}, #{fileName}, #{extension}, 
+#{pathId}, #{size}, #{hash}, #{updateTime}) <!-- embedding : null -->
+</insert>
+
+<update id="fileHashUpdate" >
 update file 
 set hash = #{newHash}
 where file_Id = #{fileId}
 </update>
+
+
 
 </mapper>

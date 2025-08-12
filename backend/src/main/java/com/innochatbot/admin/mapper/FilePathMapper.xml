@@ -56,6 +56,12 @@ order by file_name
 select path from file_path where path_id = #{pathId}
 </select>
 
+<select id="pathIdSelect" parameterType="String" resultType="String">
+select path_id
+from file_path
+where path = #{path}
+</select>
+
 <select id="filePathCount" resultType="Integer" parameterType="String">
 select count(*) 
 from file f join file_path fp on
@@ -79,8 +85,8 @@ where fp1.path_id=#{pathId}
 </select>
 
 <insert id="filePathInsert" parameterType="pathDTO">
-insert into file_path (path_id, path, access_id)
-values(#{pathId}, #{path}, #{accessId})
+insert into file_path (path_id, path, parent_id, depth)
+values(#{pathId}, #{path}, #{parentId}, #{depth})
 </insert>
 
 <update id="filePathUpdate" parameterType="pathDTO">

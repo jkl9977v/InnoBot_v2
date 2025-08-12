@@ -10,4 +10,9 @@
     from ${table}
 </select>
 
+<select id="autoNum2" resultType="string">
+    select concat(#{sep}, lpad(coalesce(max(cast(substring(${column}, #{len})as unsigned)), 0)+1,#{zeroLen}+1,'0'))
+    from ${table}
+</select>
+
 </mapper>

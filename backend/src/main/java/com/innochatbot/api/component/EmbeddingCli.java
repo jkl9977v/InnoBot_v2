@@ -1,8 +1,10 @@
 package com.innochatbot.api.component;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.innochatbot.api.mapper.FileMapper;
-import com.innochatbot.api.service.ChunkService;
-import com.innochatbot.api.service.EmbeddingService;
+import com.innochatbot.api.service.FilePathScannerService;
 import com.innochatbot.api.service.FileScannerService;
 
 /**
@@ -29,81 +30,55 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
     FileMapper fileMapper;
     
     @Autowired
-    private FileScannerService fileScannerService;
-
-    @Autowired
-    private EmbeddingService embeddingService;
+    private FilePathScannerService filePathService;
     
     @Autowired
-    private PdfTextExtractor pdfTextExtractor;
+    private FileScannerService fileService;
     
-    @Autowired
-    private ChunkService chunkService;
-
+    
     @Override
-    public void run(String... args) throws Exception { 
+    public void run(String... args) throws Exception { //파일경로 순회
         System.out.println("▶ EmbeddingCli 시작");
-        
-        //String fileId = fileScannerService.getFileId(fileName, filePath);
-        // 1. docs 폴더 내 PDF 파일 순회 => 전체 파일 순회
-        Path docsDir = Paths.get("D:/InnoBot_v3/docs");   // 문서파일 위치 경로
-        /*
-        Files.walk(docsDir)
-                .filter(p -> p.toString().endsWith(".pdf")) // .pdf 확장자만 선택
-                .forEach(filePath -> fileScannerService.processPdf(filePath));      // 각 PDF 처리를 위한 파일경로 전달
-                */
-        Files.walk(docsDir)
-        .filter(Files::isRegularFile) // 폴더 제외
-        .forEach(filePath -> {
-            //fileScannerService.registerFile(filePath); // DB 등록
-            //processByExtension(filePath);              // 확장자별 처리
-        });
 
+        // 1. docs 폴더 내 파일 순회 => 전체 파일 순회
+        Path docsDir = Paths.get("D:/InnoBot_v3/docs");   // 문서파일 위치 경로 => 추후 직접 입력 가능하게 하기
+        
+        Files.walk(docsDir)
+        		.forEach(currentPath -> {
+        			if(Files.isDirectory(currentPath)) { // 디렉토리일 때
+        				System.out.println("디렉토리 : " + currentPath);
+        				String path = currentPath.toAbsolutePath().toString().replace("\\", "/");
+        				String parentPath;
+        				//계층 깊이 (depth) = 현재 경로 깊이 (currentDepth) - 기준 경로 깊이 (baseDepth) 
+        				int baseDepth = docsDir.getNameCount();
+        				int currentDepth = docsDir.getNameCount();
+        				int depth = currentDepth - baseDepth;
+        				
+        				if (currentPath.equals(docsDir)) {
+        					parentPath = null;
+        				}else {
+        					parentPath = currentPath.getParent().toString().replace("\\", "/");
+        				}
+        				// 추후 더 필요한거 있으면 추가
+        				filePathService.processFilePath(docsDir, path, parentPath, depth);
+        			}else { //파일일 때
+        				System.out.println("파일 : " + currentPath);
+        				String fileName = currentPath.getFileName().toString();
+        				String filePath = currentPath.toAbsolutePath().toString();
+        				Path parentPath = currentPath.getParent();
+        				Date updateTime = null;
+        				long size = 0;
+						try {
+							updateTime = new Date(
+									Files.getLastModifiedTime(currentPath).toMillis());
+							size = Files.size(currentPath);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+        				fileService.processFile(fileName, filePath, parentPath, updateTime, size, currentPath);
+        			}
+        		});
         System.out.println("▶ EmbeddingCli 완료");
-    }
-    
-    public void registerFile(Path filePath) {
-    	String fileName = filePath.getFileName().toString();
-    	String pathStr = filePath.getParent().toString().replace("\\","/");
-    	
-    	//file_path insert or get path_id
-    	//String pathId = getOrInsertFilePath(pathStr);
-    	
-    	//file insert
-    	String fileId;
-    	
-    	
-    	
-    	//jdbc.update("INSERT INTO file(file_id, file_name, extension, path_id, size) VALUES (?, ?, ?, ?, ?)",
-    	//        fileId, fileName, getExtension(fileName), pathId, filePath.toFile().length());
-    }
-    
-    private void processByExtension(Path filePath) {
-    	
-    	String ext = getExtension(filePath.getFileName().toString()).toLowerCase();
-    	/*
-    	switch (ext) {
-    	case "pdf":
-    		pdfProcessor.process(filePath);
-    		break;
-    	case "txt" : 
-    		textProcessor.process(filePath);
-    		break;
-    	case "docs" : 
-    		docsProcessor.process(filePath);
-    		break;
-    	default : 
-    		System.out.println("지원하지 않는 확장자: " + ext);
-    	}
-    	*/
-    }
-    
-    private String getExtension(String fileName) {
-    	int dotIndex = fileName.lastIndexOf(".");
-    	return (dotIndex != -1) ? fileName.substring(dotIndex+1) : "";
-    }
-    
-    
-    
-    
+    }    
 }
