@@ -11,19 +11,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.innochatbot.api.dto.ChatResponse;
+import com.innochatbot.api.mapper.ChatMapper;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 
 //OpenAI API 호출
 @Service
-public class ChatService {
+public class ChatService_old {
 
     private final JdbcTemplate jdbc;
     private final EmbeddingService embeddingService;
     @Autowired
-    TopSearchService topSearchService;
-    
+    ChatMapper chatMapper;
 
     @Value("${openai.api.key}")
     private String apiKey;
@@ -32,7 +32,7 @@ public class ChatService {
     //private boolean useDummy;
     private OpenAiService client;
 
-    public ChatService(JdbcTemplate jdbc, EmbeddingService embeddingService) {
+    public ChatService_old(JdbcTemplate jdbc, EmbeddingService embeddingService) {
         this.jdbc = jdbc;
         this.embeddingService = embeddingService;
     }
@@ -65,14 +65,15 @@ public class ChatService {
           ORDER BY (embedding <=> ?)
           LIMIT 50
         """;
+        /*
+        SELECT f.file_id, chunk_id, content
+        FROM chunk c
+        join file f
+        on c.file_id = f.file_id
+        ORDER BY (c.embedding <=> ?)
+        LIMIT 10
+        */
         List<Map<String, Object>> rows = jdbc.queryForList(sql, toBytes(qVec));
-        
-        
-        
-        //file -> chunk 검색
-        //topSearchService.topFileChunk(qVec, 5, 10);
-        //topSearchService.topFileChunkEmbedding(qVec, 0, 0, 0);
-        //topSearchService.topChunkEmbeddingBasic(question, 0, 0);
 
         // 3) 프롬프트 생성
         StringBuilder prompt = new StringBuilder();

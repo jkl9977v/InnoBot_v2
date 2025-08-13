@@ -28,17 +28,9 @@ public class FilePathListService {
 		Integer count = filePathMapper.filePathCount(pathId);
 		
 		listPageService.ShowList(page, limitRow, count,searchWord, list, model, pathId, kind);
-		String path=filePathMapper.pathSelect(pathId);
-		model.addAttribute("path", path);
+		FilePathDTO filePathDTO = filePathMapper.filePathDetail2(pathId);
+		model.addAttribute("filePathDTO", filePathDTO);
 		
 	}
-	
-// 이건 뭐 만드려고 짠건지 나도 잘 모르겠음
-	// "/"안에 있는 경로 보여주는 코드??
-//    public void pathList(String pathId, Model model) {
-//        List<FilePathDTO> dto = filePathMapper.filePathSelectAll();
-//        model.addAttribute("dto", dto);
-//
-//    }
 
 }

@@ -7,6 +7,7 @@
 
 <resultMap id="filePathWithFileMap" type="pathDTO">
 	<id property="rowNum" column="rn" javaType="int"/>
+	<result property="itemType" column="item_type" javaType="java.lang.String"/> <!-- directory 또는 file -->
 	<result property="pathId" column="path_id" javaType="java.lang.String"/>
 	<result property="path" column="path" javaType="java.lang.String"/>
 	<result property="accessId" column="access_id" javaType="java.lang.String"/>
@@ -20,40 +21,60 @@
 		<result property="pathId" column="file_path_id" javaType="java.lang.String"/>
 		<result property="hash" column="hash" javaType="java.lang.String"/>
 		<result property="size" column="size" javaType="Long"/>
- 		<result property="updateTime" column="update_time" javaType="java.sql.Date"/> 
+ 		<result property="updateTime" column="update_time" javaType="java.sql.Timestamp"/> 
 	</association>
 </resultMap>
 
-<select id="filePathList" resultMap="filePathWithFileMap"  parameterType="StartEndPageDTO"> <!-- resultType="pathDTO" -->
+<select id="filePathList" resultMap="filePathWithFileMap"  parameterType="StartEndPageDTO">
 select * 
 from (
-select row_number() over (order by file_id) as rn
-, file_id as file_id, file_name as file_name         <!-- 파일 -->
-, extension as extension, size as size
-  , hash as hash, update_time as update_time
-  , f.path_id as file_path_id
-  , fp.path_id as path_id          <!-- 파일경로 -->
-  , path, access_Id
-  , depth, fp.parent_Id as parent_id
+select row_number() over (order by item_type ASC <!--, sort_name ASC --> ) as rn <!-- order by file_id -->
+, t.*
+from (
+select 
+'directory' as item_type  <!-- 하위폴더 -->
+, fp.path_id as path_id, fp.path as path
+, fp.access_id as access_id, fp.depth as depth
+, fp.parent_id as parent_id
+<!-- 파일컬럼 null -->
+, null as file_id, null as file_name, null as extension, null as file_path_id
+, null as hash, null as size, null as update_time
+<!-- 표시/정렬용 이름 -->
+<!-- ,    fp.path          AS name -->
+<!-- 정렬 키(폴더는 path 기준, 필요하면 폴더명만 추출해서 쓰기) -->
+<!--     , fp.path          AS sort_name -->
 from file_path fp
-left join file f 
-on fp.path_id=f.path_id
-where (f.path_id=#{idColumn} or parent_id=#{idColumn})
-
-<if test="searchWord != null">
-and
-file_name like concat('%',#{searchWord},'%')
-
+where fp.parent_id =#{idColumn}
+<if test="searchWord != null and searchWord != '' ">
+ and fp.path like concat ('%', #{searchWord}, '%')
 </if>
-<if test="kind != null and kind != ''">
-		and extension like concat('%',#{kind},'%')
+union all
+<!-- 현재 경로 내 파일 -->
+select 
+'file' as item_type
+, fp.path_id as path_id, fp.path as path, fp.access_id as access_id
+, fp.depth as depth, fp.parent_id as parent_id
+, f.file_id as file_id, f.file_name as file_name
+, f.extension as extension, f.path_id as file_path_id
+, f.hash as hash, f.size as size
+, f.update_time as update_time
+<!-- 표시/정렬용 이름 -->
+<!-- ,    fp.path          AS name -->
+<!-- 정렬 키(폴더는 path 기준, 필요하면 폴더명만 추출해서 쓰기) -->
+<!--     , fp.path          AS sort_name -->
+from file_path fp
+left join file f
+on f.path_id = fp.path_id
+where fp.path_id = #{idColumn}
+<if test="searchWord != null and searchWord != ''">
+and f.file_name Like concat('%', #{searchWord}, '%')
 </if>
-) as sub where rn between #{startRow} and #{endRow}
-order by file_name
-</select>
-
-<select id="pathSelect" parameterType="String" resultType="String">
-select path from file_path where path_id = #{pathId}
+<if test="kind != null and kind !=  ''">
+and f.extension like concat('%', #{kind} , '%')
+</if>
+)as t
+) as sub where sub.rn between #{startRow} and #{endRow}
+order by sub.item_type ASC <!-- , sub.sort_name ASC -->
 </select>
 
 <select id="pathIdSelect" parameterType="String" resultType="String">
@@ -82,6 +103,12 @@ from file_path fp1
 left join file_path fp2
 on fp1.parent_id = fp2.path_id
 where fp1.path_id=#{pathId}
+</select>
+
+<select id="filePathDetail2" parameterType="String" resultType="pathDTO">
+select *
+from file_path
+where path_id = #{pathId}
 </select>
 
 <insert id="filePathInsert" parameterType="pathDTO">

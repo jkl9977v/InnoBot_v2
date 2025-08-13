@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.innochatbot.api.mapper.ChatMapper">
+
+<!-- 기능 정상 작동 여부 확인 필요함 -->
+<select id="fileNameEmbeddingSelect" resultType="map">
+SELECT file_id, file_name, embedding 
+from file 
+where embedding is not null;
+</select>
+
+<select id="chunkEmbeddingSelect" resultType="map" parameterType="String">
+select chunk_id, file_id, content, embedding
+from chunk
+where file_id in
+<foreach item="id" collection="fileIds" open='(' separator=',' close=')'>
+#{id}
+
+</foreach>
+</select>
+
+<select id="fileAndChunkEmbeddingSelect" resultType="map">
+select f.file_id, f.file_name, f.title_embedding
+, c.chunk_id, c.content, c.embedding
+from file f
+join chunk c on f.file_id = c.file_id
+where f.embedding is not null
+and c.embedding is not null
+</select>
+
+<select id="selectChunkCandidates" resultType="map" parameterType="int">
+select chunk_id, file_id, content, embedding
+from chunk
+Limit #{limit}
+</select>
+
+</mapper>

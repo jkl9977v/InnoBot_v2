@@ -17,11 +17,13 @@ public class InnoChatbotApplication {
         SpringApplication.run(InnoChatbotApplication.class, args);
     }
     
+    /*
     @RequestMapping("/")
     public String index() {
     //나중에 챗봇은 여기에 띄우면 좋겠다.
     	return "thymeleaf/auth-login";
     } 
-
+	*/
+    
 }
  

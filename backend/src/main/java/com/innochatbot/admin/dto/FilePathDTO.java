@@ -19,6 +19,7 @@ public class FilePathDTO {
     int depth;
     String parentId;
     String parentPath;
+    String itemType;
     
     FileDTO FileDTO;
     AccessRuleDTO AccessRuleDTO;

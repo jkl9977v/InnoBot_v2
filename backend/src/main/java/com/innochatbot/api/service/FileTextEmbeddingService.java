@@ -21,7 +21,7 @@ public class FileTextEmbeddingService {
 	public void contentEmbedding(Path filePath, String extension, String fileId) throws Exception {
 		String text;
 		List<String> chunks;
-		System.out.println("extension: "+extension);
+		System.out.println("extension: " + extension);
 		
 		switch (extension) {
     	case "pdf":

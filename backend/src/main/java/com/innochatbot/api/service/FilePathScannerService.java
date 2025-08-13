@@ -17,7 +17,6 @@ public class FilePathScannerService {
 	AutoNumService autoNumService;
 
 	public void processFilePath(Path docsDir, String path, String parentPath, int depth) {
-		System.out.println("docsDir : " + docsDir + "/ Path : " + path);
 		String pathId = filePathMapper.pathIdSelect(path);
 		String parentId = filePathMapper.pathIdSelect(parentPath);
 		if (pathId == null) { //새로 생긴 경로
@@ -29,7 +28,7 @@ public class FilePathScannerService {
             
             FilePathDTO dto = new FilePathDTO();
             
-            dto.setPathId(pathId);
+            dto.setPathId(pathId); 
             dto.setPath(path);
             dto.setParentId(parentId);
             dto.setDepth(depth);

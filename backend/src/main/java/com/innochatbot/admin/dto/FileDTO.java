@@ -21,5 +21,5 @@ public class FileDTO {
     String hash; //파일의 해시값
     Long size;
     Date updateTime;
-    //embedding
+    byte[] embedding;
 }

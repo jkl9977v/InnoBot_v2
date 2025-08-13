@@ -20,9 +20,9 @@ and fp.path = #{path}
 
 <insert id="fileInsert" parameterType="fileDTO">
 insert into file (file_id, file_name, extension, 
-path_id, size, hash, update_time)
+path_id, size, hash, update_time, embedding)
 values (#{fileId}, #{fileName}, #{extension}, 
-#{pathId}, #{size}, #{hash}, #{updateTime}) <!-- embedding : null -->
+#{pathId}, #{size}, #{hash}, #{updateTime}, #{embedding}) 
 </insert>
 
 <update id="fileHashUpdate" >

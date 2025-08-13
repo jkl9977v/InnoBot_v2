@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import com.innochatbot.api.dto.ChunkDTO;
 import com.innochatbot.api.mapper.ChunkMapper;
@@ -16,8 +15,6 @@ import com.innochatbot.api.mapper.ChunkMapper;
 public class ChunkService {
 	@Autowired
 	private EmbeddingService embeddingService;
-	@Autowired
-	private JdbcTemplate jdbc;
 	@Autowired
 	ChunkMapper chunkMapper;
 
@@ -43,6 +40,12 @@ public class ChunkService {
 		System.out.printf("  • 처리 완료: %s (%d 청크)%n", fileId, chunks.size());
 	}
 	
+	//fileName 임베딩
+	public byte[] fileNameEmbedding(String fileName) {
+		float[] vec = embeddingService.embed(fileName);
+		return toBytes(vec);
+	}
+	
 	//chunkId 생성 및 값 부여
 	private Long generateChunkId() {
 		UUID uuid = UUID.randomUUID();
@@ -51,8 +54,7 @@ public class ChunkService {
 	}
 	
 	// chunk 테이블에 임베딩된 청크 삽입
-	//private
-	public void chunkInsert(String fileId, int sequence, String content, float[] embedding) {
+	private void chunkInsert(String fileId, int sequence, String content, float[] embedding) {
 		Long chunkId = generateChunkId(); // 또는 UUID를 long으로 변환하거나 sequence 활용
 		ChunkDTO dto = new ChunkDTO();
 		dto.setChunkId(chunkId);

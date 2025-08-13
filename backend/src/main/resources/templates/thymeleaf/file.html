@@ -46,7 +46,7 @@
       gtag('config', 'UA-56159088-1');
     </script>
     <script type="text/javascript" src="/js/getHtml.js"></script>
-        <script>
+    <script>
     	loadGetHeader("getHeader", "/admin/getHeader");
     	loadGetMain2("getMain2", "/admin/getMain2");
     </script>
@@ -70,7 +70,7 @@
   <div class="col-md-12">
   <div class="form-row">
   	<div class="col-md-6 d-flex align-items-end">
-  		<h5 class="mb-4 mt-4">현재경로 : [[${path}]]</h5>
+  		<h5 class="mb-4 mt-4">현재경로 : [[${filePathDTO.path}]]</h5>
   	</div>
   	<div class="col-md-6 text-right">
   		<a type="button" class="btn btn-lm btn-primary ml-2" th:href="@{/admin/file/addAccessRule(pathId=${pathId})}">
@@ -126,18 +126,68 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="dto : ${list}">
-                    <td>[[${dto.fileDTO.fileName}]]</td>
-                    <td>[[${dto.fileDTO.size}]]</td>
-                    <td>[[${dto.fileDTO.updateTime}]]</td>
+                  <tr th:if="${filePathDTO.depth > 0}">
+                  	<td >
+                  		<a th:href="@{/admin/file/fileList(pathId=${filePathDTO.parentId})}">📁  ...</a>
+                  	</td>
+                  	<td> </td>
+                  	<td> </td>
+                  	<td> </td>
+                  </tr>
+                  <tr th:if="${list != null and #lists.size(list) > 0}" 
+                  		th:each="dto, iter : ${list}">
+                  	<!-- 폴더/파일 구분 -->
+                  	<td>
+                  	<span th:switch="${dto.itemType}">
+						<!-- 폴더 행 -->
+                  		<a th:case="'directory'"
+                  		class="d-inline-flex align-items-center"
+                  		th:href="@{/admin/file/fileList(pathId=${dto.pathId})}">
+                  			📁 <span th:text="${dto.path != null ? dto.path.substring(dto.path.lastIndexOf('/') + 1) : ''}"></span>
+                  		</a>
+                  		<!-- 파일 행 -->
+                  		<span th:case="'file'" class="d-inline-flex align-items-center"> 
+                  			<!-- <i class="fe fe-file me-2"></i> -->
+            				<span th:text="${dto.fileDTO != null ? dto.fileDTO.fileName : '—'}"></span>
+                  		</span>
+                  	</span>
+                  	</td>
+                  	<!-- 크기: 파일만 표시, 폴더는 '-' -->
+      				<td th:text="${dto.itemType == 'file' && dto.fileDTO != null
+                    	? #numbers.formatDecimal(dto.fileDTO.size/1024.0, 0, 1) + ' KB'
+                    	: '-'}">-</td>
+
+      				<!-- 수정일: 파일만 표시 -->
+      				<td th:text="${dto.itemType == 'file' && dto.fileDTO != null
+                    	? #dates.format(dto.fileDTO.updateTime, 'yyyy-MM-dd HH:mm')
+                    	: '-'}">-</td>
+
+      				<!-- 자세히: 파일은 상세, 폴더는 열기 -->
+      				<td>
+        				<a th:if="${dto.itemType == 'file' && dto.fileDTO != null}"
+           				class="btn btn-sm btn-outline-primary"
+           				th:href="@{/admin/file/fileDetail(fileId=${dto.fileDTO.fileId})}">
+          				자세히
+        				</a>
+        				<!-- <a th:if="${dto.itemType == 'directory'}"
+           				class="btn btn-sm btn-outline-secondary"
+           				th:href="@{/admin/file/list(idColumn=${dto.pathId})}">
+          				열기
+        				</a> -->
+      				</td>
+                  	
+                    <!-- <td>${dto.fileDTO.fileName}</td>
+                    <td>${dto.fileDTO.size}</td>
+                    <td>${dto.fileDTO.updateTime}</td>
                     <td>
                       <a class="btn btn-sm btn-outline-primary"
-                         href="#">자세히 기능 개발 예정</a> <!-- th:href="@{/admin/file/fileDetail(fileId=${dto.fileDTO.fileId})}" -->
-                    </td>
+                         th:href="@{/admin/file/fileDetail(fileId=${dto.fileDTO.fileId})}">자세히 기능 개발 예정</a>
+                    </td> -->
                   </tr>
-                  <tr th:if="${list.size() <= 0}">
-                    <td colspan="4" class="text-center">검색 결과가 없습니다.</td>
-                  </tr>
+                  <!-- 데이터가 없을 때 -->
+    			  <tr th:if="${list == null or #lists.size(list) == 0}">
+      				  <td colspan="4" class="text-center">검색 결과가 없습니다.</td>
+    			  </tr>
                 </tbody>
               </table>
             </div>

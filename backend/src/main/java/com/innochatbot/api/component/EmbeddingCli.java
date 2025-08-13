@@ -51,8 +51,9 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
         				String parentPath;
         				//계층 깊이 (depth) = 현재 경로 깊이 (currentDepth) - 기준 경로 깊이 (baseDepth) 
         				int baseDepth = docsDir.getNameCount();
-        				int currentDepth = docsDir.getNameCount();
+        				int currentDepth = currentPath.getNameCount();
         				int depth = currentDepth - baseDepth;
+        				System.out.println("디렉토리 depth: " + depth);
         				
         				if (currentPath.equals(docsDir)) {
         					parentPath = null;
@@ -62,7 +63,6 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
         				// 추후 더 필요한거 있으면 추가
         				filePathService.processFilePath(docsDir, path, parentPath, depth);
         			}else { //파일일 때
-        				System.out.println("파일 : " + currentPath);
         				String fileName = currentPath.getFileName().toString();
         				String filePath = currentPath.toAbsolutePath().toString();
         				Path parentPath = currentPath.getParent();
