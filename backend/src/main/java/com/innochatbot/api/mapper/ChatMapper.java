@@ -4,21 +4,22 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
+
 
 @Mapper
 public interface ChatMapper {
-	//유사도 검색1 순차적으로(file -> chunk)
-	public List<Map<String, Object>> fileNameEmbeddingSelect();
 
-	public List<Map<String, Object>> chunkEmbeddingSelect(@Param("id") List<String> id);
-	//List<String> candidateFileIds
+	//1. chunk만 유사도 검색
+	public List<Map<String, Object>> chunkEmbeddingOnlySelect(@Param("chunkLimit") int chunkLimit);
 	
-	
-	//유사도 검색 동시에
+	//2. file과 chunk 동시에 유사도 검색
 	public List<Map<String, Object>> fileAndChunkEmbeddingSelect();
 	
-	//기본형 (chunk만)
-	public List<Map<String, Object>> selectChunkCandidates(@Param("limit") int limit);
+	//3. file -> chunk 순서로 유사도 검색
+	public List<Map<String, Object>> fileNameEmbeddingSelect1();
+
+	public List<Map<String, Object>> chunkEmbeddingSelect2(@Param("fileIds") List<String> fileIds);
+	//List<String> fileIds
 
 }

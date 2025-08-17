@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.innochatbot.api.dto.ChatResponse;
+import com.innochatbot.api.dto.TopChunk;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
@@ -19,7 +20,6 @@ import com.theokanning.openai.service.OpenAiService;
 @Service
 public class ChatService {
 
-    private final JdbcTemplate jdbc;
     private final EmbeddingService embeddingService;
     @Autowired
     TopSearchService topSearchService;
@@ -32,8 +32,7 @@ public class ChatService {
     //private boolean useDummy;
     private OpenAiService client;
 
-    public ChatService(JdbcTemplate jdbc, EmbeddingService embeddingService) {
-        this.jdbc = jdbc;
+    public ChatService(EmbeddingService embeddingService) {
         this.embeddingService = embeddingService;
     }
 
@@ -56,33 +55,47 @@ public class ChatService {
          */
 
         // 1) 질문 임베딩
-        float[] qVec = embeddingService.embed(question);
+        float[] queryVec = embeddingService.embed(question);
  
-        // 2) 유사도 Top-K 검색 (K=5)
-        String sql = """
-          SELECT chunk_id, content
-          FROM chunk
-          ORDER BY (embedding <=> ?)
-          LIMIT 50
-        """;
-        List<Map<String, Object>> rows = jdbc.queryForList(sql, toBytes(qVec));
         
+        // 2) 유사도 Top-K 검색 (K=10)
         
+        //유사도 검색 로직 3개
+        //1. chunk만 유사도 검색
+        int chunkLimit = 200;  //DB에서 가져올 후보 청크 수(예: 1000)
+        int topK = 10;  //최종 상위 결과 수(예: 5)
+        //List<TopChunk> rows = topSearchService.topChunkEmbedding(queryVec, chunkLimit, topK);
         
-        //file -> chunk 검색
-        //topSearchService.topFileChunk(qVec, 5, 10);
-        //topSearchService.topFileChunkEmbedding(qVec, 0, 0, 0);
-        //topSearchService.topChunkEmbeddingBasic(question, 0, 0);
+        //2. file과 chunk 동시에 유사도 검색
+        double wTitle = 0.3;  //제목 가중치 (예: 0.3)
+        double wChunk = 0.7;  //내용 가중치 (예: 0.7)
+        //int topK = 10; //Top-K 개수
+        //List<TopChunk> rows = topSearchService.topFileChunkEmbedding(queryVec, wTitle, wChunk, topK);
+        
+        //3. file -> chunk 순서로 유사도 검색
+        int topM = 100;  //제목 1차 후보 개수 (예: 20~50)
+        // int K;  	  //최종 청크 Top-K (예: 5)
+        List<TopChunk> rows = topSearchService.topFileChunk(queryVec, topM, topK);
+        
+        // 공통 출력(검색 결과 확인)
+        printResults(rows);
+        
 
-        // 3) 프롬프트 생성
+        
+        /*
+        //빈 결과 방어 
+        if (rows == null || rows.isEmpty()) {
+            // fallback 처리: K를 줄이거나, 다른 전략/키워드 검색으로 재시도
+        }
+        */
         StringBuilder prompt = new StringBuilder();
         int index = 1;
-        for (Map<String, Object> row : rows) {
-            //prompt.append(row.get("content")).append("\n---\n");
-            prompt.append("Document " + index + ":\n");
-            prompt.append(row.get("content")).append("\n\n");
+        for (TopChunk row : rows) {
+            prompt.append("Document ").append(index).append(":\n");
+            prompt.append(row.content()).append("\n\n"); // record 게터
             index++;
         }
+        
         prompt.append("Question: ").append(question);
 
         // 4) GPT 호출 방식 (ChatMessage, completionRequest)
@@ -111,11 +124,29 @@ public class ChatService {
 
         // 5) source chunk IDs 수집
         List<Long> ids = rows.stream()
-                .map(r -> ((Number) r.get("chunk_id")).longValue())
-                .toList();
-
+        		.map(r -> Long.valueOf(r.chunkId()))
+        		.toList();
+        //타입 체크
+        System.out.println(rows.get(0).getClass());
         return new ChatResponse(answer, ids);
     }
+    
+    private void printResults(List<TopChunk> rows) {
+    	System.out.println("=== 검색 결과 ===");
+        int idx = 1;
+        for (TopChunk chunk : rows) {
+            System.out.printf("[%02d] fileId=%s | chunkId=%s | score=%.4f\n",
+                idx,
+                chunk.fileId(),
+                chunk.chunkId(),
+                chunk.score()
+            );
+            System.out.println("Content: " + chunk.content());
+            System.out.println("-------------------------------------------------");
+            idx++;
+        }
+    }
+    
     
     // float[] → byte[] 변환 (PostgreSQL pgvector용, LE 방식)
     private byte[] toBytes(float[] vec) {

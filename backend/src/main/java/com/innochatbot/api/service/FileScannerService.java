@@ -28,7 +28,7 @@ public class FileScannerService {
 	@Autowired
 	ChunkService chunkService;
 	
-	//개별  파일 처리 함수
+	//개별 파일 처리 함수
 	public void processFile(String fileName, String filePath, Path parentPath
 			, Date updateTime, long size, Path currentPath) {
         System.out.println("처리대상 파일: " + filePath);
