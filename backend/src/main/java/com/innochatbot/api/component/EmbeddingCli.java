@@ -33,7 +33,7 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
     private FilePathScannerService filePathService;
     
     @Autowired
-    private FileScannerService fileService;
+    private FileScannerService fileScannerService;
     
     
     @Override
@@ -76,7 +76,7 @@ public class EmbeddingCli implements CommandLineRunner {        // 텍스트 임
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-        				fileService.processFile(fileName, filePath, parentPath, updateTime, size, currentPath);
+						fileScannerService.processFile(fileName, filePath, parentPath, updateTime, size, currentPath);
         			}
         		});
         System.out.println("▶ EmbeddingCli 완료");

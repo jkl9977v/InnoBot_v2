@@ -132,20 +132,66 @@
          	<artifactId>mybatis-spring-boot-starter</artifactId>
          	<version>3.0.3</version>
       	</dependency>
+      	
       	<!--로그-->
       	<dependency>
   			<groupId>org.springframework.boot</groupId>
   			<artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
+		
+		<!-- Apache POI (docx, xlsx, pptx) -->
+		<dependency>
+  			<groupId>org.apache.poi</groupId>
+  			<artifactId>poi-ooxml</artifactId>
+  			<version>5.2.5</version>
+		</dependency>
 
+		<!-- Jsoup (html) -->
+		<dependency>
+  			<groupId>org.jsoup</groupId>
+  			<artifactId>jsoup</artifactId>
+  			<version>1.17.2</version>
+		</dependency>
+
+		<!-- Apache Tika (fallback, 선택) -->
+		<dependency>
+    		<groupId>org.apache.tika</groupId>
+    		<artifactId>tika-core</artifactId>
+    		<version>2.9.2</version> <!-- 최신 안정 버전 권장 -->
+		</dependency>
+		<dependency>
+  			<groupId>org.apache.tika</groupId>
+  			<artifactId>tika-parsers-standard-package</artifactId>
+  			<version>2.9.1</version>
+		</dependency>
 
 	</dependencies>
 
 	<build>
+<!--	  	<resources>
+    		<resource>
+      			<directory>src/main/java</directory>
+      			<includes>
+        			<include>**/*Mapper.xml</include>
+      			</includes>
+    		</resource>
+  		</resources>-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-compiler-plugin</artifactId>
+    			<version>3.11.0</version>
+    			<configuration>
+        			<compilerArgs>
+            			<arg>-parameters</arg>
+        			</compilerArgs>
+        			<source>17</source>   <!-- JDK 버전 맞게 -->
+        			<target>17</target>
+    			</configuration>
 			</plugin>
 		</plugins>
 	</build>

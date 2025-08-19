@@ -49,7 +49,7 @@ public class ChunkService {
 	//chunkId 생성 및 값 부여
 	private Long generateChunkId() {
 		UUID uuid = UUID.randomUUID();
-		Long chunkId = Math.abs(uuid.getMostSignificantBits());
+		Long chunkId = Math.abs(uuid.getMostSignificantBits()); 
 		return chunkId;
 	}
 	

@@ -8,7 +8,7 @@ import com.innochatbot.api.dto.ChunkDTO;
 public interface ChunkMapper {
 
 	public void chunkInsert(ChunkDTO dto);
-
+ 
 	public void chunkDelete(String fileId);
 
 }

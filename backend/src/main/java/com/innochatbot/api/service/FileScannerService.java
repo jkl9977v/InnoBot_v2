@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.innochatbot.admin.dto.FileDTO;
 import com.innochatbot.admin.mapper.FilePathMapper;
 import com.innochatbot.admin.service.AutoNumService;
@@ -27,6 +28,15 @@ public class FileScannerService {
 	ChunkMapper chunkMapper;
 	@Autowired
 	ChunkService chunkService;
+	@Autowired
+	EmbeddingService embeddingService;
+	
+	
+	public FileScannerService(ChunkService chunkService
+			, EmbeddingService embeddingService) {
+		this.chunkService = chunkService;
+		this.embeddingService = embeddingService;
+	}
 	
 	//개별 파일 처리 함수
 	public void processFile(String fileName, String filePath, Path parentPath
@@ -56,45 +66,53 @@ public class FileScannerService {
 		            System.out.println("파일 변경 없음 -> 생략: " + fileName);
 		            return;
 				} else if (!currentHash.equals(oldHash)) {
-					fileMapper.fileHashUpdate(currentHash, fileId);
+					fileMapper.fileHashUpdate(currentHash, fileId); 
 					
 					//기존 Chunk삭제
 					chunkMapper.chunkDelete(fileId);
 					fileTextEmbeddingService.contentEmbedding(currentPath, extension, fileId);
 				}
 			} else if (fileId == null) { // 1. file_id가 null일때 : file 이번에 감지함   		
-	            String sep ="file_";
-	            String column = "file_id";
-	            int len = 6;
-	            String table = "file";
-	            int zeroLen = 10;
-	            fileId = autoNumService.autoNum2(sep, column, len, table , zeroLen);
-	            
-	            //파일 이름에 대한 텍스트 임베딩
-				byte[] embedding = chunkService.fileNameEmbedding(fileName);
-	              
-	            //file에 대한 insert 부분 만들기 
-	            FileDTO dto = new FileDTO();
-	                
-	            dto.setFileId(fileId);
-	            dto.setFileName(fileName);
-	            dto.setHash(currentHash);
-	            dto.setExtension(extension);
-	            dto.setPathId(pathId);
-	            dto.setSize(size);
-	            dto.setUpdateTime(updateTime); 
-	            dto.setEmbedding(embedding);
-	                
-	            fileMapper.fileInsert(dto);
-	            System.out.println(fileName + " 파일 테이블 입력 완료");
+	            fileId = fileWrite(fileName, currentHash, extension, pathId, size, updateTime); //파일테이블 작성
 	            
 	            fileTextEmbeddingService.contentEmbedding(currentPath, extension, fileId); 
 	                
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
     }
+	
+	private String fileWrite(String fileName, String currentHash
+			, String extension, String pathId
+			, long size, Date updateTime) { //파일 작성
+        String sep ="file_";
+        String column = "file_id";
+        int len = 6;
+        String table = "file";
+        int zeroLen = 10;
+        String fileId = autoNumService.autoNum2(sep, column, len, table , zeroLen);
+        
+        //파일 이름에 대한 텍스트 임베딩
+		byte[] embedding = chunkService.fileNameEmbedding(fileName);
+          
+        //file에 대한 insert 부분 만들기 
+        FileDTO dto = new FileDTO();
+            
+        dto.setFileId(fileId);
+        dto.setFileName(fileName);
+        dto.setHash(currentHash);
+        dto.setExtension(extension);
+        dto.setPathId(pathId);
+        dto.setSize(size);
+        dto.setUpdateTime(updateTime); 
+        dto.setEmbedding(embedding);
+            
+        fileMapper.fileInsert(dto);
+        System.out.println(fileName + " 파일 테이블 입력 완료");
+        
+        return fileId;
+	}
 	
 	private String getPathId(Path parentPath) {
 		String path = parentPath.toAbsolutePath().toString().replace("\\", "/");
