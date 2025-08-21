@@ -61,6 +61,7 @@ public class FileTextEmbeddingService {
             chunkService.saveChunks(fileId, chunks);
             System.out.println(extension + " 파일 임베딩 완료 : " + filePath);
         }else System.out.println(filePath + "처리할 청크 없음");
+
         
 		/*
 		if (extractor == null) {

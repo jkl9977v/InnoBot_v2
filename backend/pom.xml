@@ -132,6 +132,7 @@
          	<artifactId>mybatis-spring-boot-starter</artifactId>
          	<version>3.0.3</version>
       	</dependency>
+      	
       	<!--로그-->
       	<dependency>
   			<groupId>org.springframework.boot</groupId>
@@ -164,14 +165,33 @@
   			<version>2.9.1</version>
 		</dependency>
 
-
 	</dependencies>
 
 	<build>
+<!--	  	<resources>
+    		<resource>
+      			<directory>src/main/java</directory>
+      			<includes>
+        			<include>**/*Mapper.xml</include>
+      			</includes>
+    		</resource>
+  		</resources>-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-compiler-plugin</artifactId>
+    			<version>3.11.0</version>
+    			<configuration>
+        			<compilerArgs>
+            			<arg>-parameters</arg>
+        			</compilerArgs>
+        			<source>17</source>   <!-- JDK 버전 맞게 -->
+        			<target>17</target>
+    			</configuration>
 			</plugin>
 		</plugins>
 	</build>

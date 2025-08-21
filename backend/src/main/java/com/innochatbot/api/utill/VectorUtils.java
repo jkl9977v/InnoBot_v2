@@ -60,8 +60,6 @@ public class VectorUtils {
         return true;
     }
     
-    
-    
     // dot product (두 벡터가 이미 정규화되어 있다면 cosine과 동일)
     public static double dot(float[] a, float[] b) {
         double dot = 0;
