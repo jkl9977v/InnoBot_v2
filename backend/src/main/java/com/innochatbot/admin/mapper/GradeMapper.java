@@ -15,7 +15,7 @@ public interface GradeMapper {
 
 	public Integer gradeCount(Integer gradeLevel);
 
-	public List<GradeDTO> gradeSelectAll(@Param("dto") StartEndPageDTO dto
+	public List<GradeDTO> gradeList(@Param("dto") StartEndPageDTO dto
 			, @Param("gradeLevel") Integer gradeLevel);
 
 	public GradeDTO gradeDetail(String gradeId);

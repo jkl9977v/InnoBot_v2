@@ -14,7 +14,7 @@ public interface DepartmentMapper {
 
 	public Integer departmentCount();
 
-	public List<DepartmentDTO> departmentSelectAll(StartEndPageDTO dto);
+	public List<DepartmentDTO> departmentList(StartEndPageDTO dto);
 
 	public DepartmentDTO departmentDetail(String departmentId);
 

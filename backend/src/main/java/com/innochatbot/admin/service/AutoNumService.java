@@ -18,4 +18,9 @@ public class AutoNumService {
         return autoNum;
     }
 
+	public String autoNum2(String sep, String column, int len, String table, int zeroLen) { 
+		String autoNum = autoNumMapper.autoNum2(sep, column, len, table, zeroLen);
+		return autoNum;
+	}
+
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC
-        "-//mybatis.org//DTD Mapper 3.//EN"
+        "-//mybatis.org//DTD Mapper 3.0//EN"
      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.innochatbot.admin.mapper.DepartmentMapper">
@@ -14,7 +14,7 @@ values (#{departmentId}, #{departmentName})
 select count(department_id) from department
 </select>
 
-<select id="departmentSelectAll" resultType="departmentDTO" parameterType="StartEndPageDTO">
+<select id="departmentList" resultType="departmentDTO" parameterType="StartEndPageDTO">
 select * from (
 select row_number() over (order by department_id) as rn,
 department_id, department_name
@@ -23,9 +23,10 @@ from department
 where
 department_name like concat('%',#{searchWord},'%')
 </if>
-) as sub where rn 
-<if test="startRow!=0 and endRow!=0">
-between #{startRow} and #{endRow}
+) as sub 
+<if test="(startRow!=0 and endRow!=0) and (startRow!=null and endRow!=null)">
+ where rn 
+ between #{startRow} and #{endRow}
 </if>
 </select>
 

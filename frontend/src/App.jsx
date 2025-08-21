@@ -103,7 +103,7 @@ function App() {
             placeholder="질문을 입력하세요"
           />
           <button type="button" onClick={handleSubmit} disabled={loading || !question.trim()}>
-            {loading ? '로딩 중...' : '전송'}
+            {loading ? '답변 중...' : '전송'}
           </button>
         </form>
       </div>

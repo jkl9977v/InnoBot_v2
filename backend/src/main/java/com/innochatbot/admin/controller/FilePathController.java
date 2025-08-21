@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.innochatbot.admin.command.FilePathCommand;
 import com.innochatbot.admin.mapper.FilePathMapper;
 import com.innochatbot.admin.service.AutoNumService;
+import com.innochatbot.admin.service.file.FileDetailService;
 import com.innochatbot.admin.service.filePath.FilePathDetailService;
 import com.innochatbot.admin.service.filePath.FilePathListService;
 import com.innochatbot.admin.service.filePath.FilePathUpdateService;
@@ -32,6 +33,9 @@ public class FilePathController { //파일 경로 관리
 
     @Autowired
     FilePathDetailService filePathDetailService;
+    @Autowired
+    FileDetailService fileDetailService;
+    
 
     @GetMapping("pathWrite") //경로 추가
     public String filePathWrite(
@@ -113,5 +117,11 @@ public class FilePathController { //파일 경로 관리
     	filePathMapper.filePathDelete(pathId);
     	System.out.println("삭제: " + pathId);
         return "redirect:/admin/file";
+    }
+    
+    @GetMapping("fileDetail")
+    public String fileDetail(@RequestParam("fileId") String fileId, Model model) {
+    	fileDetailService.fileDetail(fileId, model);
+    	return "thymeleaf/file/fileDetail";
     }
 }

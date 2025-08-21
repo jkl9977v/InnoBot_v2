@@ -1,15 +1,23 @@
 package com.innochatbot.admin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.innochatbot.admin.command.LoginCommand;
+import com.innochatbot.admin.dto.ChatbotDTO;
+import com.innochatbot.admin.dto.LoginDTO;
+import com.innochatbot.admin.dto.UserDTO;
+import com.innochatbot.admin.mapper.UserMapper;
 import com.innochatbot.admin.service.ListPageService;
 import com.innochatbot.admin.service.UserLoginService;
+import com.innochatbot.admin.service.chatBot.ChatbotSettingService;
 import com.innochatbot.admin.service.filePath.FilePathListService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +54,7 @@ public class AdminController {
     }
     @GetMapping("login")
     public String login() {
-    	return "thymeleaf/login";
+    	return "thymeleaf/auth-login";
     }
     @PostMapping("login")
     public String login1(LoginCommand loginCommand
@@ -80,19 +88,42 @@ public class AdminController {
     		) {
         return "redirect:/admin/accessRule/accessList";
     }
+    @Autowired
+    UserMapper userMapper;
     @GetMapping("getHeader")
-    public String getHeader() {
+    public String getHeader(HttpServletResponse response, HttpSession session
+    		, Model model) {
+    	LoginDTO loginSession = (LoginDTO) session.getAttribute("loginSession");
+    	if (loginSession != null) {
+        	UserDTO dto = userMapper.userDetail(loginSession.getUserNum());
+        	model.addAttribute("user", dto);
+    	}else if (loginSession == null) {
+    		model.addAttribute("user", null);
+    	}
     	return "thymeleaf/getAll/getHeader";
     }
     @GetMapping("getMain2")
     public String getMain2() {
     	return "thymeleaf/getAll/getMain2";
     }
-    @GetMapping("chatbot")
+    @GetMapping("chatbot2")
     public String chatbot() {
     	return "thymeleaf/main";
     }
-    //pageNo=1&pageSize=&searchText=&searchTextOption=userName&memberStatuses=CREATE
+    @Autowired
+    ChatbotSettingService chatbotSettingService;
+    
+    @GetMapping("chatbot-setting")
+    public String chatbotSetting() {
+    	return "thymeleaf/chatbot/chatbotSetting";
+    }
+    
+    @PostMapping("chatbot-setting")
+    @ResponseBody 
+    public ResponseEntity<String> saveSetting(@RequestBody ChatbotDTO dto) {
+    	chatbotSettingService.saveOrUpdate(dto);
+        return ResponseEntity.ok("저장 완료");
+    }
 
 
 }

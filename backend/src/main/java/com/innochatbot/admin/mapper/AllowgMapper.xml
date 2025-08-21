@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC
-        "-//mybatis.org//DTD Mapper 3.//EN"
+        "-//mybatis.org//DTD Mapper 3.0//EN"
      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.innochatbot.admin.mapper.AllowgMapper">
@@ -14,17 +14,26 @@ values(#{allowgId}, #{allowgName}, #{gradeId})
 select count(distinct allowg_id) from allow_grade
 </select>
 
-<select id="allowgSelectAll" parameterType="StartEndPageDTO" resultType="gradeDTO">
+<select id="allowgList" parameterType="StartEndPageDTO" resultType="gradeDTO">
 select * from (
 select row_number() over (order by allowg_id) as rn
-, allowg_id, allowg_name
-from 
-(select distinct allowg_id, allowg_name from allow_grade) as distinct_allowg
+, ag.allowg_id, ag.allowg_name
+, g.grade_id, g.grade_name, g.grade_level
+from allow_grade ag
+join grade g on ag.grade_id = g.grade_id
+join (
+	select ag2.allowg_id, min(g2.grade_level) as min_grade_level
+	from allow_grade ag2
+	join grade g2 on ag2.grade_id = g2.grade_id
+	group by ag2.allowg_id
+) as subb
+on ag.allowg_id = subb.allowg_id and g.grade_level = subb.min_grade_level
 <if test="searchWord!=null">
 where
 allowg_name like concat('%',#{searchWord},'%')
 </if>
-) as sub where rn between #{startRow} and #{endRow}
+) as sub 
+where rn between #{startRow} and #{endRow}
 </select>
 
 <select id="allowgDetail" parameterType="String" resultType="gradeDTO">

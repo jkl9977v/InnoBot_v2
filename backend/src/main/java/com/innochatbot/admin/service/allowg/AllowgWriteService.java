@@ -19,7 +19,7 @@ public class AllowgWriteService {
 
 	public void allowgWrite(GradeCommand gradeCommand) {
 		//사용자가 선택한 직급 레벨 이상 리스트 가져오기
-		List<GradeDTO> list = gradeMapper.gradeSelectAll(null, gradeCommand.getGradeLevel());
+		List<GradeDTO> list = gradeMapper.gradeList(null, gradeCommand.getGradeLevel());
 		System.out.println(list);
 		
 		//리스트에 담긴 gradeId 개수만큼 반복하여 insert

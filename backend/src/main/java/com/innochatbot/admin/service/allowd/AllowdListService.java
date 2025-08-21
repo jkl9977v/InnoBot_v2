@@ -26,7 +26,7 @@ public class AllowdListService {
 		Integer count = allowdMapper.allowdCount();
 		
 		//3. dto를 Mapper에 넘겨서 각 페이지에 보여줄 값을 조회해서 List에 담아온다.
-		List<DepartmentDTO> list = allowdMapper.allowdSelectAll(dto); 
+		List<DepartmentDTO> list = allowdMapper.allowdList(dto); 
 		
 		//4. 파라미터로 받아온 값, count, list를 listPageService에 넘겨서 화면에 출력한다.
 		listPageService.ShowList(page, limitRow, count, searchWord, list, model,null, kind);

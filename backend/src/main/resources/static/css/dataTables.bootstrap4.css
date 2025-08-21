@@ -10,6 +10,7 @@ table.dataTable td,
 table.dataTable th {
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
+  
 }
 table.dataTable td.dataTables_empty,
 table.dataTable th.dataTables_empty {
@@ -18,6 +19,7 @@ table.dataTable th.dataTables_empty {
 table.dataTable.nowrap th,
 table.dataTable.nowrap td {
   white-space: nowrap;
+  
 }
 
 div.dataTables_wrapper div.dataTables_length label {

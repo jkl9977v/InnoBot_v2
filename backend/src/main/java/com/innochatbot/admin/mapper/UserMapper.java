@@ -12,7 +12,7 @@ public interface UserMapper {
 
 	public void userInsert(UserDTO dto);
 
-	public List<UserDTO> userSelectAll(StartEndPageDTO dto);
+	public List<UserDTO> userList(StartEndPageDTO dto);
 
 	public UserDTO userDetail(String userNum);
 

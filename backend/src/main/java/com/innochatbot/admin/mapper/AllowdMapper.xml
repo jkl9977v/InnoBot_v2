@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC
-        "-//mybatis.org//DTD Mapper 3.//EN"
+        "-//mybatis.org//DTD Mapper 3.0//EN"
      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.innochatbot.admin.mapper.AllowdMapper">
@@ -16,7 +16,7 @@ values(#{allowdId}, #{allowdName}, #{departmentId})
 select count(distinct allowd_id) from allow_departments
 </select>
 
-<select id="allowdSelectAll" parameterType="StartEndPageDTO" resultType="departmentDTO">
+<select id="allowdList" parameterType="StartEndPageDTO" resultType="departmentDTO">
 select * from (
 select row_number() over (order by allowd_id) as rn
  , allowd_id, allowd_name
