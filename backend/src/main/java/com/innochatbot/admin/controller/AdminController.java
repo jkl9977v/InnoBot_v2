@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.innochatbot.admin.command.ChatbotCommand;
 import com.innochatbot.admin.command.LoginCommand;
 import com.innochatbot.admin.dto.ChatbotDTO;
 import com.innochatbot.admin.dto.LoginDTO;
@@ -120,8 +121,8 @@ public class AdminController {
     
     @PostMapping("chatbot-setting")
     @ResponseBody 
-    public ResponseEntity<String> saveSetting(@RequestBody ChatbotDTO dto) {
-    	chatbotSettingService.saveOrUpdate(dto);
+	public ResponseEntity<String> saveSetting(/* @RequestBody */ ChatbotCommand chatbotCommand) {
+    	chatbotSettingService.settingUpdate(chatbotCommand);
         return ResponseEntity.ok("저장 완료");
     }
 

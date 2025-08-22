@@ -1,17 +1,16 @@
 package com.innochatbot.admin.mapper;
 
-import java.util.Optional;
+//import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.innochatbot.admin.dto.ChatbotDTO;
 
 @Mapper
-
 public interface ChatbotMapper {
 
-	public Optional<ChatbotDTO> findById(String string);
+	//public Optional<ChatbotDTO> findById(String string);
 
-	public void save(ChatbotDTO dto);
+	public void botSettingUpdate(ChatbotDTO dto);
 
 }

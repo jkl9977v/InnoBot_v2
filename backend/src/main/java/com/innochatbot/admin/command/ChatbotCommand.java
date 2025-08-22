@@ -1,4 +1,4 @@
-package com.innochatbot.admin.dto;
+package com.innochatbot.admin.command;
 
 import org.apache.ibatis.type.Alias;
 
@@ -6,11 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Alias("chatbotDTO")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatbotDTO {
+public class ChatbotCommand {
 	
 	//관리자페이지 설정
 	String settingId;
@@ -37,3 +36,4 @@ public class ChatbotDTO {
 	
 
 }
+

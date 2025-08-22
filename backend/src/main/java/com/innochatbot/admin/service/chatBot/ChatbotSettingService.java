@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.innochatbot.admin.command.ChatbotCommand;
 import com.innochatbot.admin.dto.ChatbotDTO;
 import com.innochatbot.admin.mapper.ChatbotMapper;
 
@@ -13,17 +14,28 @@ public class ChatbotSettingService {
 	@Autowired
 	ChatbotMapper chatbotMapper;
 
-	public void saveOrUpdate(ChatbotDTO dto) {
-	    Optional<ChatbotDTO> existing = chatbotMapper.findById("default");
-	    ChatbotDTO setting = existing.orElse(new ChatbotDTO());
+	public void settingUpdate(ChatbotCommand command) {
+	    //Optional<ChatbotDTO> existing = chatbotMapper.findById("default");
+	    ChatbotDTO dto = new ChatbotDTO();
 	    
-	    setting.setId("default"); // 단일 설정용
-	    setting.setModelName(dto.getModelName());
-	    setting.setEmbeddingModel(dto.getEmbeddingModel());
-	    setting.setRefreshCycleMin(dto.getRefreshCycleMin());
-	    setting.setFileExtensions(dto.getFileExtensions());
+	    dto.setSettingId(command.getSettingId());
+	    dto.setPath(command.getPath());
+	    dto.setHour(command.getHour());
+	    dto.setMin(command.getMin());
 	    
-	    chatbotMapper.save(dto);
+	    //확장자
+	    /*
+	    dto.setTxt(command.getTxt());
+	    dto.setPdf(command.getPdf());
+	    dto.setDocx(command.getDocx());
+	    dto.setXlsx(command.getXlsx());
+	    dto.setPptx(command.getPptx());
+	    dto.setHtml(command.getHtml());
+	    dto.setCvs(command.getCvs());
+	    dto.setTika(command.getTika());
+	    */
+	    
+	    chatbotMapper.botSettingUpdate(dto);
 		
 	}
 	
