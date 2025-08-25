@@ -29,5 +29,7 @@ public interface FilePathMapper {
 
 	public FilePathDTO filePathDetail2(String pathId);
 
+	public List<FilePathDTO> filePathListAll(String searchWord);
+
 	
 }

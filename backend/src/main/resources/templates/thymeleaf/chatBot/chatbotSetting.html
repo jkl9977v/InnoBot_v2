@@ -97,6 +97,14 @@ $(function(){
 	});	
 });
 </script>
+<script type="text/javascript">
+$(function(){
+	$("#filePathSearch").click(function(){
+		window.open("/admin/file/pathSearch", "경로 검색"
+				, "width=620, height=400, left=30, top=50")
+	});
+})
+</script>
   </head>
 
   
@@ -145,9 +153,12 @@ $(function(){
 				<div class="form-row">
                   <div class="form-group col-md-2">
 					<label>기준 경로</label>
-					</div>
-					<div class="form-group col-md-4">
-					<input type="text" name="path" class="form-control" placeholder="실제 경로를 입력하세요"/>
+				  </div>
+				  <div class="form-group col-md-4">
+					<input type="text" name="path" class="form-control" id="path" th:value="${dto.path}" placeholder="실제 경로를 입력하세요"/>
+				  </div>
+				  <div class="form-group col-md-3">
+				  	<button type="button" id="filePathSearch" class="btn btn-lm btn-primary ml-2">경로 검색</button>
 				  </div>
 				</div>
 				<div class="form-row">
@@ -159,6 +170,7 @@ $(function(){
 				  	<option th:each="i : ${#numbers.sequence(0,24)}"
 				  	th:value="${i}"
 				  	th:text="${i}"
+				  	th:selected="${dto.hour == i}"
 				  	 />
 				  </select>
 				  </div>
@@ -169,7 +181,8 @@ $(function(){
 				  <select name="min" class="form-control">
 				  	<option th:each=" i : ${#numbers.sequence(0, 60)}" 
 				  	th:value="${i}"
-				  	th:text="${i}"></option>
+				  	th:text="${i}"
+				  	th:selected="${dto.min == i}"></option>
 				  </select>
 				  </div>
 				  <div class="form-group col-md-1 d-flex align-items-end">

@@ -15,8 +15,8 @@ public class ChatbotDTO {
 	//관리자페이지 설정
 	String settingId;
 	String path; //기준경로
-	int hour;
-	int min;
+	int hour; //시간
+	int min;  // 분
 	
 	//확장자
 	String txt;

@@ -5,16 +5,22 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import com.innochatbot.admin.dto.ChatbotDTO;
+import com.innochatbot.admin.service.chatBot.ChatbotDetailService;
 import com.innochatbot.api.service.EmbeddingCliService;
 
 import jakarta.annotation.PreDestroy;
 
 @Component
 public class ProgrammaticEmbeddingScheduler { //자바 표준 ScheduledExecutorService로만 스케줄 처리
+	
+	@Autowired
+	ChatbotDetailService chatbotDetailService;
 	
 	//2. ScheduledExecutorService에 작업 등록
 	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(r-> {
@@ -34,8 +40,13 @@ public class ProgrammaticEmbeddingScheduler { //자바 표준 ScheduledExecutorS
 	//1. 애플리케이션 준비 시 스케줄 등록(ApplicationReadyEvent 사용 권장)
 	@EventListener(ApplicationReadyEvent.class)
 	public void startScheduler() {
-		int min = 60; //0 ~ 59분
-		int hour = 1;
+		/*
+		 * if(min == null || hour == null) { //최초 기본값 min = 60; hour = 1; }
+		 */
+		ChatbotDTO dto = chatbotDetailService.returnDTO();
+		int hour = dto.getHour();
+		int min = dto.getMin(); //0 ~ 59분
+		
 		//initialDelay : 시작 지연(ms), period: 주기(ms)
 		long initialDelay = 10000; //10초 후 시작(안정성)  
 		long period = hour * 60 * 60 * 1000 + min * 60 * 1000; //5분마다 실행(원하는 값으로 변경)

@@ -33,4 +33,12 @@ public class FilePathListService {
 		
 	}
 
+
+	public void filePathSearch(String searchWord, Model model) {
+		List<FilePathDTO> list = filePathMapper.filePathListAll(searchWord);
+		System.out.println(list);
+		model.addAttribute("list", list);
+		
+	}
+
 }

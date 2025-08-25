@@ -16,7 +16,7 @@ public class FilePathScannerService {
 	@Autowired
 	AutoNumService autoNumService;
 
-	public void processFilePath(Path docsDir, String path, String parentPath, int depth) {
+	public void processFilePath(Path startPath, String path, String parentPath, int depth) {
 		String pathId = filePathMapper.pathIdSelect(path);
 		String parentId = filePathMapper.pathIdSelect(parentPath);
 		if (pathId == null) { //새로 생긴 경로

@@ -51,7 +51,7 @@ public class FileScannerService {
 			String currentHash = FileHashUtill.getMD5(currentPath);
 			//PathId 조회
 			String pathId = getPathId(parentPath);
-			System.out.println("PathId: " + pathId);
+			//System.out.println("PathId: " + pathId);
 			//extension
 			String extension = "";
 			int dotIndex = fileName.lastIndexOf('.');

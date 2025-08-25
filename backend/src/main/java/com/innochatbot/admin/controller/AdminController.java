@@ -18,6 +18,7 @@ import com.innochatbot.admin.dto.UserDTO;
 import com.innochatbot.admin.mapper.UserMapper;
 import com.innochatbot.admin.service.ListPageService;
 import com.innochatbot.admin.service.UserLoginService;
+import com.innochatbot.admin.service.chatBot.ChatbotDetailService;
 import com.innochatbot.admin.service.chatBot.ChatbotSettingService;
 import com.innochatbot.admin.service.filePath.FilePathListService;
 
@@ -113,17 +114,21 @@ public class AdminController {
     }
     @Autowired
     ChatbotSettingService chatbotSettingService;
+    @Autowired
+    ChatbotDetailService chatbotDetailService;
     
     @GetMapping("chatbot-setting")
-    public String chatbotSetting() {
+    public String chatbotSetting(String settingId ,Model model) {
+    	chatbotDetailService.chatbotDetail(settingId, model);
     	return "thymeleaf/chatbot/chatbotSetting";
     }
     
     @PostMapping("chatbot-setting")
-    @ResponseBody 
-	public ResponseEntity<String> saveSetting(/* @RequestBody */ ChatbotCommand chatbotCommand) {
+    //@ResponseBody 
+	public /*ResponseEntity<String>*/ String saveSetting(/* @RequestBody */ ChatbotCommand chatbotCommand) {
     	chatbotSettingService.settingUpdate(chatbotCommand);
-        return ResponseEntity.ok("저장 완료");
+        //return ResponseEntity.ok("저장 완료");
+    	return "redirect:/admin/";
     }
 
 

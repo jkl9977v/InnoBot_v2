@@ -79,6 +79,12 @@ public class FilePathController { //파일 경로 관리
     	filePathListService.filePathList(page, limitRow, pathId, searchWord, model, kind);
     	return "thymeleaf/file";
     }
+    @GetMapping("pathSearch")
+    public String filePathSearch(String searchWord, Model model) {
+    	filePathListService.filePathSearch(searchWord, model);
+    	return "thymeleaf/path/filePathSearch";
+    }
+    
     @GetMapping("pathDetail")
     public String filePathDetail(@RequestParam String pathId, Model model) {
     	filePathDetailService.pathDetail(pathId, model);
@@ -96,6 +102,8 @@ public class FilePathController { //파일 경로 관리
         filePathUpdateService.pathUpdate(filePathCommand);
         return "redirect:pathList";
     }
+    
+    
     @GetMapping("addAccessRule")
     public String addAccessRule(@RequestParam String pathId, Model model) {
         filePathDetailService.pathDetail(pathId, model);

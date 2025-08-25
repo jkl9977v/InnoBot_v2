@@ -13,4 +13,6 @@ public interface ChatbotMapper {
 
 	public void botSettingUpdate(ChatbotDTO dto);
 
+	public ChatbotDTO ChatbotDetail(String settingId);
+
 }

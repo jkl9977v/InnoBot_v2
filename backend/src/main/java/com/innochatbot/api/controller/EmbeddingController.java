@@ -17,7 +17,7 @@ import com.innochatbot.api.service.EmbeddingCliService;
 
 @RestController
 @RequestMapping("/admin/embedding")
-public class EmbeddingController {
+public class EmbeddingController { //수동 임베딩 호출
 	private final EmbeddingCliService embeddingCliService;
 	private final Executor embeddingExecutor; // 스레드풀 (또는 @Async 사용)
 	
