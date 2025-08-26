@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import './App.css';
+import './App_ChatSetting.css';
 import botIcon from './image/tiumBot1.png';
 
 function App() {
