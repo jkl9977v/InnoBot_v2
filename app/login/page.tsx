@@ -1,0 +1,152 @@
+
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+export default function LoginPage() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    // 간단한 유효성 검사
+    if (!username || !password) {
+      setError('아이디와 비밀번호를 모두 입력해주세요.');
+      setIsLoading(false);
+      return;
+    }
+
+    // 로그인 시뮬레이션 (실제로는 API 호출)
+    setTimeout(() => {
+      // 간단한 데모용 로그인 체크
+      if (username === 'admin' && password === 'admin123') {
+        console.log('로그인 성공');
+        localStorage.setItem('isLoggedIn', 'true');
+        router.push('/chat');
+      } else {
+        setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+      }
+      setIsLoading(false);
+    }, 1500);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
+        {/* Logo/Header */}
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-block">
+            <div className="flex items-center justify-center space-x-3 mb-2">
+              {/* Character Image */}
+              <div className="w-12 h-12 flex items-center justify-center">
+                <img 
+                  src="https://static.readdy.ai/image/8cfbe681cd6be44b8057581fc3cc12d1/30a4d73a30bae5dc0789582636640c3f.png" 
+                  alt="TiumBot Character" 
+                  className="w-12 h-12 object-contain"
+                />
+              </div>
+              <span className="font-['Pacifico'] text-3xl text-indigo-600">TiumBot</span>
+            </div>
+          </Link>
+          <p className="text-gray-600 mt-2">사용자 로그인</p>
+        </div>
+
+        {/* Login Form */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-8">
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                아이디
+              </label>
+              <div className="relative">
+                <input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors text-sm"
+                  placeholder="아이디를 입력하세요"
+                  disabled={isLoading}
+                />
+                <i className="ri-user-line absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                비밀번호
+              </label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 pl-12 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors text-sm"
+                  placeholder="비밀번호를 입력하세요"
+                  disabled={isLoading}
+                />
+                <i className="ri-lock-line absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                >
+                  <i className={`${showPassword ? 'ri-eye-off-line' : 'ri-eye-line'}`}></i>
+                </button>
+              </div>
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center space-x-2">
+                <i className="ri-error-warning-line text-red-500"></i>
+                <span className="text-red-700 text-sm">{error}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white py-3 rounded-lg font-medium transition-colors cursor-pointer whitespace-nowrap flex items-center justify-center space-x-2"
+            >
+              {isLoading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <span>로그인 중...</span>
+                </>
+              ) : (
+                <>
+                  <i className="ri-login-circle-line w-5 h-5 flex items-center justify-center"></i>
+                  <span>로그인</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+              <a href="#" className="hover:text-indigo-600 transition-colors cursor-pointer">
+                비밀번호를 잊으셨나요?
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-8">
+          <Link href="/" className="text-sm text-gray-600 hover:text-indigo-600 transition-colors cursor-pointer">
+            ← 홈페이지로 돌아가기
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
